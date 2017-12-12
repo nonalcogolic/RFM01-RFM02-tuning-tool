@@ -1,8 +1,6 @@
 #ifndef IPINOUT_H
 #define IPINOUT_H
 
-#include <bcm2835.h>
-
 enum class ePin
 {
    nSel = 23,

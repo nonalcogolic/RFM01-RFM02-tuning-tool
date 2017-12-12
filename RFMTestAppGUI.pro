@@ -11,7 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = RFMTestAppGUI
 TEMPLATE = app
-LIBS += -L/usr/local/lib/ -lbcm2835
+unix:LIBS += -L/usr/local/lib/ -lbcm2835
+# LIBS += -L/usr/local/lib/ -lbcm2835
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -24,14 +25,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-
 SOURCES += \
     mainwindow.cpp \
     main.cpp \
     crmfhandler.cpp \
-    CBroadcomPinout.cpp \
     crfmtransmitterhandler.cpp \
     cgpioevent.cpp
+
+unix:SOURCES += CBroadcomPinout.cpp
+win32:SOURCES += CBroadcomPinoutDummy.cpp
+
 
 HEADERS += \
     mainwindow.h \

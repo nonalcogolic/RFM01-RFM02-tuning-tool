@@ -3,6 +3,8 @@
 #include <exception>
 #include <string>
 
+#include <bcm2835.h>
+
 class OpenBCMException : public std::exception
 {
     const std::string mMsg;
