@@ -131,7 +131,6 @@ void MainWindow::readTrStatus()
    ui->ed_tr->setText(result);
 }
 
-
 void MainWindow::sendAllRec()
 {
    auto commandsList = ui->edit_rec->toPlainText().split(R"([,\s]+)");

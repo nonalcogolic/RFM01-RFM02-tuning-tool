@@ -1,5 +1,6 @@
 #include "crfmtransmitterhandler.h"
 
+#include "constants.h"
 
 #include <chrono>
 #include <thread>
@@ -8,7 +9,7 @@ namespace
 {
 void setPinDelay()
 {
-   const auto delay = std::chrono::nanoseconds(500);
+   const auto delay = std::chrono::nanoseconds(Constants::CHANGE_LEVEL_DELAY_TR_NS);
    std::this_thread::sleep_for(delay);
 }
 }
@@ -49,6 +50,7 @@ void CRFMTransmitterHandler::sendData(const std::vector<bool> command, const std
 
    for (auto bit : command)
    {
+      setPinDelay();
       mPinout.setPinState(bit, ePin::tr_SDI);
       mPinout.setPinState(true, ePin::tr_SCK);
       setPinDelay();

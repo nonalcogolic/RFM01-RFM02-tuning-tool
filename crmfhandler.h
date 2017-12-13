@@ -16,7 +16,7 @@ public:
    CRMFHandler(IPinOut & pinout);
    ~CRMFHandler();
 
-   void sendComand(const std::vector<bool> command);
+   void sendComand(const std::vector<bool> & command);
 
    std::vector<bool> readStatus();
 

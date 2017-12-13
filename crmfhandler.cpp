@@ -1,10 +1,11 @@
 #include "crmfhandler.h"
 
+#include "constants.h"
 #include <chrono>
 
 void setPinDelay()
 {
-   const auto delay = std::chrono::microseconds(1);
+   const auto delay = std::chrono::nanoseconds(Constants::CHANGE_LEVEL_DELAY_REC_NS);
    std::this_thread::sleep_for(delay);
 }
 
@@ -16,15 +17,13 @@ CRMFHandler::CRMFHandler(IPinOut & pinout)
    mPinout.setPinState(true, ePin::nSel);
    mPinout.setPinState(false, ePin::SDI);
    mPinout.setPinState(true, ePin::SCK);
-
 }
 
 CRMFHandler::~CRMFHandler()
 {
 }
 
-
-void CRMFHandler::sendComand(const std::vector<bool> command)
+void CRMFHandler::sendComand(const std::vector<bool> & command)
 {
    mPinout.setPinState(false, ePin::SDI);
    mPinout.setPinState(false, ePin::nSel);
@@ -35,6 +34,7 @@ void CRMFHandler::sendComand(const std::vector<bool> command)
       mPinout.setPinState(true, ePin::SCK);
       setPinDelay();
       mPinout.setPinState(false, ePin::SCK);
+      setPinDelay();
    }
 
    mPinout.setPinState(true, ePin::nSel);
@@ -56,6 +56,7 @@ std::vector<bool> CRMFHandler::readStatus()
           setPinDelay();
           output.push_back(mPinout.getPinState(ePin::SDO));
           mPinout.setPinState(false, ePin::SCK);
+          setPinDelay();
        }
 
        mPinout.setPinState(true, ePin::nSel);

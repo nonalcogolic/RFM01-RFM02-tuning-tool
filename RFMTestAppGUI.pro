@@ -42,7 +42,8 @@ HEADERS += \
     ipinout.h \
     CBroadcomPinout.h \
     crfmtransmitterhandler.h \
-    cgpioevent.h
+    cgpioevent.h \
+    constants.h
 
 FORMS += \
     mainwindow.ui
