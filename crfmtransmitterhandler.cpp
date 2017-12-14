@@ -1,19 +1,5 @@
 #include "crfmtransmitterhandler.h"
 
-#include "constants.h"
-
-#include <chrono>
-#include <thread>
-
-namespace
-{
-void setPinDelay()
-{
-   const auto delay = std::chrono::nanoseconds(Constants::CHANGE_LEVEL_DELAY_TR_NS);
-   std::this_thread::sleep_for(delay);
-}
-}
-
 
 CRFMTransmitterHandler::CRFMTransmitterHandler(IPinOut & pinout)
    : mPinout(pinout)
@@ -37,7 +23,6 @@ void CRFMTransmitterHandler::sendComand(const std::vector<bool> command)
    {
       mPinout.setPinState(bit, ePin::tr_SDI);
       mPinout.setPinState(true, ePin::tr_SCK);
-      setPinDelay();
       mPinout.setPinState(false, ePin::tr_SCK);
    }
 
@@ -50,17 +35,14 @@ void CRFMTransmitterHandler::sendData(const std::vector<bool> command, const std
 
    for (auto bit : command)
    {
-      setPinDelay();
       mPinout.setPinState(bit, ePin::tr_SDI);
       mPinout.setPinState(true, ePin::tr_SCK);
-      setPinDelay();
       mPinout.setPinState(false, ePin::tr_SCK);
    }
 
    for (auto bit : data)
    {
       mPinout.setPinState(bit, ePin::tr_SDI);
-      setPinDelay();
    }
 
    mPinout.setPinState(true, ePin::tr_nSEL);
@@ -71,30 +53,23 @@ std::vector<bool> CRFMTransmitterHandler::readStatus()
 {
    std::vector<bool> output;
 
-  // if (!mPinout.getPinState(ePin::nIRQ))
+   mPinout.setPinState(false, ePin::tr_nSEL);
+   mPinout.setPinState(false, ePin::tr_SDI);
+
+   auto command = std::vector<bool>{1,1,0,0,  1,1,0,0,  0,0,0,0,  0,0,0,0};
+
+   for (int i = 0; i<16; ++i)
    {
-       mPinout.setPinState(false, ePin::tr_nSEL);
-       mPinout.setPinState(false, ePin::tr_SDI);
+      mPinout.setPinState(command[i], ePin::tr_SDI);
+      mPinout.setPinState(true, ePin::tr_SCK);
 
-       //while (!mPinout.getPinState(ePin::nIRQ))
-       auto command = std::vector<bool>{1,1,0,0,  1,1,0,0,  0,0,0,0,  0,0,0,0};
+      if (i >= 8)
+         output.push_back(mPinout.getPinState(ePin::tr_NIRQ));
 
-       for (int i = 0; i<16; ++i)
-       {
-          mPinout.setPinState(command[i], ePin::tr_SDI);
-          mPinout.setPinState(true, ePin::tr_SCK);
-          setPinDelay();
-
-          if (i >= 8)
-             output.push_back(mPinout.getPinState(ePin::tr_NIRQ));
-
-          mPinout.setPinState(false, ePin::tr_SCK);
-          setPinDelay();
-       }
-
-       mPinout.setPinState(true, ePin::tr_nSEL);
-     //  mPinout.setPinState(true, ePin::SDI);
+      mPinout.setPinState(false, ePin::tr_SCK);
    }
+
+   mPinout.setPinState(true, ePin::tr_nSEL);
 
    return output;
 }

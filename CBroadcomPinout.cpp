@@ -2,8 +2,15 @@
 
 #include <exception>
 #include <string>
+#include <chrono>
 
 #include <bcm2835.h>
+
+void setPinDelay()
+{
+   const auto delay = std::chrono::nanoseconds(Constants::CHANGE_LEVEL_DELAY);
+   std::this_thread::sleep_for(delay);
+}
 
 class OpenBCMException : public std::exception
 {
@@ -24,7 +31,7 @@ public:
 CBroadcomPinout::CBroadcomPinout()
 {
     if (!bcm2835_init())
-        throw OpenBCMException() ;
+        throw OpenBCMException();
 
     bcm2835_gpio_fsel(static_cast<uint8_t>(ePin::nSel), BCM2835_GPIO_FSEL_OUTP);
     bcm2835_gpio_fsel(static_cast<uint8_t>(ePin::SDI), BCM2835_GPIO_FSEL_OUTP);
@@ -33,14 +40,15 @@ CBroadcomPinout::CBroadcomPinout()
     bcm2835_gpio_fsel(static_cast<uint8_t>(ePin::SDO), BCM2835_GPIO_FSEL_INPT);
 }
 
- CBroadcomPinout::~CBroadcomPinout()
- {
-    bcm2835_close();
- }
+CBroadcomPinout::~CBroadcomPinout()
+{
+   bcm2835_close();
+}
 
 void CBroadcomPinout::setPinState(const bool state, const ePin pin)
 {
-    bcm2835_gpio_write(static_cast<uint8_t>(pin), static_cast<uint8_t>(state));
+   bcm2835_gpio_write(static_cast<uint8_t>(pin), static_cast<uint8_t>(state));
+   setPinDelay();
 }
 
 
