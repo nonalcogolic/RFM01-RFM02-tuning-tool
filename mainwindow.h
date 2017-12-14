@@ -34,6 +34,8 @@ public slots:
    void sendAllRec();
    void sendAllTr();
 
+   void sendData();
+
 private:
    Ui::MainWindow *ui;
    CBroadcomPinout mPinout;

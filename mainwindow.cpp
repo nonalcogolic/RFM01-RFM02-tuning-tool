@@ -8,11 +8,11 @@
 namespace
 {
 
-   std::vector<bool> fromInt(int command, int size)
+   std::vector<bool> fromInt(int command, int charsInCommand)
    {
       std::list<bool> retValue;
 
-      for (int i = 0 ; i < size * 4; ++i)
+      for (int i = 0 ; i < charsInCommand * 4; ++i)
       {
          bool value = (command >> i) % 2;
          retValue.push_front(value);
@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
 
    connect(ui->but_tr_sendAll, SIGNAL(clicked()), this, SLOT(sendAllTr()) );
    connect(ui->but_rec_Send_all, SIGNAL(clicked()), this, SLOT(sendAllRec()) );
+   connect(ui->pushButton_Data, SIGNAL(clicked()), this, SLOT(sendData()) );
 
    connect(this, SIGNAL(nIRQSignal(const bool)), this, SLOT(nIRQ(const bool)), Qt::ConnectionType::QueuedConnection);
    connect(ui->transmitter_but, SIGNAL(clicked()), this, SLOT(transmiiterSendComand()));
@@ -100,14 +101,7 @@ void MainWindow::transmiiterSendComand()
    const auto size = ui->transmitterCmd->text().size();
    auto comand = ui->transmitterCmd->text().toInt(nullptr, 16);
    const auto bitset = fromInt(comand, size);
-   auto data = 0xAAAAAA2DD4AAAAAA;
-   const auto bitsetDATA = fromInt(data, 16);
 
-   if (comand == 0xC6)
-   {
-      mTransmitterHandler.sendData(bitset, bitsetDATA);
-   }
-   else
    {
       mTransmitterHandler.sendComand(bitset);
    }
@@ -138,8 +132,7 @@ void MainWindow::sendAllRec()
    for (const auto & comand : commandsList)
    {
       mReceiver.sendComand(fromInt(comand.toInt(nullptr, 16), comand.size()));
-      const auto delay = std::chrono::nanoseconds(100);
-      std::this_thread::sleep_for(delay);
+      std::this_thread::sleep_for(std::chrono::nanoseconds(100));
    }
 
    readStatus();
@@ -147,5 +140,21 @@ void MainWindow::sendAllRec()
 
 void MainWindow::sendAllTr()
 {
+   auto commandsList = ui->edit_Tr->toPlainText().split(R"([,\s]+)");
 
+   for (const auto & comand : commandsList)
+   {
+      mTransmitterHandler.sendComand(fromInt(comand.toInt(nullptr, 16), comand.size()));
+      std::this_thread::sleep_for(std::chrono::nanoseconds(100));
+   }
+
+   readStatus();
+}
+
+void MainWindow::sendData()
+{
+   const auto bitset = fromInt(0xC6, 2);
+   auto data = 0xAAAAAA2DD4AAAAAA;
+   const auto bitsetDATA = fromInt(data, 16);
+   mTransmitterHandler.sendData(bitset, bitsetDATA);
 }
