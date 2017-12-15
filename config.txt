@@ -17,11 +17,25 @@ Rec
 7. FIFO  CE87 //
 8. Run   C091
 
+ 0x0000
+ 0x898A
+ 0xA7D0
+ 0xC847
+ 0xC69B
+ 0xC42A
+ 0xC200
+ 0xC080
+ 0xCE84
+ 0xCE87
+ 0xC081
+
+
+
 TR
 0.       CC00           //read status
 1. CFG   8886       // control reg
 2. freq  A7D0
-3. DatRa C811
+3. DatRa C847
 4. TxSy  c220             //?
 5. PLL   D240
 6. Pow   B2

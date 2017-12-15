@@ -31,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
    , mEvents(mPinout)
 {
    mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, CGPIOEvent::eEventType::every);
- //  mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, CGPIOEvent::eEventType::every);
 
    ui->setupUi(this);
    connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(sendComand()) );
@@ -44,6 +43,8 @@ MainWindow::MainWindow(QWidget *parent)
 
    connect(this, SIGNAL(nIRQSignal(const bool)), this, SLOT(nIRQ(const bool)), Qt::ConnectionType::QueuedConnection);
    connect(ui->transmitter_but, SIGNAL(clicked()), this, SLOT(transmiiterSendComand()));
+
+   ui->edit_rec->setText("0000 898A A7D0 C847 C69B C42A C200 C080 CE84 CE87 C081");
 }
 
 MainWindow::~MainWindow()
@@ -132,7 +133,7 @@ void MainWindow::sendAllRec()
    for (const auto & comand : commandsList)
    {
       mReceiver.sendComand(fromInt(comand.toInt(nullptr, 16), comand.size()));
-      std::this_thread::sleep_for(std::chrono::nanoseconds(100));
+      std::this_thread::sleep_for(std::chrono::microseconds(10));
    }
 
    readStatus();
