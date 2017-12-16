@@ -39,7 +39,17 @@ TR
 4. TxSy  c220             //?
 5. PLL   D240
 6. Pow   B2
-7. PWMN  C039              //   ?
-8. Data  C6
+7. PWMN  C039
 
 
+Timer both: E000
+12:8 R
+0:7 M
+M*2^R ms
+
+Enable wake in tr PWMN | 2
+Enable wake in rc PWMN | 0x0200
+
+E0FF
+
+FF00 - reset chip
