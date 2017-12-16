@@ -1,14 +1,17 @@
 #include "CBroadcomPinout.h"
 
+#include "constants.h"
+
 #include <exception>
 #include <string>
 #include <chrono>
+#include <thread>
 
 #include <bcm2835.h>
 
 void setPinDelay()
 {
-   const auto delay = std::chrono::nanoseconds(Constants::CHANGE_LEVEL_DELAY);
+   const auto delay = std::chrono::microseconds(Constants::CHANGE_LEVEL_DURATION);
    std::this_thread::sleep_for(delay);
 }
 

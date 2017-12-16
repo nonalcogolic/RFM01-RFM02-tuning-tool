@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
    , mEvents(mPinout)
 {
    mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, CGPIOEvent::eEventType::every);
+   mEvents.listenPin(ePin::SDO, [this](const bool state) { emit nIRQSignal(state); }, CGPIOEvent::eEventType::every);
 
    ui->setupUi(this);
    connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(sendComand()) );
