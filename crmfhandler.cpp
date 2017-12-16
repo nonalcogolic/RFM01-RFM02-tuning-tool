@@ -22,6 +22,7 @@ CRMFHandler::~CRMFHandler()
 
 void CRMFHandler::sendComand(const std::vector<bool> & command)
 {
+   mPinout.setPinState(false, ePin::SCK);
    mPinout.setPinState(false, ePin::nSel);
 
    for (auto bit : command)
@@ -31,7 +32,7 @@ void CRMFHandler::sendComand(const std::vector<bool> & command)
       mPinout.setPinState(false, ePin::SCK);
    }
 
-   mPinout.setPinState(true, ePin::SDI);
+   mPinout.setPinState(false, ePin::SCK);
    mPinout.setPinState(true, ePin::nSel);
 }
 
@@ -39,13 +40,16 @@ std::vector<bool> CRMFHandler::readStatus()
 {
    std::vector<bool> output;
 
-   mPinout.setPinState(false, ePin::nSel);
+   mPinout.setPinState(false, ePin::SCK);
    mPinout.setPinState(false, ePin::SDI);
+   mPinout.setPinState(false, ePin::nSel);
 
    for (int i = 0; i<16; ++i)
-   {      
+   {
       output.push_back(mPinout.getPinState(ePin::SDO));
       mPinout.setPinState(true, ePin::SCK);
+      mPinout.setPinState(true, ePin::SCK);
+      mPinout.setPinState(false, ePin::SCK);
       mPinout.setPinState(false, ePin::SCK);
    }
 
@@ -53,11 +57,12 @@ std::vector<bool> CRMFHandler::readStatus()
    {
       output.push_back(mPinout.getPinState(ePin::SDO));
       mPinout.setPinState(true, ePin::SCK);
+      mPinout.setPinState(true, ePin::SCK);
+      mPinout.setPinState(false, ePin::SCK);
       mPinout.setPinState(false, ePin::SCK);
    }
 
    mPinout.setPinState(true, ePin::nSel);
-
 
    return output;
 }
