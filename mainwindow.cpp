@@ -4,6 +4,7 @@
 #include <list>
 
 #include <qmessagebox.h>
+#include <qdebug.h>
 
 namespace
 {
@@ -45,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
    connect(this, SIGNAL(nIRQSignal(const bool)), this, SLOT(nIRQ(const bool)), Qt::ConnectionType::QueuedConnection);
    connect(ui->transmitter_but, SIGNAL(clicked()), this, SLOT(transmiiterSendComand()));
 
-   ui->edit_rec->setText("0000 898A A7D0 C847 C69B C42A C200 C080 CE84 CE87 C081");
+   ui->edit_multple_comand_rec->setText("0000 898A A7D0 C847 C69B C42A C200 C080 CE84 CE87 C081");
 }
 
 MainWindow::~MainWindow()
@@ -116,38 +117,37 @@ void MainWindow::transmiiterSendComand()
 void MainWindow::readTrStatus()
 {
    auto word = mTransmitterHandler.readStatus();
-
    QString result;
-
    for (auto symb : word)
    {
       result += (symb) ? "1" : "0";
    }
-
    ui->ed_tr->setText(result);
 }
 
 void MainWindow::sendAllRec()
 {
-   auto commandsList = ui->edit_rec->toPlainText().split(R"([,\s]+)");
-
+   QRegExp rx { R"([,\s]+)" };
+   auto commandsList = ui->edit_multple_comand_rec->toPlainText().split(rx);
    for (const auto & comand : commandsList)
    {
+      qDebug() << comand ;
       mReceiver.sendComand(fromInt(comand.toInt(nullptr, 16), comand.size()));
       std::this_thread::sleep_for(std::chrono::microseconds(10));
    }
-
    readStatus();
 }
 
 void MainWindow::sendAllTr()
 {
-   auto commandsList = ui->edit_Tr->toPlainText().split(R"([,\s]+)");
+   QRegExp rx { R"([,\s]+)" };
+   auto commandsList = ui->edit_Tr->toPlainText().split(rx);
 
    for (const auto & comand : commandsList)
    {
+      qDebug() << comand ;
       mTransmitterHandler.sendComand(fromInt(comand.toInt(nullptr, 16), comand.size()));
-      std::this_thread::sleep_for(std::chrono::nanoseconds(100));
+      std::this_thread::sleep_for(std::chrono::microseconds(10));
    }
 
    readStatus();
