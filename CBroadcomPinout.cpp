@@ -36,11 +36,11 @@ CBroadcomPinout::CBroadcomPinout()
     if (!bcm2835_init())
         throw OpenBCMException();
 
-    bcm2835_gpio_fsel(static_cast<uint8_t>(ePin::nSel), BCM2835_GPIO_FSEL_OUTP);
+  /*  bcm2835_gpio_fsel(static_cast<uint8_t>(ePin::nSel), BCM2835_GPIO_FSEL_OUTP);
     bcm2835_gpio_fsel(static_cast<uint8_t>(ePin::SDI), BCM2835_GPIO_FSEL_OUTP);
     bcm2835_gpio_fsel(static_cast<uint8_t>(ePin::SCK), BCM2835_GPIO_FSEL_OUTP);
     bcm2835_gpio_fsel(static_cast<uint8_t>(ePin::nIRQ), BCM2835_GPIO_FSEL_INPT);
-    bcm2835_gpio_fsel(static_cast<uint8_t>(ePin::SDO), BCM2835_GPIO_FSEL_INPT);
+    bcm2835_gpio_fsel(static_cast<uint8_t>(ePin::SDO), BCM2835_GPIO_FSEL_INPT);*/
 }
 
 CBroadcomPinout::~CBroadcomPinout()

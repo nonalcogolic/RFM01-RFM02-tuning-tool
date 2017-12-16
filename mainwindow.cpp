@@ -27,12 +27,12 @@ namespace
 MainWindow::MainWindow(QWidget *parent)
    : QWidget(parent)
    , ui(new Ui::MainWindow)
+   , mPinout()
    , mReceiver(mPinout)
    , mTransmitterHandler(mPinout)
    , mEvents(mPinout)
 {
    mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, CGPIOEvent::eEventType::every);
-   mEvents.listenPin(ePin::SDO, [this](const bool state) { emit nIRQSignal(state); }, CGPIOEvent::eEventType::every);
 
    ui->setupUi(this);
    connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(sendComand()) );
