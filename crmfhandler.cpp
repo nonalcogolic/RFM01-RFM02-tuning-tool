@@ -48,8 +48,8 @@ std::vector<bool> CRMFHandler::readStatus()
    {
       output.push_back(mPinout.getPinState(ePin::SDO));
       mPinout.setPinState(true, ePin::SCK);
-      mPinout.setPinState(true, ePin::SCK);
-      mPinout.setPinState(false, ePin::SCK);
+  //    mPinout.setPinState(true, ePin::SCK);
+ //     mPinout.setPinState(false, ePin::SCK);
       mPinout.setPinState(false, ePin::SCK);
    }
 
@@ -57,8 +57,8 @@ std::vector<bool> CRMFHandler::readStatus()
    {
       output.push_back(mPinout.getPinState(ePin::SDO));
       mPinout.setPinState(true, ePin::SCK);
-      mPinout.setPinState(true, ePin::SCK);
-      mPinout.setPinState(false, ePin::SCK);
+  //    mPinout.setPinState(true, ePin::SCK);
+   //   mPinout.setPinState(false, ePin::SCK);
       mPinout.setPinState(false, ePin::SCK);
    }
 

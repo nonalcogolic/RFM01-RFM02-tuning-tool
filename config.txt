@@ -36,19 +36,22 @@ TR
 1. CFG   8886       // control reg
 2. freq  A7D0
 3. DatRa C847
-4. TxSy  c220             //?
+4. TxSy  c200             //c220
 5. PLL   D240
 6. Pow   B2
 7. PWMN  C039
 
 
+
+// HOW to test if both are worked and successfully receive the command, status are read correct
+// Proposal to use wake up command : set wake up period, enable timer, wait for reaction, check the status,
 Timer both: E000
 12:8 R
 0:7 M
 M*2^R ms
 
 Enable wake in tr PWMN | 2
-Enable wake in rc PWMN | 0x0200
+Enable wake in rc PWMN | 0x0200  //make a note: value of register are always overrided, it's need to set it again every SW restart
 
 E0FF
 

@@ -46,8 +46,8 @@ MainWindow::MainWindow(QWidget *parent)
    connect(this, SIGNAL(nIRQSignal(const bool)), this, SLOT(nIRQ(const bool)), Qt::ConnectionType::QueuedConnection);
    connect(ui->transmitter_but, SIGNAL(clicked()), this, SLOT(transmiiterSendComand()));
 
-   ui->edit_multple_comand_rec->setText("0000 898A A7D0 C847 C69B C42A C200 C080 CE84 CE87 C081");
-   ui->edit_multyple_comand_Tr->setText("CC00 8886 A7D0 C811 C220");
+   ui->edit_multple_comand_rec->setText("0000 898A A7D0 C811 C69B C42A C200 C080 CE84 CE87 C081");
+   ui->edit_multyple_comand_Tr->setText("CC00 8886 A7D0 C811 c200");
 }
 
 MainWindow::~MainWindow()
@@ -134,7 +134,7 @@ void MainWindow::sendAllRec()
    {
       qDebug() << comand ;
       mReceiver.sendComand(fromInt(comand.toInt(nullptr, 16), comand.size()));
-      std::this_thread::sleep_for(std::chrono::microseconds(10));
+      std::this_thread::sleep_for(std::chrono::milliseconds(50));
    }
    readStatus();
 }
@@ -148,19 +148,19 @@ void MainWindow::sendAllTr()
    {
       qDebug() << comand ;
       mTransmitterHandler.sendComand(fromInt(comand.toInt(nullptr, 16), comand.size()));
-      std::this_thread::sleep_for(std::chrono::microseconds(10));
+      std::this_thread::sleep_for(std::chrono::milliseconds(50));
    }
 
-   readStatus();
+   readTrStatus();
 }
 
 void MainWindow::sendData()
 {
-   mTransmitterHandler.sendComand(fromInt(0xC001, 4));
+  // mTransmitterHandler.sendComand(fromInt(0xC039, 4));
    const auto bitset = fromInt(0xC6, 2);
    auto data = 0xAAAAAA2DD4FF11AA;
    const auto bitsetDATA = fromInt(data, 16);
    mTransmitterHandler.sendData(bitset, bitsetDATA);
-   mTransmitterHandler.sendComand(fromInt(0xC039, 4));
+  // mTransmitterHandler.sendComand(fromInt(0xC001, 4));
    //delay(1s);
 }
