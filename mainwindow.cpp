@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
    connect(ui->transmitter_but, SIGNAL(clicked()), this, SLOT(transmiiterSendComand()));
 
    ui->edit_multple_comand_rec->setText("0000 898A A7D0 C847 C69B C42A C200 C080 CE84 CE87 C081");
+   ui->edit_multyple_comand_Tr->setText("CC00 8886 A7D0 C811 C220");
 }
 
 MainWindow::~MainWindow()
@@ -141,7 +142,7 @@ void MainWindow::sendAllRec()
 void MainWindow::sendAllTr()
 {
    QRegExp rx { R"([,\s]+)" };
-   auto commandsList = ui->edit_Tr->toPlainText().split(rx);
+   auto commandsList = ui->edit_multyple_comand_Tr->toPlainText().split(rx);
 
    for (const auto & comand : commandsList)
    {
@@ -155,8 +156,11 @@ void MainWindow::sendAllTr()
 
 void MainWindow::sendData()
 {
+   mTransmitterHandler.sendComand(fromInt(0xC001, 4));
    const auto bitset = fromInt(0xC6, 2);
-   auto data = 0xAAAAAA2DD4AAAAAA;
+   auto data = 0xAAAAAA2DD4FF11AA;
    const auto bitsetDATA = fromInt(data, 16);
    mTransmitterHandler.sendData(bitset, bitsetDATA);
+   mTransmitterHandler.sendComand(fromInt(0xC039, 4));
+   //delay(1s);
 }
