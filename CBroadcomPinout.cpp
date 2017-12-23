@@ -54,6 +54,11 @@ void CBroadcomPinout::setPinState(const bool state, const ePin pin)
    setPinDelay();
 }
 
+void CBroadcomPinout::setPinStateForce(const bool state, const ePin pin)
+{
+   bcm2835_gpio_write(static_cast<uint8_t>(pin), static_cast<uint8_t>(state));
+}
+
 
 bool CBroadcomPinout::getPinState(const ePin pin)
 {

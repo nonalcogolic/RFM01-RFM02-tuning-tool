@@ -2,7 +2,6 @@
 #define DATAPACKETSENDER_H
 
 #include <vector>
-#include <inttypes.h>
 
 class IPinOut;
 class DataPacketSender
@@ -20,7 +19,8 @@ public:
 private:
    IPinOut & mPinout;
    const std::vector<bool> mData;
-   size_t mCursor;
+   std::vector<bool>::size_type mCursor;
+   const std::vector<bool>::size_type mSize;
 };
 
 #endif // DATAPACKETSENDER_H

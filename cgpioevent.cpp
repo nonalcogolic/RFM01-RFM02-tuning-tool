@@ -1,7 +1,6 @@
 #include "cgpioevent.h"
 
-
-#include "QMessageBox"
+#include "qdebug.h"
 
 CGPIOEvent::CGPIOEvent(IPinOut & pinout)
    : mPinout(pinout)
@@ -23,16 +22,14 @@ void CGPIOEvent::listenPin(const ePin pin, std::function<void(bool)> stateChange
    sEventHandler handler{type, mPinout.getPinState(pin), stateChangedEvent};
    std::lock_guard<std::mutex> lk(mx);
    mEvents.insert({ pin, handler });
+   qDebug() << "CGPIOEvent::listenPin() inserted pin";
 }
 
 
 void CGPIOEvent::removeEvent(const ePin pin)
 {
    std::lock_guard<std::mutex> lk(mx);
-   if (mEvents.find(pin) != mEvents.cend())
-   {
-      mEvents.erase(pin);
-   }
+   mEvents.erase(pin);
 }
 
 

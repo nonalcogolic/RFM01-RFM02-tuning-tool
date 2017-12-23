@@ -3,6 +3,8 @@
 
 #include "qdebug.h"
 
+#include <chrono>
+
 //const std::string data = "1010101010101010101010100010110111010100110011001100110010101010"; //AAAAAA2DD4CCCCAA
 const auto data
    = Helper::convert(0xAA)
@@ -118,15 +120,17 @@ bool CRFMTransmitterHandler::bitSyncArived()
 {
    if (!mDataSender.eof())
    {
+
+      static auto latest = std::chrono::system_clock::now();
       mDataSender.sendNext();
-      qDebug() << "byte sent";
+      auto currentTime = std::chrono::system_clock::now();
+      qDebug() << "byte sent" << std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime-latest).count();
+
+      latest = currentTime;
       return true;
    }
    else
    {
-      mDataSender.reset();
-      auto switchOff = Helper::convert(0xC0) + Helper::convert(0x01);
-      sendComand(switchOff);
       qDebug() << "Data transmition is over";
       return false;
    }

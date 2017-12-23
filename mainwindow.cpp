@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "helper.h"
 
 #include <list>
 
@@ -33,7 +34,6 @@ MainWindow::MainWindow(QWidget *parent)
    , mEvents(mPinout)
 {
    mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, CGPIOEvent::eEventType::every);
-   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitter(state); }, CGPIOEvent::eEventType::high);
 
 
    ui->setupUi(this);
@@ -46,10 +46,11 @@ MainWindow::MainWindow(QWidget *parent)
    connect(ui->pushButton_Data, SIGNAL(clicked()), this, SLOT(sendData()) );
 
    connect(this, SIGNAL(nIRQSignal(const bool)), this, SLOT(nIRQ(const bool)), Qt::ConnectionType::QueuedConnection);
+   connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitter(const bool)), Qt::ConnectionType::QueuedConnection);
    connect(ui->transmitter_but, SIGNAL(clicked()), this, SLOT(transmiiterSendComand()));
 
    ui->edit_multple_comand_rec->setText("0000 898A A7D0 C811 C69B C42A C200 C080 CE84 CE87 C081");
-   ui->edit_multyple_comand_Tr->setText("CC00 8886 A7D0 C811 c200");
+   ui->edit_multyple_comand_Tr->setText("CC00 8886 A7D0 C811 c220");
 }
 
 MainWindow::~MainWindow()
@@ -102,16 +103,7 @@ void MainWindow::nIRQ(const bool state)
 }
 
 
-void MainWindow::nIRQTransmitter(const bool state)
-{
-//   if (state == true)
-   {
-      if (!mTransmitterHandler.bitSyncArived())
-      {
-         mEvents.removeEvent(ePin::tr_NIRQ);
-      }
-   }
-}
+
 
 void MainWindow::transmiiterSendComand()
 {
@@ -163,20 +155,29 @@ void MainWindow::sendAllTr()
       mTransmitterHandler.sendComand(fromInt(comand.toInt(nullptr, 16), comand.size()));
       std::this_thread::sleep_for(std::chrono::milliseconds(50));
    }
-
-   readTrStatus();
 }
 
 void MainWindow::sendData()
 {
- /* // mTransmitterHandler.sendComand(fromInt(0xC039, 4));
-   const auto bitset = fromInt(0xC6, 2);
-   auto data = 0xAAAAAA2DD4FF11AA;
-   const auto bitsetDATA = fromInt(data, 16);
-   mTransmitterHandler.sendData(bitset, bitsetDATA);
-  // mTransmitterHandler.sendComand(fromInt(0xC001, 4));
-   //delay(1s);*/
-
-   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitter(state); }, CGPIOEvent::eEventType::high);
+   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, CGPIOEvent::eEventType::high);
+   transmitionIsOver = false;
    mTransmitterHandler.sendData();
+}
+
+void MainWindow::nIRQTransmitter(const bool state)
+{
+   std::ignore = state;
+
+   if (transmitionIsOver)
+   {
+      return;
+   }
+
+   if (!mTransmitterHandler.bitSyncArived())
+   {
+      transmitionIsOver = true;
+      auto switchOff = Helper::convert(0xC0) + Helper::convert(0x01);
+      mTransmitterHandler.sendComand(switchOff);
+      mEvents.removeEvent(ePin::tr_NIRQ);
+   }
 }

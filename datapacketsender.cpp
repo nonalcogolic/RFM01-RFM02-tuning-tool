@@ -1,22 +1,23 @@
 #include "datapacketsender.h"
-#include "IPinOut.h"
+#include "ipinout.h"
 
 DataPacketSender::DataPacketSender(IPinOut & pinout, const std::vector<bool> &data)
    : mPinout(pinout)
    , mData(data)
    , mCursor(0)
+   , mSize(data.size())
 {}
 
 bool DataPacketSender::eof() const
 {
-   return mCursor == mData.size();
+   return mCursor == mSize;
 }
 
 void DataPacketSender::sendNext()
 {
    if (!eof())
    {
-      mPinout.setPinState(mData[mCursor], ePin::tr_NIRQ);
+      mPinout.setPinStateForce(mData[mCursor], ePin::tr_NIRQ);
       ++mCursor;
    }
 }

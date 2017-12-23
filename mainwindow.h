@@ -22,6 +22,7 @@ public:
 
 signals:
    void nIRQSignal(const bool state);
+   void nIRQTransmitterSignal(const bool state);
 
 public slots:
    void sendComand();
@@ -44,6 +45,8 @@ private:
    CRMFHandler mReceiver;
    CRFMTransmitterHandler mTransmitterHandler;
    CGPIOEvent mEvents;
+
+   bool transmitionIsOver;
 
 };
 

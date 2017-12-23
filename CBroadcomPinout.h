@@ -11,6 +11,7 @@ public:
    ~CBroadcomPinout();
 
    void setPinState(const bool state, const ePin pin) override;
+   void setPinStateForce(const bool state, const ePin pin) override;
    bool getPinState(const ePin pin) override;
    void setPinDirrection(const bool isPinOut, const ePin pin);
 };
