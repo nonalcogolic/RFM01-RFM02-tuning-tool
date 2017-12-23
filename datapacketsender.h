@@ -13,7 +13,7 @@ public:
    DataPacketSender(IPinOut & pinout, const std::vector<bool> & data);
 
    bool eof() const;
-   void sendNext();
+   bool sendNext();
    void reset();
 
 private:

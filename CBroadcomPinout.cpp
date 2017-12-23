@@ -11,7 +11,7 @@
 
 void setPinDelay()
 {
-   const auto delay = std::chrono::microseconds(Constants::CHANGE_LEVEL_DURATION);
+   const auto delay = std::chrono::nanoseconds(Constants::CHANGE_LEVEL_DURATION);
    std::this_thread::sleep_for(delay);
 }
 
@@ -35,12 +35,6 @@ CBroadcomPinout::CBroadcomPinout()
 {
     if (!bcm2835_init())
         throw OpenBCMException();
-
-  /*  bcm2835_gpio_fsel(static_cast<uint8_t>(ePin::nSel), BCM2835_GPIO_FSEL_OUTP);
-    bcm2835_gpio_fsel(static_cast<uint8_t>(ePin::SDI), BCM2835_GPIO_FSEL_OUTP);
-    bcm2835_gpio_fsel(static_cast<uint8_t>(ePin::SCK), BCM2835_GPIO_FSEL_OUTP);
-    bcm2835_gpio_fsel(static_cast<uint8_t>(ePin::nIRQ), BCM2835_GPIO_FSEL_INPT);
-    bcm2835_gpio_fsel(static_cast<uint8_t>(ePin::SDO), BCM2835_GPIO_FSEL_INPT);*/
 }
 
 CBroadcomPinout::~CBroadcomPinout()
@@ -73,6 +67,11 @@ void CBroadcomPinout::setPinDirrection(const bool isPinOut, const ePin pin)
 
 void CBroadcomPinout::subscribeOn(const ePin pin, const eEventType type)
 {
+   bcm2835_gpio_clr_afen(static_cast<uint8_t>(pin));
+   bcm2835_gpio_clr_aren(static_cast<uint8_t>(pin));
+   bcm2835_gpio_clr_hen(static_cast<uint8_t>(pin));
+   bcm2835_gpio_clr_len(static_cast<uint8_t>(pin));
+
    switch (type) {
    case eEventType::fall:
       bcm2835_gpio_afen(static_cast<uint8_t>(pin));

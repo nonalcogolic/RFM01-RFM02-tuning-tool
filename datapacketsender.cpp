@@ -13,13 +13,14 @@ bool DataPacketSender::eof() const
    return mCursor == mSize;
 }
 
-void DataPacketSender::sendNext()
+bool DataPacketSender::sendNext()
 {
    if (!eof())
    {
       mPinout.setPinStateForce(mData[mCursor], ePin::tr_NIRQ);
       ++mCursor;
    }
+   return mCursor < mSize;
 }
 
 void DataPacketSender::reset()

@@ -7,6 +7,10 @@
 #include <qmessagebox.h>
 #include <qdebug.h>
 
+
+
+const auto switchOff = Helper::convert(0xC0) + Helper::convert(0x01);
+
 namespace
 {
 
@@ -33,8 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
    , mTransmitterHandler(mPinout)
    , mEvents(mPinout)
 {
-   //mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, CGPIOEvent::eEventType::every);
-
+   mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, eEventType::rise);
 
    ui->setupUi(this);
    connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(sendComand()) );
@@ -49,8 +52,8 @@ MainWindow::MainWindow(QWidget *parent)
    connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitter(const bool)), Qt::ConnectionType::QueuedConnection);
    connect(ui->transmitter_but, SIGNAL(clicked()), this, SLOT(transmiiterSendComand()));
 
-   ui->edit_multple_comand_rec->setText("0000 898A A7D0 C811 C69B C42A C200 C080 CE84 CE87 C081");
-   ui->edit_multyple_comand_Tr->setText("CC00 8886 A7D0 C811 c220");
+   ui->edit_multple_comand_rec->setText("0000 898A A7D0 C847 C69B C42A C200 C080 CE84 CE87 C081");
+   ui->edit_multyple_comand_Tr->setText("CC00 8886 A7D0 C847 D240 c220");
 }
 
 MainWindow::~MainWindow()
@@ -92,11 +95,7 @@ void MainWindow::readStatus()
 }
 
 void MainWindow::nIRQ(const bool state)
-{  
-   QMessageBox msg;
-   msg.setText(QString("Pin event state :") + ((state)? "high" : "low"));
-   msg.exec();
-
+{
    static int value= 0;
    value = (++value)%100;
    ui->progressBar->setValue(value);
@@ -157,7 +156,7 @@ void MainWindow::sendAllTr()
 
 void MainWindow::sendData()
 {
-   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::high);
+   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
    transmitionIsOver = false;
    mTransmitterHandler.sendData();
 }
@@ -166,16 +165,11 @@ void MainWindow::nIRQTransmitter(const bool state)
 {
    std::ignore = state;
 
-   if (transmitionIsOver)
-   {
-      return;
-   }
-
+   qDebug() << "nIRQTransmitter";
    if (!mTransmitterHandler.bitSyncArived())
    {
-      transmitionIsOver = true;
-      auto switchOff = Helper::convert(0xC0) + Helper::convert(0x01);
       mTransmitterHandler.sendComand(switchOff);
-      mEvents.removeEvent(ePin::tr_NIRQ);
+      mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
+      readTrStatus();
    }
 }

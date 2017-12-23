@@ -118,20 +118,11 @@ std::vector<bool> CRFMTransmitterHandler::readStatus()
 bool CRFMTransmitterHandler::bitSyncArived()
 //--------------------------------------------------
 {
-   if (!mDataSender.eof())
-   {
+   static int count = 0;
+   static auto latest = std::chrono::system_clock::now();
+   auto currentTime = std::chrono::system_clock::now();
+   qDebug() << ++count <<" bit sent" << std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime-latest).count();
+   latest = currentTime;
 
-      static auto latest = std::chrono::system_clock::now();
-      mDataSender.sendNext();
-      auto currentTime = std::chrono::system_clock::now();
-      qDebug() << "byte sent" << std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime-latest).count();
-
-      latest = currentTime;
-      return true;
-   }
-   else
-   {
-      qDebug() << "Data transmition is over";
-      return false;
-   }
+   return mDataSender.sendNext();
 }

@@ -19,7 +19,7 @@ public:
    ~CGPIOEvent();
 
    void listenPin(const ePin pin, std::function<void(bool)> stateChangedEvent, const eEventType type);
-   void removeEvent(const ePin pin);
+   void removeEvent(const ePin pin, const eEventType type);
 
 private:
    IPinOut & mPinout;

@@ -26,8 +26,9 @@ void CGPIOEvent::listenPin(const ePin pin, std::function<void(bool)> stateChange
 }
 
 
-void CGPIOEvent::removeEvent(const ePin pin)
+void CGPIOEvent::removeEvent(const ePin pin, const eEventType type)
 {
+   mPinout.unsubscribeFrom(pin, type);
    std::lock_guard<std::mutex> lk(mx);
    mEvents.erase(pin);
 }
