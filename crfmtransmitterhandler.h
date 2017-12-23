@@ -2,6 +2,7 @@
 #define CRFMTRANSMITTERHANDLER_H
 
 #include "ipinout.h"
+#include "datapacketsender.h"
 
 #include <vector>
 
@@ -13,10 +14,14 @@ public:
    void sendComand(const std::vector<bool> command);
    void sendData(const std::vector<bool> command, const std::vector<bool> data);
 
-   std::vector<bool>  readStatus();
+   void sendData();
+   std::vector<bool> readStatus();
+
+   bool bitSyncArived();
 
 private:
    IPinOut & mPinout;
+   DataPacketSender mDataSender;
 };
 
 #endif // CRFMTRANSMITTERHANDLER_H

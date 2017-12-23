@@ -33,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent)
    , mEvents(mPinout)
 {
    mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, CGPIOEvent::eEventType::every);
+   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitter(state); }, CGPIOEvent::eEventType::high);
+
 
    ui->setupUi(this);
    connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(sendComand()) );
@@ -100,6 +102,17 @@ void MainWindow::nIRQ(const bool state)
 }
 
 
+void MainWindow::nIRQTransmitter(const bool state)
+{
+//   if (state == true)
+   {
+      if (!mTransmitterHandler.bitSyncArived())
+      {
+         mEvents.removeEvent(ePin::tr_NIRQ);
+      }
+   }
+}
+
 void MainWindow::transmiiterSendComand()
 {
    const auto size = ui->transmitterCmd->text().size();
@@ -156,11 +169,14 @@ void MainWindow::sendAllTr()
 
 void MainWindow::sendData()
 {
-  // mTransmitterHandler.sendComand(fromInt(0xC039, 4));
+ /* // mTransmitterHandler.sendComand(fromInt(0xC039, 4));
    const auto bitset = fromInt(0xC6, 2);
    auto data = 0xAAAAAA2DD4FF11AA;
    const auto bitsetDATA = fromInt(data, 16);
    mTransmitterHandler.sendData(bitset, bitsetDATA);
   // mTransmitterHandler.sendComand(fromInt(0xC001, 4));
-   //delay(1s);
+   //delay(1s);*/
+
+   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitter(state); }, CGPIOEvent::eEventType::high);
+   mTransmitterHandler.sendData();
 }

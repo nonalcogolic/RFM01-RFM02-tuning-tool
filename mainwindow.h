@@ -36,6 +36,8 @@ public slots:
 
    void sendData();
 
+   void nIRQTransmitter(const bool state);
+
 private:
    Ui::MainWindow *ui;
    CBroadcomPinout mPinout;
