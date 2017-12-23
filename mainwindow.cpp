@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
    , mTransmitterHandler(mPinout)
    , mEvents(mPinout)
 {
-   mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, CGPIOEvent::eEventType::every);
+   //mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, CGPIOEvent::eEventType::every);
 
 
    ui->setupUi(this);
@@ -103,8 +103,6 @@ void MainWindow::nIRQ(const bool state)
 }
 
 
-
-
 void MainWindow::transmiiterSendComand()
 {
    const auto size = ui->transmitterCmd->text().size();
@@ -159,7 +157,7 @@ void MainWindow::sendAllTr()
 
 void MainWindow::sendData()
 {
-   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, CGPIOEvent::eEventType::high);
+   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::high);
    transmitionIsOver = false;
    mTransmitterHandler.sendData();
 }

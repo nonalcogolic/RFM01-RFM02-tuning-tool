@@ -3,6 +3,7 @@
 
 
 #include "ipinout.h"
+#include "helper.h"
 
 #include <functional>
 #include <map>
@@ -14,13 +15,6 @@
 class CGPIOEvent
 {
 public:
-   enum class eEventType
-   {
-      low,
-      high,
-      every
-   };
-
    CGPIOEvent(IPinOut & pinout);
    ~CGPIOEvent();
 
@@ -28,15 +22,8 @@ public:
    void removeEvent(const ePin pin);
 
 private:
-   struct sEventHandler
-   {
-      eEventType type;
-      bool prevState;
-      std::function<void(bool)> stateChangedFunction;
-   };
-
    IPinOut & mPinout;
-   std::map<ePin, sEventHandler> mEvents;
+   std::map<ePin, std::function<void(bool)>> mEvents;
 
 private: //thread communications
    void eventLoop();

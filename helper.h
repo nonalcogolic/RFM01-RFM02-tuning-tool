@@ -3,6 +3,18 @@
 
 #include <vector>
 
+
+enum class eEventType
+{
+   low,
+   high,
+   every, //TODO not supported yet
+   rise,
+   fall
+};
+
+
+
 namespace Helper
 {
    std::vector<bool> convert(const unsigned char byte);

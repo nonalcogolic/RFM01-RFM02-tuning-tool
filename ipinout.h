@@ -1,6 +1,8 @@
 #ifndef IPINOUT_H
 #define IPINOUT_H
 
+#include "helper.h"
+
 enum class ePin
 {
    nSel = 23,
@@ -24,15 +26,11 @@ public:
    virtual void setPinStateForce(const bool state, const ePin pin) = 0;
    virtual bool getPinState(const ePin pin) = 0;
    virtual void setPinDirrection(const bool isPinOut, const ePin pin) = 0;
-};
 
-class PinOutDummy : public IPinOut
-{
-public:
-   void setPinState(const bool state, const ePin pin) override {  (void) state; (void) pin; }
-   void setPinStateForce(const bool state, const ePin pin) override {  (void) state; (void) pin; }
-   bool getPinState(const ePin pin) override { (void) pin; return false; }
-   virtual void setPinDirrection(const bool isPinOut, const ePin pin) {  (void) isPinOut;  (void) pin;}
+   virtual void subscribeOn(const ePin pin, const eEventType type) = 0;
+   virtual void unsubscribeFrom(const ePin pin, const eEventType type) = 0;
+   virtual bool checkEvent(const ePin pin) = 0;
+   virtual void resetEvent(const ePin pin) = 0;
 };
 
 

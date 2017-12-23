@@ -19,9 +19,9 @@ CGPIOEvent::~CGPIOEvent()
 void CGPIOEvent::listenPin(const ePin pin, std::function<void(bool)> stateChangedEvent, const eEventType type)
 {
    mPinout.setPinDirrection(false, pin);
-   sEventHandler handler{type, mPinout.getPinState(pin), stateChangedEvent};
+   mPinout.subscribeOn(pin, type);
    std::lock_guard<std::mutex> lk(mx);
-   mEvents.insert({ pin, handler });
+   mEvents.emplace(pin, stateChangedEvent);
    qDebug() << "CGPIOEvent::listenPin() inserted pin";
 }
 
@@ -40,30 +40,10 @@ void CGPIOEvent::eventLoop()
       std::lock_guard<std::mutex> lk(mx);
       for (auto & pin : mEvents)
       {
-         auto actualPinState = mPinout.getPinState(pin.first);
-         if (actualPinState != pin.second.prevState)
+         if (mPinout.checkEvent(pin.first))
          {
-            pin.second.prevState = actualPinState;
-            bool rise = false;
-            switch (pin.second.type)
-            {
-            case eEventType::every:
-               rise = true;
-               break;
-
-            case eEventType::low:
-               if (!actualPinState) { rise = true; }
-               break;
-
-            case eEventType::high:
-               if (actualPinState) { rise = true; }
-               break;
-
-            default:
-               break;
-            }
-
-            if (rise) pin.second.stateChangedFunction(actualPinState);
+            mPinout.resetEvent(pin.first);
+            pin.second(true);
          }
       }
 
