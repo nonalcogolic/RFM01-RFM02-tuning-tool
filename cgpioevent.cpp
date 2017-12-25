@@ -31,6 +31,7 @@ void CGPIOEvent::removeEvent(const ePin pin, const eEventType type)
    mPinout.unsubscribeFrom(pin, type);
    std::lock_guard<std::mutex> lk(mx);
    mEvents.erase(pin);
+   qDebug() << "CGPIOEvent::removeEvent()";
 }
 
 
@@ -38,8 +39,13 @@ void CGPIOEvent::eventLoop()
 {
    while (!mTerminateThread)
    {
-      std::lock_guard<std::mutex> lk(mx);
-      for (auto & pin : mEvents)
+      decltype(mEvents) events;
+      {
+         std::lock_guard<std::mutex> lk(mx);
+         events = mEvents;
+      }
+
+      for (auto & pin : events)
       {
          if (mPinout.checkEvent(pin.first))
          {

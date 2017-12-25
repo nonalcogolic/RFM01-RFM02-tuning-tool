@@ -157,6 +157,7 @@ void MainWindow::sendAllTr()
 void MainWindow::sendData()
 {
    mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
+   mTransmitterHandler.sendComand(Helper::convert(0xC2) + Helper::convert(0x20));
    transmitionIsOver = false;
    mTransmitterHandler.sendData();
 }
@@ -164,11 +165,14 @@ void MainWindow::sendData()
 void MainWindow::nIRQTransmitter(const bool state)
 {
    std::ignore = state;
-
-   qDebug() << "nIRQTransmitter";
+   static int count = 0;
+   qDebug() << "nIRQTransmitter " << ++count;
    if (!mTransmitterHandler.bitSyncArived())
    {
+      count = 0;
+      transmitionIsOver = true;
       mTransmitterHandler.sendComand(switchOff);
+      mTransmitterHandler.sendComand(Helper::convert(0xC2) + Helper::convert(0x00));
       mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
       readTrStatus();
    }

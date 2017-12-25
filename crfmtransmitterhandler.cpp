@@ -107,7 +107,6 @@ std::vector<bool> CRFMTransmitterHandler::readStatus()
    }
    output.push_back(mPinout.getPinState(ePin::tr_NIRQ));
 
-
    mPinout.setPinState(true, ePin::tr_SDI);
    mPinout.setPinState(true, ePin::tr_nSEL);
 
@@ -118,10 +117,9 @@ std::vector<bool> CRFMTransmitterHandler::readStatus()
 bool CRFMTransmitterHandler::bitSyncArived()
 //--------------------------------------------------
 {
-   static int count = 0;
    static auto latest = std::chrono::system_clock::now();
    auto currentTime = std::chrono::system_clock::now();
-   qDebug() << ++count <<" bit sent" << std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime-latest).count();
+   qDebug() <<" bit sent" << std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime-latest).count();
    latest = currentTime;
 
    return mDataSender.sendNext();

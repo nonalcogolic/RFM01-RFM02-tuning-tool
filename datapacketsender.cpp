@@ -17,7 +17,7 @@ bool DataPacketSender::sendNext()
 {
    if (!eof())
    {
-      mPinout.setPinStateForce(mData[mCursor], ePin::tr_NIRQ);
+      mPinout.setPinStateForce(mData[mCursor], ePin::tr_SDI);
       ++mCursor;
    }
    return mCursor < mSize;
