@@ -5,16 +5,15 @@
 
 #include <chrono>
 
-//const std::string data = "1010101010101010101010100010110111010100110011001100110010101010"; //AAAAAA2DD4CCCCAA
 const auto data
    = Helper::convert(0xAA)
    + Helper::convert(0xAA)
    + Helper::convert(0xAA)
    + Helper::convert(0x2D)
    + Helper::convert(0xD4)
-   + Helper::convert(0xCC)
-   + Helper::convert(0xCC)
-   + Helper::convert(0xAA);
+//   + Helper::convert(0xCC)
+   + Helper::convert(0xCC);
+ //  + Helper::convert(0xAA);
 
 //--------------------------------------------------
 CRFMTransmitterHandler::CRFMTransmitterHandler(IPinOut & pinout)
