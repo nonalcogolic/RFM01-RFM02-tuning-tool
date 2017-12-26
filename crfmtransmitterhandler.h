@@ -14,7 +14,8 @@ public:
    void sendComand(const std::vector<bool> command);
    void sendData(const std::vector<bool> command, const std::vector<bool> data);
 
-   void sendData();
+   void sendDataFSK();
+   void sendDataSDI();
    std::vector<bool> readStatus();
 
    bool bitSyncArived();

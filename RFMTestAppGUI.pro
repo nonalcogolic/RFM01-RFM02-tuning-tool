@@ -32,7 +32,8 @@ SOURCES += \
     crfmtransmitterhandler.cpp \
     cgpioevent.cpp \
     datapacketsender.cpp \
-    helper.cpp
+    helper.cpp \
+    command.cpp
 
 unix:SOURCES += CBroadcomPinout.cpp
 win32:SOURCES += CBroadcomPinoutDummy.cpp
@@ -47,7 +48,8 @@ HEADERS += \
     cgpioevent.h \
     constants.h \
     datapacketsender.h \
-    helper.h
+    helper.h \
+    command.h
 
 FORMS += \
     mainwindow.ui

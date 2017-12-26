@@ -18,7 +18,7 @@ const auto data
 //--------------------------------------------------
 CRFMTransmitterHandler::CRFMTransmitterHandler(IPinOut & pinout)
    : mPinout(pinout)
-   , mDataSender(pinout, data)
+   , mDataSender(pinout, ePin::tr_FSK, data)
 //--------------------------------------------------
 {
    mPinout.setPinDirrection(true, ePin::tr_nSEL);
@@ -71,14 +71,21 @@ void CRFMTransmitterHandler::sendData(const std::vector<bool> command, const std
 }
 
 //--------------------------------------------------
-void CRFMTransmitterHandler::sendData()
+void CRFMTransmitterHandler::sendDataFSK()
 //--------------------------------------------------
 {
    qDebug() << "Starting data transmition";
    mDataSender.reset();
-   auto switchOn = Helper::convert(0xC0) + Helper::convert(0x39);
-   sendComand(switchOn);
 }
+
+//--------------------------------------------------
+void CRFMTransmitterHandler::sendDataSDI()
+//--------------------------------------------------
+{
+   qDebug() << "Starting data transmition";
+   mDataSender.reset();
+}
+
 
 //--------------------------------------------------
 std::vector<bool> CRFMTransmitterHandler::readStatus()
@@ -123,3 +130,4 @@ bool CRFMTransmitterHandler::bitSyncArived()
 
    return mDataSender.sendNext();
 }
+

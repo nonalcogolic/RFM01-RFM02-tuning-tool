@@ -1,11 +1,12 @@
 #include "datapacketsender.h"
 #include "ipinout.h"
 
-DataPacketSender::DataPacketSender(IPinOut & pinout, const std::vector<bool> &data)
+DataPacketSender::DataPacketSender(IPinOut & pinout, const ePin usedPin, const std::vector<bool> & data)
    : mPinout(pinout)
    , mData(data)
    , mCursor(0)
    , mSize(data.size())
+   , mUsedPin(usedPin)
 {}
 
 bool DataPacketSender::eof() const
@@ -17,7 +18,7 @@ bool DataPacketSender::sendNext()
 {
    if (!eof())
    {
-      mPinout.setPinStateForce(mData[mCursor], ePin::tr_SDI);
+      mPinout.setPinStateForce(mData[mCursor], mUsedPin);
       ++mCursor;
    }
    return mCursor < mSize;

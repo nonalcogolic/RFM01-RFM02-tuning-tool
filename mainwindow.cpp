@@ -1,15 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "helper.h"
+#include "command.h"
 
 #include <list>
 
 #include <qmessagebox.h>
 #include <qdebug.h>
-
-
-
-const auto switchOff = Helper::convert(0xC0) + Helper::convert(0x01);
 
 namespace
 {
@@ -46,14 +42,13 @@ MainWindow::MainWindow(QWidget *parent)
 
    connect(ui->but_tr_sendAll, SIGNAL(clicked()), this, SLOT(sendAllTr()) );
    connect(ui->but_rec_Send_all, SIGNAL(clicked()), this, SLOT(sendAllRec()) );
-   connect(ui->pushButton_Data, SIGNAL(clicked()), this, SLOT(sendData()) );
+   connect(ui->pushButton_DataFSK, SIGNAL(clicked()), this, SLOT(sendDataFSK()) );
 
    connect(this, SIGNAL(nIRQSignal(const bool)), this, SLOT(nIRQ(const bool)), Qt::ConnectionType::QueuedConnection);
-   connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitter(const bool)), Qt::ConnectionType::QueuedConnection);
    connect(ui->transmitter_but, SIGNAL(clicked()), this, SLOT(transmiiterSendComand()));
 
    ui->edit_multple_comand_rec->setText("0000 898A A7D0 C847 C69B C42A C200 C080 CE84 CE87 C081");
-   ui->edit_multyple_comand_Tr->setText("CC00 8886 A7D0 C847 D240 c220");
+   ui->edit_multyple_comand_Tr->setText("CC00 8886 A7D0 C847 D240 C220");
 }
 
 MainWindow::~MainWindow()
@@ -68,7 +63,6 @@ void MainWindow::sendComand()
    auto comand = ui->lineEdit->text().toInt(nullptr, 16);
    const auto bitset = fromInt(comand, size);
    mReceiver.sendComand(bitset);
-
 
    QString result;
 
@@ -154,25 +148,56 @@ void MainWindow::sendAllTr()
    }
 }
 
-void MainWindow::sendData()
+void MainWindow::sendDataFSK()
 {
-   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
-   mTransmitterHandler.sendComand(Helper::convert(0xC2) + Helper::convert(0x20));
    transmitionIsOver = false;
-   mTransmitterHandler.sendData();
+   connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)), Qt::ConnectionType::QueuedConnection);
+   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
+   mTransmitterHandler.sendComand(CMD::CMD_ENABLE_TX_SYNC());
+   mTransmitterHandler.sendComand(CMD::CMD_SWITCH_ON_FSK_MODE());
+   mTransmitterHandler.sendDataFSK();
 }
 
-void MainWindow::nIRQTransmitter(const bool state)
+void MainWindow::sendDataSDI()
+{
+   transmitionIsOver = false;
+   connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)), Qt::ConnectionType::QueuedConnection);
+   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
+   mTransmitterHandler.sendComand(CMD::CMD_ENABLE_TX_SYNC());
+   mTransmitterHandler.sendComand(CMD::CMD_DATA_TRANSMIT()); //TODO:separate cmd required
+   mTransmitterHandler.sendDataSDI();
+}
+
+void MainWindow::nIRQTransmitterFSK(const bool state)
 {
    std::ignore = state;
    static int count = 0;
-   qDebug() << "nIRQTransmitter " << ++count;
+   qDebug() << "nIRQTransmitterFSK " << ++count;
    if (!mTransmitterHandler.bitSyncArived())
    {
       count = 0;
       transmitionIsOver = true;
-      mTransmitterHandler.sendComand(switchOff);
-      mTransmitterHandler.sendComand(Helper::convert(0xC2) + Helper::convert(0x00));
+      mTransmitterHandler.sendComand(CMD::CMD_SWITCH_OFF());
+      mTransmitterHandler.sendComand(CMD::CMD_DISABLE_TX_SYNC());
+      disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)));
+      mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
+      readTrStatus();
+   }
+}
+
+
+void MainWindow::nIRQTransmitterSDI(const bool state)
+{
+   std::ignore = state;
+   static int count = 0;
+   qDebug() << "nIRQTransmitterSDI " << ++count;
+   if (!mTransmitterHandler.bitSyncArived())
+   {
+      count = 0;
+      transmitionIsOver = true;
+      mTransmitterHandler.sendComand(CMD::CMD_SWITCH_OFF());
+      mTransmitterHandler.sendComand(CMD::CMD_DISABLE_TX_SYNC());
+      disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)));
       mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
       readTrStatus();
    }

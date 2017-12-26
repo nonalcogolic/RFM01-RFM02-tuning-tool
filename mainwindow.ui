@@ -81,35 +81,15 @@
           <string>Transmitter</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="1">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>TextLabel</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="ed_tr"/>
-          </item>
-          <item row="0" column="0" rowspan="3">
-           <widget class="QTextEdit" name="edit_multyple_comand_Tr"/>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="transmitterCmd"/>
-          </item>
-          <item row="1" column="2">
-           <widget class="QPushButton" name="transmitter_but">
-            <property name="text">
-             <string>send comand</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
+          <item row="2" column="3">
            <widget class="QPushButton" name="but_readTrStatus">
             <property name="text">
              <string>read tr status</string>
             </property>
            </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="transmitterCmd"/>
           </item>
           <item row="3" column="0">
            <widget class="QPushButton" name="but_tr_sendAll">
@@ -118,13 +98,47 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
-           <widget class="QLineEdit" name="lineEdit_Data"/>
+          <item row="1" column="3">
+           <widget class="QPushButton" name="transmitter_but">
+            <property name="text">
+             <string>send comand</string>
+            </property>
+           </widget>
           </item>
-          <item row="3" column="2">
-           <widget class="QPushButton" name="pushButton_Data">
+          <item row="0" column="1">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" rowspan="3">
+           <widget class="QTextEdit" name="edit_multyple_comand_Tr"/>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="lineEdit_Data">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="ed_tr"/>
+          </item>
+          <item row="4" column="3">
+           <widget class="QPushButton" name="pushButton_DataFSK">
             <property name="text">
              <string>Data</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QCheckBox" name="checkBox">
+            <property name="text">
+             <string>FSK</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>

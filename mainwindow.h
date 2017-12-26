@@ -35,9 +35,12 @@ public slots:
    void sendAllRec();
    void sendAllTr();
 
-   void sendData();
+   void sendDataFSK();
+   void sendDataSDI();
 
-   void nIRQTransmitter(const bool state);
+   void nIRQTransmitterFSK(const bool state); //transmition over FSK using PWR managment command 0xC039/0xC001
+
+   void nIRQTransmitterSDI(const bool state); //Data transmit command 0xC6
 
 private:
    Ui::MainWindow *ui;
