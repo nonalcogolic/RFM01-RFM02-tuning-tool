@@ -16,6 +16,7 @@ public:
 
    void sendDataFSK();
    void sendDataSDI();
+   void stopSendDataSDI();
    std::vector<bool> readStatus();
 
    bool bitSyncArived();

@@ -56,3 +56,9 @@ FORMS += \
 
 OTHER_FILES += \
     config.txt
+
+DISTFILES += \
+    Commands/Commands.pri
+
+include(Commands/Commands.pri)
+include(Commands/Transmitter/Transmitter.pri)

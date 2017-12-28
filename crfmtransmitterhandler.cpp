@@ -1,5 +1,6 @@
 #include "crfmtransmitterhandler.h"
 #include "helper.h"
+#include "command.h"
 
 #include "qdebug.h"
 
@@ -74,7 +75,7 @@ void CRFMTransmitterHandler::sendData(const std::vector<bool> command, const std
 void CRFMTransmitterHandler::sendDataFSK()
 //--------------------------------------------------
 {
-   qDebug() << "Starting data transmition";
+   qDebug() << "CRFMTransmitterHandler::sendDataFSK Starting data transmition";
    mDataSender.reset();
 }
 
@@ -82,8 +83,27 @@ void CRFMTransmitterHandler::sendDataFSK()
 void CRFMTransmitterHandler::sendDataSDI()
 //--------------------------------------------------
 {
-   qDebug() << "Starting data transmition";
+   qDebug() << "CRFMTransmitterHandler::sendDataSDI Starting data transmition";
    mDataSender.reset();
+
+   const auto & command = CMD::CMD_DATA_TRANSMIT();
+
+   mPinout.setPinState(false, ePin::tr_nSEL);
+
+   for (auto bit : command)
+   {
+      mPinout.setPinState(bit, ePin::tr_SDI);
+      mPinout.setPinState(true, ePin::tr_SCK);
+      mPinout.setPinState(false, ePin::tr_SCK);
+   }
+}
+
+//--------------------------------------------------
+void CRFMTransmitterHandler::stopSendDataSDI()
+//--------------------------------------------------
+{
+   mPinout.setPinState(true, ePin::tr_SCK); //TODO: order?
+   mPinout.setPinState(true, ePin::tr_nSEL);
 }
 
 
@@ -96,7 +116,7 @@ std::vector<bool> CRFMTransmitterHandler::readStatus()
    mPinout.setPinState(false, ePin::tr_nSEL);
    mPinout.setPinState(false, ePin::tr_SDI);
 
-   auto command = std::vector<bool>(Helper::convert(0xCC));
+   auto & command = CMD::CMD_READ_STATUS();
 
    for (int i = 0; i<8; ++i)
    {
