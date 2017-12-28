@@ -14,9 +14,21 @@ public:
 
    tCMD operator()();
 protected:
-   void setValue(const uint8_t offset, const uint8_t bitCount, const uint16_t value);
+   template<class T>
+   void setValue(const uint8_t offset, const uint8_t bitCount, const T value);
+
+   void setValue(const uint8_t offset, const bool value);
+
+private:
+   void setValuel(const uint8_t offset, const uint8_t bitCount, const uint16_t value);
 
    tCMD mCmd;
 };
+
+template<class Enum>
+void ACommands::setValue(const uint8_t offset, const uint8_t bitCount, const Enum value)
+{
+   setValuel(offset, bitCount, static_cast<uint16_t>(value));
+}
 
 #endif // ACOMMANDS_H

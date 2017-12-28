@@ -18,7 +18,12 @@ tCMD ACommands::operator()()
    return mCmd;
 }
 
-void ACommands::setValue(const uint8_t offset, const uint8_t bitCount, const uint16_t value)
+void ACommands::setValuel(const uint8_t offset, const uint8_t bitCount, const uint16_t value)
 {
    Helper::setValue(offset, bitCount, value, mCmd);
+}
+
+void ACommands::setValue(const uint8_t offset, const bool value)
+{
+   Helper::setValue(offset, 1, (value ? 1 : 0) , mCmd);
 }
