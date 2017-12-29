@@ -11,8 +11,8 @@ class CRFMTransmitterHandler
 public:
    CRFMTransmitterHandler(IPinOut & pinout);
 
-   void sendComand(const std::vector<bool> command);
-   void sendData(const std::vector<bool> command, const std::vector<bool> data);
+   void sendComand(const std::vector<bool> & command);
+   void sendData(const std::vector<bool> & command, const std::vector<bool> data); //Depricated
 
    void sendDataFSK();   
    void stopSendDataFSK();

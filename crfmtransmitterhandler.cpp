@@ -34,7 +34,7 @@ CRFMTransmitterHandler::CRFMTransmitterHandler(IPinOut & pinout)
 }
 
 //--------------------------------------------------
-void CRFMTransmitterHandler::sendComand(const std::vector<bool> command)
+void CRFMTransmitterHandler::sendComand(const std::vector<bool> & command)
 //--------------------------------------------------
 {
    mPinout.setPinState(false, ePin::tr_nSEL);
@@ -50,7 +50,7 @@ void CRFMTransmitterHandler::sendComand(const std::vector<bool> command)
 }
 
 //--------------------------------------------------
-void CRFMTransmitterHandler::sendData(const std::vector<bool> command, const std::vector<bool> data)
+void CRFMTransmitterHandler::sendData(const std::vector<bool> & command, const std::vector<bool> data)
 //--------------------------------------------------
 {
    mPinout.setPinState(false, ePin::tr_nSEL);
@@ -109,7 +109,6 @@ void CRFMTransmitterHandler::stopSendDataSDI()
    mPinout.setPinState(true, ePin::tr_nSEL);
    sendComand(CMD::CMD_DISABLE_TX_SYNC());
 }
-
 
 //--------------------------------------------------
 std::vector<bool> CRFMTransmitterHandler::readStatus()
