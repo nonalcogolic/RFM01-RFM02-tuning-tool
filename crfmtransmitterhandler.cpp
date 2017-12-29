@@ -77,6 +77,8 @@ void CRFMTransmitterHandler::sendDataFSK()
 {
    qDebug() << "CRFMTransmitterHandler::sendDataFSK Starting data transmition";
    mDataSender.reset();
+   sendComand(CMD::CMD_ENABLE_TX_SYNC());
+   sendComand(CMD::CMD_SWITCH_ON_FSK_MODE());
 }
 
 //--------------------------------------------------
@@ -85,6 +87,7 @@ void CRFMTransmitterHandler::sendDataSDI()
 {
    qDebug() << "CRFMTransmitterHandler::sendDataSDI Starting data transmition";
    mDataSender.reset();
+   sendComand(CMD::CMD_ENABLE_TX_SYNC());
 
    const auto & command = CMD::CMD_DATA_TRANSMIT();
 
@@ -104,6 +107,7 @@ void CRFMTransmitterHandler::stopSendDataSDI()
 {
    mPinout.setPinState(true, ePin::tr_SCK); //TODO: order?
    mPinout.setPinState(true, ePin::tr_nSEL);
+   sendComand(CMD::CMD_DISABLE_TX_SYNC());
 }
 
 
@@ -151,3 +155,10 @@ bool CRFMTransmitterHandler::bitSyncArived()
    return mDataSender.sendNext();
 }
 
+//--------------------------------------------------
+void CRFMTransmitterHandler::stopSendDataFSK()
+//--------------------------------------------------
+{
+   sendComand(CMD::CMD_SWITCH_OFF());
+   sendComand(CMD::CMD_DISABLE_TX_SYNC());
+}

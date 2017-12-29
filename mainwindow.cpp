@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "command.h"
 
 #include <list>
 
@@ -153,8 +152,6 @@ void MainWindow::sendDataFSK()
    transmitionIsOver = false;
    connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)), Qt::ConnectionType::QueuedConnection);
    mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
-   mTransmitterHandler.sendComand(CMD::CMD_ENABLE_TX_SYNC());
-   mTransmitterHandler.sendComand(CMD::CMD_SWITCH_ON_FSK_MODE());
    mTransmitterHandler.sendDataFSK();
 }
 
@@ -167,10 +164,9 @@ void MainWindow::nIRQTransmitterFSK(const bool state)
    {
       count = 0;
       transmitionIsOver = true;
-      mTransmitterHandler.sendComand(CMD::CMD_SWITCH_OFF());
-      mTransmitterHandler.sendComand(CMD::CMD_DISABLE_TX_SYNC());
       disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)));
       mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
+      mTransmitterHandler.stopSendDataFSK();
       readTrStatus();
    }
 }
@@ -180,7 +176,6 @@ void MainWindow::sendDataSDI()
    transmitionIsOver = false;
    connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)), Qt::ConnectionType::QueuedConnection);
    mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
-   mTransmitterHandler.sendComand(CMD::CMD_ENABLE_TX_SYNC());
    mTransmitterHandler.sendDataSDI();
 }
 
@@ -196,7 +191,6 @@ void MainWindow::nIRQTransmitterSDI(const bool state)
       mTransmitterHandler.stopSendDataSDI();
       disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)));
       mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
-      mTransmitterHandler.sendComand(CMD::CMD_DISABLE_TX_SYNC());
       readTrStatus();
    }
 }
