@@ -3,6 +3,8 @@
 
 #include "../ACommands.h"
 
+namespace NTransmitter
+{
 
 class ConfigurationSetting : public ACommands
 {
@@ -44,5 +46,7 @@ public:
    void setBandwidthSign(const bool positive);
 
 };
+
+}
 
 #endif // CONFIGURATIONSETTING_H

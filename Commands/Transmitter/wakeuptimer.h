@@ -2,7 +2,8 @@
 #define WAKEUPTIMER_H
 
 #include "../ACommands.h"
-#include <chrono>
+
+namespace NTransmitter {
 
 class WakeUpTimer : public ACommands
 {
@@ -11,5 +12,7 @@ public:
 
    void setPeriod(const uint8_t mantis, const uint8_t order);
 };
+
+}
 
 #endif // WAKEUPTIMER_H

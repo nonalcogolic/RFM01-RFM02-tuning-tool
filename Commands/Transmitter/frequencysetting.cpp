@@ -1,5 +1,8 @@
 #include "frequencysetting.h"
 
+namespace NTransmitter
+{
+
 FrequencySetting::FrequencySetting()
    : ACommands(0xA0, 0x00)
 {
@@ -16,3 +19,4 @@ void FrequencySetting::setFrequency(const uint32_t frequency)
    }
 }
 
+}

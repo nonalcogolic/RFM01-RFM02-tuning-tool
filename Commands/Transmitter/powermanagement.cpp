@@ -1,5 +1,8 @@
 #include "powermanagement.h"
 
+namespace NTransmitter
+{
+
 PowerManagement::PowerManagement()
    : ACommands(0xC0, 0x00)
 {
@@ -44,4 +47,6 @@ void PowerManagement::automaticOscilatorAndSynthesizer(const bool active)
 void PowerManagement::automaticPowerAmplifter(const bool active)
 {
    setValue(6, active);
+}
+
 }

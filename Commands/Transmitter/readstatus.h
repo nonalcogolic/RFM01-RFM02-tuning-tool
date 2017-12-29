@@ -3,6 +3,8 @@
 
 #include "../ACommands.h"
 
+namespace NTransmitter {
+
 class ReadStatus : public ACommands
 {
 public:
@@ -10,5 +12,7 @@ public:
 
    //No additional methods
 };
+
+}
 
 #endif // READSTATUS_H

@@ -3,6 +3,9 @@
 
 #include "../ACommands.h"
 
+namespace NTransmitter
+{
+
 class FrequencySetting : public ACommands
 {
 public:
@@ -11,5 +14,7 @@ public:
    //430.240000 ~ 439.757500  Mhz. Value in Hz should be used.
    void setFrequency(const uint32_t frequency);
 };
+
+}
 
 #endif // FREQUENCYSETTING_H

@@ -1,5 +1,8 @@
 #include "pllsettings.h"
 
+namespace NTransmitter
+{
+
 PLLSettings::PLLSettings()
    : ACommands(0xD2, 0x00)
 {
@@ -30,4 +33,6 @@ void PLLSettings::setPllValue(const int32_t br)
    {
        setValue(4,4,eMaxBitrate::br_115_2);
    }
+}
+
 }

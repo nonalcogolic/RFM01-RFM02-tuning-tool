@@ -3,6 +3,9 @@
 
 #include "../ACommands.h"
 
+namespace NTransmitter
+{
+
 class Sleep : public ACommands
 {
 public:
@@ -10,5 +13,7 @@ public:
 
    void setSleepAfter(const uint8_t delayTicks);
 };
+
+}
 
 #endif // SLEEP_H

@@ -3,6 +3,9 @@
 
 #include "../ACommands.h"
 
+namespace NTransmitter
+{
+
 class PowerManagement : ACommands
 {
 public:
@@ -19,5 +22,7 @@ public:
    void automaticOscilatorAndSynthesizer(const bool active);
    void automaticPowerAmplifter(const bool active);
 };
+
+}
 
 #endif // POWERMANAGEMENT_H

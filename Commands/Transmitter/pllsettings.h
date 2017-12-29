@@ -3,6 +3,9 @@
 
 #include "../ACommands.h"
 
+namespace NTransmitter
+{
+
 class PLLSettings : public ACommands
 {
 public:
@@ -18,5 +21,7 @@ public:
    void setPllValue(const eMaxBitrate br);
    void setPllValue(const int32_t br);
 };
+
+}
 
 #endif // PLLSETTINGS_H

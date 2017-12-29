@@ -1,5 +1,8 @@
 #include "configurationsetting.h"
 
+namespace NTransmitter
+{
+
 ConfigurationSetting::ConfigurationSetting()
    : ACommands(0x80,0x00)
 {}
@@ -30,4 +33,6 @@ void ConfigurationSetting::setOutputBandwidth(const eBandwidth_khz bandwidth)
 void ConfigurationSetting::setBandwidthSign(const bool positive)
 {
    setValue(3, 1, positive ? 1 : 0);
+}
+
 }

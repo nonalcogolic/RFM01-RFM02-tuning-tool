@@ -3,6 +3,9 @@
 
 #include "../ACommands.h"
 
+namespace NTransmitter
+{
+
 class DataRate : public ACommands
 {
 public:
@@ -10,5 +13,7 @@ public:
 
    void setDataRate(const int32_t dataRate);
 };
+
+}
 
 #endif // DATARATE_H
