@@ -33,7 +33,8 @@ SOURCES += \
     cgpioevent.cpp \
     datapacketsender.cpp \
     helper.cpp \
-    command.cpp
+    command.cpp \
+    transmittercontrolpanel.cpp
 
 unix:SOURCES += CBroadcomPinout.cpp
 win32:SOURCES += CBroadcomPinoutDummy.cpp
@@ -49,10 +50,12 @@ HEADERS += \
     constants.h \
     datapacketsender.h \
     helper.h \
-    command.h
+    command.h \
+    transmittercontrolpanel.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    transmittercontrolpanel.ui
 
 OTHER_FILES += \
     config.txt
