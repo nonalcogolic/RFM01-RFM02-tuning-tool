@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
 
    connect(ui->but_tr_sendAll, SIGNAL(clicked()), this, SLOT(sendAllTr()) );
    connect(ui->but_rec_Send_all, SIGNAL(clicked()), this, SLOT(sendAllRec()) );
-   connect(ui->pushButton_DataFSK, SIGNAL(clicked()), this, SLOT(sendDataFSK()) );
+   connect(ui->but_send, SIGNAL(clicked()), this, SLOT(sendData()));
 
    connect(this, SIGNAL(nIRQSignal(const bool)), this, SLOT(nIRQ(const bool)), Qt::ConnectionType::QueuedConnection);
    connect(ui->transmitter_but, SIGNAL(clicked()), this, SLOT(transmiiterSendComand()));
@@ -144,6 +144,18 @@ void MainWindow::sendAllTr()
       qDebug() << comand ;
       mTransmitterHandler.sendComand(fromInt(comand.toInt(nullptr, 16), comand.size()));
       std::this_thread::sleep_for(std::chrono::milliseconds(50));
+   }
+}
+
+void MainWindow::sendData()
+{
+   if (ui->ch_FSK->isChecked())
+   {
+      sendDataFSK();
+   }
+   else
+   {
+      sendDataSDI();
    }
 }
 

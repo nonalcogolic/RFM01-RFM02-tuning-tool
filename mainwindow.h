@@ -35,14 +35,16 @@ public slots:
    void sendAllRec();
    void sendAllTr();
 
-   void sendDataFSK();
-   void sendDataSDI();
+   void sendData();
 
    void nIRQTransmitterFSK(const bool state); //transmition over FSK using PWR managment command 0xC039/0xC001
 
    void nIRQTransmitterSDI(const bool state); //Data transmit command 0xC6
 
-private:
+private:   
+   void sendDataFSK();
+   void sendDataSDI();
+
    Ui::MainWindow *ui;
    CBroadcomPinout mPinout;
    CRMFHandler mReceiver;

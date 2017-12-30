@@ -19,7 +19,7 @@ const auto data
 //--------------------------------------------------
 CRFMTransmitterHandler::CRFMTransmitterHandler(IPinOut & pinout)
    : mPinout(pinout)
-   , mDataSender(pinout, ePin::tr_FSK, data)
+   , mDataSender(pinout, data)
 //--------------------------------------------------
 {
    mPinout.setPinDirrection(true, ePin::tr_nSEL);
@@ -77,6 +77,7 @@ void CRFMTransmitterHandler::sendDataFSK()
 {
    qDebug() << "CRFMTransmitterHandler::sendDataFSK Starting data transmition";
    mDataSender.reset();
+   mDataSender.setUsedPin(ePin::tr_FSK);
    sendComand(CMD::CMD_ENABLE_TX_SYNC());
    sendComand(CMD::CMD_SWITCH_ON_FSK_MODE());
 }
@@ -87,6 +88,7 @@ void CRFMTransmitterHandler::sendDataSDI()
 {
    qDebug() << "CRFMTransmitterHandler::sendDataSDI Starting data transmition";
    mDataSender.reset();
+   mDataSender.setUsedPin(ePin::tr_SDI);
    sendComand(CMD::CMD_ENABLE_TX_SYNC());
 
    const auto & command = CMD::CMD_DATA_TRANSMIT();
