@@ -11,6 +11,8 @@ class PowerSetting : public ACommands
 {
 public:
    PowerSetting();
+
+   void setOutputPower(const uint8_t power);
 };
 
 }

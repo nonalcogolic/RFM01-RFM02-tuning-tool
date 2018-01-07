@@ -9,4 +9,10 @@ PowerSetting::PowerSetting()
 
 }
 
+void PowerSetting::setOutputPower(const uint8_t power)
+{
+   const auto value = power & 0x07;
+   setValue(0,3, value);
+}
+
 }
