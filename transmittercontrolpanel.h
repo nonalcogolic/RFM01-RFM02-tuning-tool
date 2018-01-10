@@ -15,6 +15,20 @@ public:
    explicit TransmitterControlPanel(QWidget *parent = 0);
    ~TransmitterControlPanel();
 
+public slots:
+   void sendAll();
+   void sendConfig();
+   void sendPowerManagment();
+   void sendFrequency();
+   void sendDataRate();
+   void sendPowerSettings();
+   void sendTXandTreshold();
+   void sendSleep();
+   void sendWakeUpTime();
+   void sendDataTransmit();
+   void sendReadStatus();
+   void sendPLLSettings();
+
 private:
    Ui::TransmitterControlPanel *ui;
 };

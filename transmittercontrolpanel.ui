@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>529</width>
-    <height>460</height>
+    <height>614</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,35 +25,124 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QComboBox" name="comboBox_4"/>
+           <widget class="QComboBox" name="comboBox_4">
+            <item>
+             <property name="text">
+              <string>19.2</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>38.4</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>68.9</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>115.2</string>
+             </property>
+            </item>
+           </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_6">
+           <widget class="QPushButton" name="but_send_pll">
             <property name="text">
              <string>Send</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_send_auto_pll">
+            <property name="text">
+             <string>send automaticaly</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
          </layout>
         </item>
        </layout>
-       <zorder>groupBox_5</zorder>
-       <zorder>verticalLayoutWidget_2</zorder>
       </widget>
      </item>
      <item row="0" column="0" colspan="4">
       <widget class="QGroupBox" name="groupBox_2">
        <property name="title">
-        <string>GroupBox</string>
+        <string>Configuration</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0" colspan="3">
          <layout class="QGridLayout" name="gridLayout_3">
           <item row="2" column="2">
-           <widget class="QLineEdit" name="lineEdit"/>
+           <widget class="QDoubleSpinBox" name="crystalLoadCapasitance">
+            <property name="readOnly">
+             <bool>false</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::PlusMinus</enum>
+            </property>
+            <property name="minimum">
+             <double>8.500000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>15.500000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.500000000000000</double>
+            </property>
+            <property name="value">
+             <double>10.500000000000000</double>
+            </property>
+           </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QComboBox" name="comboBox_2"/>
+           <widget class="QComboBox" name="clockOutput">
+            <item>
+             <property name="text">
+              <string>1</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>1.25</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>1.66</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>2</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>2.5</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>3.33</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>5</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>10</string>
+             </property>
+            </item>
+           </widget>
           </item>
           <item row="1" column="0" colspan="2">
            <widget class="QLabel" name="label_2">
@@ -77,10 +166,29 @@
            </widget>
           </item>
           <item row="0" column="2">
-           <widget class="QComboBox" name="comboBox"/>
+           <widget class="QComboBox" name="band">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <item>
+             <property name="text">
+              <string>433</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>868</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>915</string>
+             </property>
+            </item>
+           </widget>
           </item>
           <item row="3" column="3">
-           <widget class="QCheckBox" name="checkBox">
+           <widget class="QCheckBox" name="checkbox_deviation_sign">
             <property name="text">
              <string>Positiv offset</string>
             </property>
@@ -97,16 +205,22 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="QLabel" name="label_7">
+           <widget class="QLabel" name="label_deviation">
             <property name="text">
              <string>30 kHz</string>
             </property>
            </widget>
           </item>
           <item row="3" column="2">
-           <widget class="QSlider" name="horizontalSlider">
+           <widget class="QSlider" name="deviation_value">
             <property name="maximum">
              <number>6</number>
+            </property>
+            <property name="pageStep">
+             <number>2</number>
+            </property>
+            <property name="value">
+             <number>0</number>
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -116,9 +230,19 @@
          </layout>
         </item>
         <item row="1" column="2">
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="but_send_conf">
           <property name="text">
            <string>Send</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QCheckBox" name="checkbox_auto_conf">
+          <property name="text">
+           <string>send automaticaly</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -128,7 +252,7 @@
      <item row="1" column="3">
       <widget class="QGroupBox" name="groupBox_5">
        <property name="title">
-        <string>Power setting</string>
+        <string>Power settings</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
@@ -141,16 +265,29 @@
             <property name="singleStep">
              <number>3</number>
             </property>
+            <property name="value">
+             <number>21</number>
+            </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_5">
+           <widget class="QPushButton" name="but_send_pow">
             <property name="text">
              <string>Send</string>
             </property>
            </widget>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkBox_send_auto_pow">
+          <property name="text">
+           <string>send automaticaly</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -161,72 +298,91 @@
         <string>Power management</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_6">
-        <item row="1" column="1" rowspan="4">
+        <item row="5" column="1">
+         <widget class="QPushButton" name="but_send_pow_man">
+          <property name="text">
+           <string>Send</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QCheckBox" name="checkBox_send_auto_power_man">
+          <property name="text">
+           <string>send automaticaly</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" rowspan="4" colspan="2">
          <layout class="QGridLayout" name="gridLayout_5">
           <item row="0" column="0">
-           <widget class="QCheckBox" name="checkBox_2">
+           <widget class="QCheckBox" name="checkbox_auto_oscil_synth">
             <property name="text">
              <string>Automatic oscil  and synth</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QCheckBox" name="checkBox_4">
+           <widget class="QCheckBox" name="checkbox_auto_power_apl">
             <property name="text">
              <string>Automatic power amplifter</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QCheckBox" name="checkBox_3">
+           <widget class="QCheckBox" name="checkBox_on_amplifter">
             <property name="text">
              <string>switch on amplifter</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QCheckBox" name="checkBox_6">
+           <widget class="QCheckBox" name="checkBox_on_oscil">
             <property name="text">
              <string>switch on oscillator</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QCheckBox" name="checkBox_7">
+           <widget class="QCheckBox" name="checkBox_on_synth">
             <property name="text">
              <string>switch on synthesizer</string>
             </property>
            </widget>
           </item>
           <item row="2" column="0">
-           <widget class="QCheckBox" name="checkBox_5">
+           <widget class="QCheckBox" name="checkbox_enLowBtatery">
             <property name="text">
              <string>Enable lowbatery detection</string>
             </property>
            </widget>
           </item>
           <item row="3" column="0">
-           <widget class="QCheckBox" name="checkBox_8">
+           <widget class="QCheckBox" name="checkbox_en_wakeUp">
             <property name="text">
              <string>Enable wake up timer</string>
             </property>
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="QCheckBox" name="checkBox_9">
+           <widget class="QCheckBox" name="checkBox_disable_clock_output">
             <property name="text">
              <string>disable clock output</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
          </layout>
-        </item>
-        <item row="5" column="1">
-         <widget class="QPushButton" name="pushButton_2">
-          <property name="text">
-           <string>Send</string>
-          </property>
-         </widget>
         </item>
        </layout>
       </widget>
@@ -236,9 +392,67 @@
    <item row="1" column="1">
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
-      <string>Working frequency settings</string>
+      <string>frequency, data rate, treshold value, sleep, wakeup</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_8">
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Sleep command after N periods</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="lineEdit_wakeUp_mantis"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>WakeUp timer, ms M*2^r:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QLineEdit" name="lineEdit_wakeUp_pow"/>
+      </item>
+      <item row="5" column="0">
+       <widget class="QPushButton" name="but_transmit_data">
+        <property name="text">
+         <string>Transmit data</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QPushButton" name="but_read_status">
+        <property name="text">
+         <string>Read status</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLineEdit" name="lineEdit_status">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="3">
+       <widget class="QPushButton" name="but_send_wake">
+        <property name="text">
+         <string>Send</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QPushButton" name="but_send_sleep">
+        <property name="text">
+         <string>Send</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1" colspan="2">
+       <widget class="QLineEdit" name="lineEdit_sleep_periods"/>
+      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
@@ -247,23 +461,26 @@
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QPushButton" name="pushButton_4">
+       <widget class="QPushButton" name="but_send_datarate">
         <property name="text">
          <string>Send</string>
         </property>
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="but_send_work_freq">
         <property name="text">
          <string>Send</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QCheckBox" name="checkBox_10">
+       <widget class="QCheckBox" name="checkBox_disableWakeUp">
         <property name="text">
          <string>Disable wakeUp sync</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -275,29 +492,97 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QCheckBox" name="checkBox_11">
+       <widget class="QCheckBox" name="checkBox_en_tx">
         <property name="text">
          <string>TX synch</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
       <item row="1" column="1" colspan="2">
-       <widget class="QLineEdit" name="lineEdit_2"/>
+       <widget class="QLineEdit" name="lineEdit_data_rate">
+        <property name="text">
+         <string>4800</string>
+        </property>
+       </widget>
       </item>
       <item row="0" column="1" colspan="2">
-       <widget class="QLineEdit" name="lineEdit_3"/>
+       <widget class="QLineEdit" name="lineEdit_work_freq">
+        <property name="text">
+         <string>435</string>
+        </property>
+       </widget>
       </item>
       <item row="2" column="2">
-       <widget class="QLineEdit" name="lineEdit_4">
+       <widget class="QLineEdit" name="lineEdit_treshold">
         <property name="toolTip">
          <string>Treshold value</string>
         </property>
        </widget>
       </item>
       <item row="2" column="3">
-       <widget class="QPushButton" name="pushButton_7">
+       <widget class="QPushButton" name="but_send_tx_dwake_treshold">
         <property name="text">
          <string>Send</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QCheckBox" name="checkBox_send_auto_work_freq">
+        <property name="text">
+         <string>send automaticaly</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
+       <widget class="QCheckBox" name="checkBox_send_auto_data_rate">
+        <property name="text">
+         <string>send automaticaly</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="4">
+       <widget class="QCheckBox" name="checkBox_send_auto_treshold">
+        <property name="text">
+         <string>send automaticaly</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="4">
+       <widget class="QCheckBox" name="checkBox_send_auto_sleep_periods">
+        <property name="text">
+         <string>send automaticaly</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="4">
+       <widget class="QCheckBox" name="checkBox_send_auto_wakeup">
+        <property name="text">
+         <string>send automaticaly</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="3" colspan="2">
+       <widget class="QPushButton" name="but_send_all">
+        <property name="text">
+         <string>Send all</string>
         </property>
        </widget>
       </item>
