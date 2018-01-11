@@ -13,7 +13,7 @@ ACommands::ACommands(const uint8_t & cmd_pt1, const uint8_t & cmd_pt2)
 
 }
 
-tCMD ACommands::operator()()
+tCMD ACommands::operator()() const
 {
    return mCmd;
 }

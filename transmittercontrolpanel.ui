@@ -78,29 +78,17 @@
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0" colspan="3">
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="2" column="2">
-           <widget class="QDoubleSpinBox" name="crystalLoadCapasitance">
-            <property name="readOnly">
-             <bool>false</bool>
+          <item row="3" column="4">
+           <widget class="QCheckBox" name="checkbox_deviation_sign">
+            <property name="text">
+             <string>Positiv offset</string>
             </property>
-            <property name="buttonSymbols">
-             <enum>QAbstractSpinBox::PlusMinus</enum>
-            </property>
-            <property name="minimum">
-             <double>8.500000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>15.500000000000000</double>
-            </property>
-            <property name="singleStep">
-             <double>0.500000000000000</double>
-            </property>
-            <property name="value">
-             <double>10.500000000000000</double>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="1" column="2">
+          <item row="1" column="3">
            <widget class="QComboBox" name="clockOutput">
             <item>
              <property name="text">
@@ -144,28 +132,36 @@
             </item>
            </widget>
           </item>
-          <item row="1" column="0" colspan="2">
-           <widget class="QLabel" name="label_2">
+          <item row="3" column="0" colspan="2">
+           <widget class="QLabel" name="label_4">
             <property name="text">
-             <string>Clock Output Frequncy</string>
+             <string>Deviation:</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" colspan="2">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Crystal load capacitance</string>
+          <item row="3" column="3">
+           <widget class="QSlider" name="deviation_value">
+            <property name="minimum">
+             <number>30</number>
+            </property>
+            <property name="maximum">
+             <number>210</number>
+            </property>
+            <property name="singleStep">
+             <number>30</number>
+            </property>
+            <property name="pageStep">
+             <number>60</number>
+            </property>
+            <property name="value">
+             <number>30</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
-          <item row="0" column="0" colspan="2">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Frequency band</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
+          <item row="0" column="3">
            <widget class="QComboBox" name="band">
             <property name="enabled">
              <bool>false</bool>
@@ -187,43 +183,50 @@
             </item>
            </widget>
           </item>
-          <item row="3" column="3">
-           <widget class="QCheckBox" name="checkbox_deviation_sign">
-            <property name="text">
-             <string>Positiv offset</string>
+          <item row="2" column="3">
+           <widget class="QSpinBox" name="crystalLoadCapasitance">
+            <property name="readOnly">
+             <bool>false</bool>
             </property>
-            <property name="checked">
-             <bool>true</bool>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::PlusMinus</enum>
             </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>Deviation:</string>
+            <property name="minimum">
+             <number>85</number>
             </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLabel" name="label_deviation">
-            <property name="text">
-             <string>30 kHz</string>
+            <property name="maximum">
+             <number>155</number>
+            </property>
+            <property name="singleStep">
+             <number>5</number>
             </property>
            </widget>
           </item>
           <item row="3" column="2">
-           <widget class="QSlider" name="deviation_value">
-            <property name="maximum">
-             <number>6</number>
+           <widget class="QLabel" name="label_deviation">
+            <property name="text">
+             <string>30</string>
             </property>
-            <property name="pageStep">
-             <number>2</number>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="3">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Crystal load cap, C*10</string>
             </property>
-            <property name="value">
-             <number>0</number>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="3">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Clock Output Frequncy</string>
             </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="3">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Frequency band</string>
             </property>
            </widget>
           </item>
@@ -456,7 +459,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Transmitter frequency</string>
+         <string>Transmitter frequency,hz</string>
         </property>
        </widget>
       </item>
@@ -511,7 +514,7 @@
       <item row="0" column="1" colspan="2">
        <widget class="QLineEdit" name="lineEdit_work_freq">
         <property name="text">
-         <string>435</string>
+         <string>435000000</string>
         </property>
        </widget>
       </item>

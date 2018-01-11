@@ -12,7 +12,7 @@ public:
    ACommands(const uint8_t & cmd);
    ACommands(const uint8_t & cmd_pt1, const uint8_t & cmd_pt2);
 
-   tCMD operator()();
+   tCMD operator()() const;
 protected:
    template<class T>
    void setValue(const uint8_t offset, const uint8_t bitCount, const T value);

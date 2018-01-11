@@ -7,6 +7,7 @@
 #include "crfmtransmitterhandler.h"
 #include "CBroadcomPinout.h"
 #include "cgpioevent.h"
+#include "transmittercontrolpanel.h"
 
 namespace Ui {
 class MainWindow;
@@ -50,6 +51,7 @@ private:
    CRMFHandler mReceiver;
    CRFMTransmitterHandler mTransmitterHandler;
    CGPIOEvent mEvents;
+   TransmitterControlPanel trControlPanel;
 
    bool transmitionIsOver;
 

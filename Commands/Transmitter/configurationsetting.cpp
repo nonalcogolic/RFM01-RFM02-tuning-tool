@@ -18,6 +18,11 @@ void ConfigurationSetting::setClkFrequency(const eClockFrequency freq)
    setValue(8, 3, static_cast<int>(freq));
 }
 
+void ConfigurationSetting::setClkFrequency(const int freqDevider)
+{
+   setValue(8, 3, freqDevider);
+}
+
 void ConfigurationSetting::setCrystalLoadCapasitance(const int8_t pf)
 {
    uint8_t value = (pf - 85) / 5;
@@ -28,6 +33,11 @@ void ConfigurationSetting::setCrystalLoadCapasitance(const int8_t pf)
 void ConfigurationSetting::setOutputBandwidth(const eBandwidth_khz bandwidth)
 {
    setValue(0, 3, static_cast<int>(bandwidth));
+}
+
+void ConfigurationSetting::setOutputBandwidth(const int value)
+{
+   setValue(0, 3, value);
 }
 
 void ConfigurationSetting::setBandwidthSign(const bool positive)

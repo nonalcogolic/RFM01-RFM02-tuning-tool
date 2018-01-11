@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
    , mReceiver(mPinout)
    , mTransmitterHandler(mPinout)
    , mEvents(mPinout)
+   , trControlPanel()
 {
    mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, eEventType::rise);
 
@@ -48,6 +49,8 @@ MainWindow::MainWindow(QWidget *parent)
 
    ui->edit_multple_comand_rec->setText("0000 898A A7D0 C847 C69B C42A C200 C080 CE84 CE87 C081");
    ui->edit_multyple_comand_Tr->setText("CC00 8886 A7D0 C847 D240 C220");
+
+   trControlPanel.show();
 }
 
 MainWindow::~MainWindow()

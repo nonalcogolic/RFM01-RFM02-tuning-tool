@@ -6,7 +6,7 @@
 namespace NTransmitter
 {
 
-class PowerManagement : ACommands
+class PowerManagement : public ACommands
 {
 public:
    PowerManagement();
