@@ -6,6 +6,12 @@
 #include "Commands/Transmitter/configurationsetting.h"
 #include "Commands/Transmitter/powermanagement.h"
 #include "Commands/Transmitter/frequencysetting.h"
+#include "Commands/Transmitter/datarate.h"
+#include "Commands/Transmitter/powersetting.h"
+#include "Commands/Transmitter/sleep.h"
+#include "Commands/Transmitter/lowbatteryandtxbitsync.h"
+#include "Commands/Transmitter/wakeuptimer.h"
+#include "Commands/Transmitter/pllsettings.h"
 
 
 #include "QDebug"
@@ -130,40 +136,60 @@ void TransmitterControlPanel::sendFrequency()
 
 void TransmitterControlPanel::sendDataRate()
 {
+   NTransmitter::DataRate msg;
+   msg.setDataRate(ui->lineEdit_data_rate->text().toInt());
 
+   debug(msg);
 }
 
 void TransmitterControlPanel::sendPowerSettings()
 {
+   NTransmitter::PowerSetting msg;
+   msg.setOutputPower(ui->spinBox_power->value() / 3);
 
+   debug(msg);
 }
 
 void TransmitterControlPanel::sendTXandTreshold()
 {
+   NTransmitter::LowBatteryAndTXbitSync msg;
+   msg.setTresholdValue( ui->treshold->value());
+   msg.enableTXSyncr(ui->checkBox_en_tx->isChecked());
+   msg.disableWakeTimerColibration(ui->checkBox_disableWakeUpSync->isChecked());
 
+   debug(msg);
 }
 
 void TransmitterControlPanel::sendSleep()
 {
+   NTransmitter::Sleep msg;
+   msg.setSleepAfter(ui->lineEdit_sleep_periods->text().toInt());
 
+   debug(msg);
 }
 
 void TransmitterControlPanel::sendWakeUpTime()
 {
+   NTransmitter::WakeUpTimer msg;
+   msg.setPeriod(ui->lineEdit_wakeUp_mantis->text().toInt(), ui->lineEdit_wakeUp_pow->text().toInt());
 
+   debug(msg);
 }
 
 void TransmitterControlPanel::sendDataTransmit()
 {
-
+ //differrent impl
 }
 
 void TransmitterControlPanel::sendReadStatus()
 {
-
+   //different impl
 }
 
 void TransmitterControlPanel::sendPLLSettings()
 {
+   NTransmitter::PLLSettings msg;
+   msg.setPllValue(ui->comboBox_PLL->currentText().toInt() * 1000 - 1);
 
+   debug(msg);
 }
