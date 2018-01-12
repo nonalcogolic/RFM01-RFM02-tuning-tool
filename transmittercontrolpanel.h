@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+class ACommands;
+
 namespace Ui {
 class TransmitterControlPanel;
 }
@@ -15,7 +17,17 @@ public:
    explicit TransmitterControlPanel(QWidget *parent = 0);
    ~TransmitterControlPanel();
 
+
+signals:
+   void startDataTransmittion(const bool throughTheFSK, const std::vector<bool> command);
+   void sendCommand(const std::vector<bool> command);
+   void readStatus(const std::vector<bool> readstatusCMD);
+
 public slots:
+   void dataTransmitionFinished(const bool throughTheFSK);
+   void statusReceived(const QString & data);
+
+private slots:
    void sendAll();
    void sendConfig();
    void sendPowerManagment();
@@ -30,6 +42,8 @@ public slots:
    void sendPLLSettings();
 
 private:
+   void send(const ACommands & cmd);
+
    Ui::TransmitterControlPanel *ui;
 };
 

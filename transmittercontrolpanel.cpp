@@ -12,6 +12,8 @@
 #include "Commands/Transmitter/lowbatteryandtxbitsync.h"
 #include "Commands/Transmitter/wakeuptimer.h"
 #include "Commands/Transmitter/pllsettings.h"
+#include "Commands/Transmitter/datatransmit.h"
+#include "Commands/Transmitter/readstatus.h"
 
 
 #include "QDebug"
@@ -25,15 +27,7 @@ void checkAndSend(const QCheckBox * checkbox, const std::function<void()> & fn)
    }
 }
 
-void debug(const ACommands & cmd)
-{
-   const auto bytes = cmd();
-   QString string;
-   for (auto bit : bytes)
-      string += bit ? "1" : "0";
 
-   qDebug() << string;
-}
 
 int convertCLK(const QString clk)
 {
@@ -107,7 +101,7 @@ void TransmitterControlPanel::sendConfig()
    msg.setBandwidthSign(ui->checkbox_deviation_sign->isChecked());
    msg.setOutputBandwidth(ui->deviation_value->value() / 30 - 1);
 
-   debug(msg);
+   send(msg);
 }
 
 void TransmitterControlPanel::sendPowerManagment()
@@ -123,7 +117,7 @@ void TransmitterControlPanel::sendPowerManagment()
    msg.activateWakeUpTimer(ui->checkbox_en_wakeUp->isChecked());
    msg.disableClockOut(ui->checkBox_disable_clock_output->isChecked());
 
-   debug(msg);
+   send(msg);
 }
 
 void TransmitterControlPanel::sendFrequency()
@@ -131,7 +125,7 @@ void TransmitterControlPanel::sendFrequency()
    NTransmitter::FrequencySetting msg;
    msg.setFrequency(ui->lineEdit_work_freq->text().toInt());
 
-   debug(msg);
+   send(msg);
 }
 
 void TransmitterControlPanel::sendDataRate()
@@ -139,7 +133,7 @@ void TransmitterControlPanel::sendDataRate()
    NTransmitter::DataRate msg;
    msg.setDataRate(ui->lineEdit_data_rate->text().toInt());
 
-   debug(msg);
+   send(msg);
 }
 
 void TransmitterControlPanel::sendPowerSettings()
@@ -147,7 +141,7 @@ void TransmitterControlPanel::sendPowerSettings()
    NTransmitter::PowerSetting msg;
    msg.setOutputPower(ui->spinBox_power->value() / 3);
 
-   debug(msg);
+   send(msg);
 }
 
 void TransmitterControlPanel::sendTXandTreshold()
@@ -157,7 +151,7 @@ void TransmitterControlPanel::sendTXandTreshold()
    msg.enableTXSyncr(ui->checkBox_en_tx->isChecked());
    msg.disableWakeTimerColibration(ui->checkBox_disableWakeUpSync->isChecked());
 
-   debug(msg);
+   send(msg);
 }
 
 void TransmitterControlPanel::sendSleep()
@@ -165,31 +159,79 @@ void TransmitterControlPanel::sendSleep()
    NTransmitter::Sleep msg;
    msg.setSleepAfter(ui->lineEdit_sleep_periods->text().toInt());
 
-   debug(msg);
+   send(msg);
 }
 
 void TransmitterControlPanel::sendWakeUpTime()
 {
    NTransmitter::WakeUpTimer msg;
    msg.setPeriod(ui->lineEdit_wakeUp_mantis->text().toInt(), ui->lineEdit_wakeUp_pow->text().toInt());
-
-   debug(msg);
+   send(msg);
 }
 
 void TransmitterControlPanel::sendDataTransmit()
 {
- //differrent impl
+   if (ui->checkBox_FSK->isChecked())
+   {
+      ui->checkbox_auto_oscil_synth->setChecked(false);
+      ui->checkbox_auto_power_apl->setChecked(false);
+      ui->checkBox_on_amplifter->setChecked(true);
+      ui->checkBox_on_oscil->setChecked(true);
+      ui->checkBox_on_synth->setChecked(true);
+      sendPowerManagment();
+   }
+   else
+   {
+      NTransmitter::DataTransmit msg;
+      send(msg);
+   }
 }
 
 void TransmitterControlPanel::sendReadStatus()
 {
-   //different impl
+   NTransmitter::ReadStatus msg;
+   emit readStatus(msg());
 }
 
 void TransmitterControlPanel::sendPLLSettings()
 {
    NTransmitter::PLLSettings msg;
-   msg.setPllValue(ui->comboBox_PLL->currentText().toInt() * 1000 - 1);
+   msg.setPllValue(ui->comboBox_PLL->currentText().toDouble() * 1000 - 1);
+   send(msg);
+}
 
-   debug(msg);
+
+void TransmitterControlPanel::dataTransmitionFinished(const bool throughTheFSK)
+{
+   if (throughTheFSK)
+   {
+      ui->checkbox_auto_oscil_synth->setChecked(false);
+      ui->checkbox_auto_power_apl->setChecked(false);
+      ui->checkBox_on_amplifter->setChecked(false);
+      ui->checkBox_on_oscil->setChecked(false);
+      ui->checkBox_on_synth->setChecked(false);
+      sendPowerManagment();
+   }
+   else
+   {
+      //TODO: maybe not need
+      sendReadStatus();
+   }
+}
+
+void TransmitterControlPanel::statusReceived(const QString & data)
+{
+   ui->lineEdit_status->setText(data);
+}
+
+void TransmitterControlPanel::send(const ACommands & cmd)
+{
+   const auto bytes = cmd();
+   QString string;
+   for (auto bit : bytes)
+      string += bit ? "1" : "0";
+
+   qDebug() << string;
+
+   emit sendCommand(bytes);
 }
