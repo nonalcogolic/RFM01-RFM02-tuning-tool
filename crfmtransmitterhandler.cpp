@@ -78,20 +78,15 @@ void CRFMTransmitterHandler::sendDataFSK()
    qDebug() << "CRFMTransmitterHandler::sendDataFSK Starting data transmition";
    mDataSender.reset();
    mDataSender.setUsedPin(ePin::tr_FSK);
-   sendComand(CMD::CMD_ENABLE_TX_SYNC());
-   sendComand(CMD::CMD_SWITCH_ON_FSK_MODE());
 }
 
 //--------------------------------------------------
-void CRFMTransmitterHandler::sendDataSDI()
+void CRFMTransmitterHandler::sendDataSDI(const std::vector<bool> & command)
 //--------------------------------------------------
 {
    qDebug() << "CRFMTransmitterHandler::sendDataSDI Starting data transmition";
    mDataSender.reset();
    mDataSender.setUsedPin(ePin::tr_SDI);
-   sendComand(CMD::CMD_ENABLE_TX_SYNC());
-
-   const auto & command = CMD::CMD_DATA_TRANSMIT();
 
    mPinout.setPinState(false, ePin::tr_nSEL);
 
@@ -109,19 +104,16 @@ void CRFMTransmitterHandler::stopSendDataSDI()
 {
    mPinout.setPinState(true, ePin::tr_SCK); //TODO: order?
    mPinout.setPinState(true, ePin::tr_nSEL);
-   sendComand(CMD::CMD_DISABLE_TX_SYNC());
 }
 
 //--------------------------------------------------
-std::vector<bool> CRFMTransmitterHandler::readStatus()
+std::vector<bool> CRFMTransmitterHandler::readStatus(const std::vector<bool> command)
 //--------------------------------------------------
 {
    std::vector<bool> output;
 
    mPinout.setPinState(false, ePin::tr_nSEL);
    mPinout.setPinState(false, ePin::tr_SDI);
-
-   auto & command = CMD::CMD_READ_STATUS();
 
    for (int i = 0; i<8; ++i)
    {
@@ -160,6 +152,5 @@ bool CRFMTransmitterHandler::bitSyncArived()
 void CRFMTransmitterHandler::stopSendDataFSK()
 //--------------------------------------------------
 {
-   sendComand(CMD::CMD_SWITCH_OFF());
-   sendComand(CMD::CMD_DISABLE_TX_SYNC());
+   //No need
 }

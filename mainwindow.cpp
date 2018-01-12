@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include <list>
+#include <future>
 
 #include <qmessagebox.h>
 #include <qdebug.h>
@@ -36,19 +37,19 @@ MainWindow::MainWindow(QWidget *parent)
    mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, eEventType::rise);
 
    ui->setupUi(this);
-   connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(sendComand()) );
-   connect(ui->pushButton_2, SIGNAL(clicked()), this, SLOT(readStatus()) );
-   connect(ui->but_readTrStatus, SIGNAL(clicked()), this, SLOT(readTrStatus()) );
+   connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(sendComand()));
+   connect(ui->pushButton_2, SIGNAL(clicked()), this, SLOT(readStatus()));
 
-   connect(ui->but_tr_sendAll, SIGNAL(clicked()), this, SLOT(sendAllTr()) );
-   connect(ui->but_rec_Send_all, SIGNAL(clicked()), this, SLOT(sendAllRec()) );
-   connect(ui->but_send, SIGNAL(clicked()), this, SLOT(sendData()));
+   //transmitter
+   connect(&trControlPanel, SIGNAL(sendCommand(const std::vector<bool> &)), this, SLOT(transmiiterSendCommand(const std::vector<bool> &))); //, Qt::ConnectionType::QueuedConnection
+   connect(&trControlPanel, SIGNAL(readStatus(const std::vector<bool> &)), this, SLOT(readTrStatus(const std::vector<bool> &))); //, Qt::ConnectionType::QueuedConnection
+   connect(&trControlPanel, SIGNAL(startDataTransmittion(const bool, const std::vector<bool> &)), this, SLOT(sendData(const bool, const std::vector<bool> &))); //, Qt::ConnectionType::QueuedConnection
+   connect(this, SIGNAL(dataTransmitionFinished(const bool)), &trControlPanel, SLOT(dataTransmitionFinished(const bool)), Qt::ConnectionType::QueuedConnection);
+   connect(this, SIGNAL(transmitterStatusChanged(const QString & )), &trControlPanel, SLOT(statusReceived(const QString & )));
 
    connect(this, SIGNAL(nIRQSignal(const bool)), this, SLOT(nIRQ(const bool)), Qt::ConnectionType::QueuedConnection);
-   connect(ui->transmitter_but, SIGNAL(clicked()), this, SLOT(transmiiterSendComand()));
 
    ui->edit_multple_comand_rec->setText("0000 898A A7D0 C847 C69B C42A C200 C080 CE84 CE87 C081");
-   ui->edit_multyple_comand_Tr->setText("CC00 8886 A7D0 C847 D240 C220");
 
    trControlPanel.show();
 }
@@ -98,30 +99,21 @@ void MainWindow::nIRQ(const bool state)
 }
 
 
-void MainWindow::transmiiterSendComand()
+void MainWindow::transmiiterSendCommand(const std::vector<bool> & cmd)
 {
-   const auto size = ui->transmitterCmd->text().size();
-   auto comand = ui->transmitterCmd->text().toInt(nullptr, 16);
-   const auto bitset = fromInt(comand, size);
-
-   {
-      mTransmitterHandler.sendComand(bitset);
-   }
-
-   ui->label_2->setText(QString::number(comand, 16));
-
+   mTransmitterHandler.sendComand(cmd);
 }
 
-
-void MainWindow::readTrStatus()
+void MainWindow::readTrStatus(const std::vector<bool> & readstatusCMD)
 {
-   auto word = mTransmitterHandler.readStatus();
+   auto word = mTransmitterHandler.readStatus(readstatusCMD);
    QString result;
    for (auto symb : word)
    {
       result += (symb) ? "1" : "0";
    }
-   ui->ed_tr->setText(result);
+
+   emit transmitterStatusChanged(result);
 }
 
 void MainWindow::sendAllRec()
@@ -137,28 +129,16 @@ void MainWindow::sendAllRec()
    readStatus();
 }
 
-void MainWindow::sendAllTr()
-{
-   QRegExp rx { R"([,\s]+)" };
-   auto commandsList = ui->edit_multyple_comand_Tr->toPlainText().split(rx);
 
-   for (const auto & comand : commandsList)
-   {
-      qDebug() << comand ;
-      mTransmitterHandler.sendComand(fromInt(comand.toInt(nullptr, 16), comand.size()));
-      std::this_thread::sleep_for(std::chrono::milliseconds(50));
-   }
-}
-
-void MainWindow::sendData()
+void MainWindow::sendData(const bool throughFSK, const std::vector<bool> transmitDataSDIcmd)
 {
-   if (ui->ch_FSK->isChecked())
+   if (throughFSK)
    {
-      sendDataFSK();
+      std::async(std::launch::async, &MainWindow::sendDataFSK, this);
    }
    else
    {
-      sendDataSDI();
+      std::async(std::launch::async, &MainWindow::sendDataSDI, this, transmitDataSDIcmd);
    }
 }
 
@@ -172,9 +152,7 @@ void MainWindow::sendDataFSK()
 
 void MainWindow::nIRQTransmitterFSK(const bool state)
 {
-   std::ignore = state;
-   static int count = 0;
-   qDebug() << "nIRQTransmitterFSK " << ++count;
+   std::ignore = state; static int count = 0; qDebug() << "nIRQTransmitterFSK " << ++count;
    if (!mTransmitterHandler.bitSyncArived())
    {
       count = 0;
@@ -182,30 +160,28 @@ void MainWindow::nIRQTransmitterFSK(const bool state)
       disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)));
       mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
       mTransmitterHandler.stopSendDataFSK();
-      readTrStatus();
+      emit dataTransmitionFinished(true);
    }
 }
 
-void MainWindow::sendDataSDI()
+void MainWindow::sendDataSDI(const std::vector<bool> transmitDataSDIcmd)
 {
    transmitionIsOver = false;
    connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)), Qt::ConnectionType::QueuedConnection);
    mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
-   mTransmitterHandler.sendDataSDI();
+   mTransmitterHandler.sendDataSDI(transmitDataSDIcmd);
 }
 
 void MainWindow::nIRQTransmitterSDI(const bool state)
 {
-   std::ignore = state;
-   static int count = 0;
-   qDebug() << "nIRQTransmitterSDI " << ++count;
+   std::ignore = state; static int count = 0; qDebug() << "nIRQTransmitterSDI " << ++count;
    if (!mTransmitterHandler.bitSyncArived())
    {
       count = 0;
       transmitionIsOver = true;
       mTransmitterHandler.stopSendDataSDI();
-      disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)));
+      disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)));
       mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
-      readTrStatus();
+      emit dataTransmitionFinished(false);
    }
 }

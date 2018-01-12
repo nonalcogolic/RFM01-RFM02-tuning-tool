@@ -17,11 +17,10 @@ public:
    explicit TransmitterControlPanel(QWidget *parent = 0);
    ~TransmitterControlPanel();
 
-
 signals:
-   void startDataTransmittion(const bool throughTheFSK, const std::vector<bool> command);
-   void sendCommand(const std::vector<bool> command);
-   void readStatus(const std::vector<bool> readstatusCMD);
+   void startDataTransmittion(const bool throughTheFSK, const std::vector<bool> & command);
+   void sendCommand(const std::vector<bool> & command);
+   void readStatus(const std::vector<bool> &readstatusCMD);
 
 public slots:
    void dataTransmitionFinished(const bool throughTheFSK);

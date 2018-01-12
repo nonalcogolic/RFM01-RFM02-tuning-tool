@@ -17,10 +17,10 @@ public:
    void sendDataFSK();   
    void stopSendDataFSK();
 
-   void sendDataSDI();
+   void sendDataSDI(const std::vector<bool> & command);
    void stopSendDataSDI();
 
-   std::vector<bool> readStatus();
+   std::vector<bool> readStatus(const std::vector<bool> command);
 
    bool bitSyncArived();
 

@@ -25,18 +25,20 @@ signals:
    void nIRQSignal(const bool state);
    void nIRQTransmitterSignal(const bool state);
 
+   void dataTransmitionFinished(const bool throughFSK);
+   void transmitterStatusChanged(const QString & data);
+
 public slots:
    void sendComand();
    void readStatus();
-   void transmiiterSendComand();
-   void readTrStatus();
+   void transmiiterSendCommand(const std::vector<bool> & cmd);
+   void readTrStatus(const std::vector<bool> & readstatusCMD);
 
    void nIRQ(const bool state);
 
    void sendAllRec();
-   void sendAllTr();
 
-   void sendData();
+   void sendData(const bool throughFSK, const std::vector<bool> transmitDataSDIcmd);
 
    void nIRQTransmitterFSK(const bool state); //transmition over FSK using PWR managment command 0xC039/0xC001
 
@@ -44,7 +46,7 @@ public slots:
 
 private:   
    void sendDataFSK();
-   void sendDataSDI();
+   void sendDataSDI(const std::vector<bool> transmitDataSDIcmd);
 
    Ui::MainWindow *ui;
    CBroadcomPinout mPinout;

@@ -211,6 +211,7 @@ void TransmitterControlPanel::dataTransmitionFinished(const bool throughTheFSK)
       ui->checkBox_on_oscil->setChecked(false);
       ui->checkBox_on_synth->setChecked(false);
       sendPowerManagment();
+      sendReadStatus();
    }
    else
    {
