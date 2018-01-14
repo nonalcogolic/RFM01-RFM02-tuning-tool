@@ -11,8 +11,7 @@
 
 void setPinDelay()
 {
-   const auto delay = std::chrono::nanoseconds(Constants::CHANGE_LEVEL_DURATION);
-   std::this_thread::sleep_for(delay);
+   std::this_thread::sleep_for(std::chrono::nanoseconds(Constants::CHANGE_LEVEL_DURATION));
 }
 
 class OpenBCMException : public std::exception

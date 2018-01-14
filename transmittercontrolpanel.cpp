@@ -178,12 +178,12 @@ void TransmitterControlPanel::sendDataTransmit()
       ui->checkBox_on_amplifter->setChecked(true);
       ui->checkBox_on_oscil->setChecked(true);
       ui->checkBox_on_synth->setChecked(true);
+      emit startDataTransmittion(true, {});
       sendPowerManagment();
    }
    else
    {
-      NTransmitter::DataTransmit msg;
-      send(msg);
+      emit startDataTransmittion(false, NTransmitter::DataTransmit()());
    }
 }
 
@@ -215,8 +215,12 @@ void TransmitterControlPanel::dataTransmitionFinished(const bool throughTheFSK)
    }
    else
    {
-      //TODO: maybe not need
-      sendReadStatus();
+  //    ui->checkbox_auto_oscil_synth->setChecked(false);
+  //    ui->checkbox_auto_power_apl->setChecked(false);
+  //    ui->checkBox_on_amplifter->setChecked(false);
+      ui->checkBox_on_oscil->setChecked(false);
+   //   ui->checkBox_on_synth->setChecked(false);
+      sendPowerManagment();
    }
 }
 

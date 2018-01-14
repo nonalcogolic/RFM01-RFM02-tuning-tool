@@ -101,9 +101,11 @@ void CRFMTransmitterHandler::sendDataSDI(const std::vector<bool> & command)
 //--------------------------------------------------
 void CRFMTransmitterHandler::stopSendDataSDI()
 //--------------------------------------------------
-{
+{   
+   mPinout.setPinStateForce(true, ePin::tr_nSEL);
    mPinout.setPinState(true, ePin::tr_SCK); //TODO: order?
-   mPinout.setPinState(true, ePin::tr_nSEL);
+   mPinout.setPinState(false, ePin::tr_SCK); //TODO: order?
+   qDebug() << "CRFMTransmitterHandler::stopSendDataSDI";
 }
 
 //--------------------------------------------------

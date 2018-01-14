@@ -132,6 +132,7 @@ void MainWindow::sendAllRec()
 
 void MainWindow::sendData(const bool throughFSK, const std::vector<bool> transmitDataSDIcmd)
 {
+   qDebug() << "MainWindow::sendData";
    if (throughFSK)
    {
       std::async(std::launch::async, &MainWindow::sendDataFSK, this);
@@ -164,6 +165,7 @@ void MainWindow::nIRQTransmitterFSK(const bool state)
    }
 }
 
+
 void MainWindow::sendDataSDI(const std::vector<bool> transmitDataSDIcmd)
 {
    transmitionIsOver = false;
@@ -180,8 +182,9 @@ void MainWindow::nIRQTransmitterSDI(const bool state)
       count = 0;
       transmitionIsOver = true;
       mTransmitterHandler.stopSendDataSDI();
-      disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)));
-      mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
       emit dataTransmitionFinished(false);
+   //   mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
+   //   disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)));
+      qDebug() << "disconnected";
    }
 }
