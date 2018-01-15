@@ -65,4 +65,4 @@ Enable wake in rc PWMN | 0x0200  //make a note: value of register are always ove
 
 E0FF
 
-FF00 - reset chip
+FF00 - reset chip (RFM-01)

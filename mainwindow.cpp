@@ -182,8 +182,8 @@ void MainWindow::nIRQTransmitterSDI(const bool state)
       count = 0;
       transmitionIsOver = true;
       mTransmitterHandler.stopSendDataSDI();
+      mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
       emit dataTransmitionFinished(false);
-   //   mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
    //   disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)));
       qDebug() << "disconnected";
    }

@@ -101,10 +101,10 @@ void CBroadcomPinout::subscribeOn(const ePin pin, const eEventType type)
 
 void CBroadcomPinout::unsubscribeFrom(const ePin pin, const eEventType type)
 {
-   bcm2835_gpio_clr_afen(static_cast<uint8_t>(pin));
-   bcm2835_gpio_clr_aren(static_cast<uint8_t>(pin));
    bcm2835_gpio_clr_fen(static_cast<uint8_t>(pin));
    bcm2835_gpio_clr_ren(static_cast<uint8_t>(pin));
+   bcm2835_gpio_clr_afen(static_cast<uint8_t>(pin));
+   bcm2835_gpio_clr_aren(static_cast<uint8_t>(pin));
    bcm2835_gpio_clr_hen(static_cast<uint8_t>(pin));
    bcm2835_gpio_clr_len(static_cast<uint8_t>(pin));
 }
