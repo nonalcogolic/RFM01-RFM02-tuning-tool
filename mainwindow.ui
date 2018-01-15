@@ -75,6 +75,9 @@
      </item>
     </layout>
    </item>
+   <item row="1" column="0">
+    <layout class="QGridLayout" name="gridLayout_3"/>
+   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

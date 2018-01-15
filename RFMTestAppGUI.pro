@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-CONFIG += c++11
+CONFIG += c++11 object_parallel_to_source
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -60,8 +60,10 @@ FORMS += \
 OTHER_FILES += \
     config.txt
 
-DISTFILES += \
-    Commands/Commands.pri
+#DISTFILES += \
+  #  Commands/Commands.pri # \
+  #  Commands/Receiver/Receiver.pri
 
 include(Commands/Commands.pri)
 include(Commands/Transmitter/Transmitter.pri)
+include(Commands/Receiver/Receiver.pri)

@@ -6,3 +6,4 @@ SOURCES += \
 
 DISTFILES += \
     $$PWD/Transmitter/Transmitter.pri
+    $$PWD/Receiver/Receiver.pri
