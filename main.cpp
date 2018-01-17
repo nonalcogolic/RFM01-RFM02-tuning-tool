@@ -1,14 +1,14 @@
 
 #include <qapplication.h>
 #include "receivercontrolpanel.h"
+#include "applicationcontroller.h"
 
 
 int main(int argn, char ** argv)
 {
    QApplication application(argn, argv);
 
-   ReceiverControlPanel receiverControlPanel;
-   receiverControlPanel.show();
+   ApplicationController controller;
 
    return application.exec();
 }

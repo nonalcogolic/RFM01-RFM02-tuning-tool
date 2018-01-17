@@ -52,10 +52,6 @@ private:
    CRMFHandler mReceiver;
    CRFMTransmitterHandler mTransmitterHandler;
    CGPIOEvent mEvents;
-   TransmitterControlPanel trControlPanel;
-
-   bool transmitionIsOver;
-
 };
 
 #endif // ReceiverControlPanel_H

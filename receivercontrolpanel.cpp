@@ -32,25 +32,17 @@ ReceiverControlPanel::ReceiverControlPanel(QWidget *parent)
    , mReceiver(mPinout)
    , mTransmitterHandler(mPinout)
    , mEvents(mPinout)
-   , trControlPanel()
 {
    mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, eEventType::rise);
 
    ui->setupUi(this);
    connect(ui->pushButton_read_status, SIGNAL(clicked()), this, SLOT(receiverReadStatus()));
 
-   //transmitter
-   connect(&trControlPanel, SIGNAL(sendCommand(const std::vector<bool> &)), this, SLOT(transmiiterSendCommand(const std::vector<bool> &))); //, Qt::ConnectionType::QueuedConnection
-   connect(&trControlPanel, SIGNAL(readStatus(const std::vector<bool> &)), this, SLOT(readTrStatus(const std::vector<bool> &))); //, Qt::ConnectionType::QueuedConnection
-   connect(&trControlPanel, SIGNAL(startDataTransmittion(const bool, const std::vector<bool> &)), this, SLOT(sendData(const bool, const std::vector<bool> &))); //, Qt::ConnectionType::QueuedConnection
-   connect(this, SIGNAL(dataTransmitionFinished(const bool)), &trControlPanel, SLOT(dataTransmitionFinished(const bool)), Qt::ConnectionType::QueuedConnection);
-   connect(this, SIGNAL(transmitterStatusChanged(const QString & )), &trControlPanel, SLOT(statusReceived(const QString & )));
 
    connect(this, SIGNAL(nIRQSignal(const bool)), this, SLOT(nIRQ(const bool)), Qt::ConnectionType::QueuedConnection);
 
    //ui->edit_multple_comand_rec->setText("0000 898A A7D0 C847 C69B C42A C200 C080 CE84 CE87 C081");
 
-   trControlPanel.show();
 }
 
 ReceiverControlPanel::~ReceiverControlPanel()
@@ -117,7 +109,6 @@ void ReceiverControlPanel::sendData(const bool throughFSK, const std::vector<boo
 
 void ReceiverControlPanel::sendDataFSK()
 {
-   transmitionIsOver = false;
    connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)), Qt::ConnectionType::QueuedConnection);
    mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
    mTransmitterHandler.sendDataFSK();
@@ -129,7 +120,6 @@ void ReceiverControlPanel::nIRQTransmitterFSK(const bool state)
    if (!mTransmitterHandler.bitSyncArived())
    {
       count = 0;
-      transmitionIsOver = true;
       disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)));
       mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
       mTransmitterHandler.stopSendDataFSK();
@@ -140,7 +130,6 @@ void ReceiverControlPanel::nIRQTransmitterFSK(const bool state)
 
 void ReceiverControlPanel::sendDataSDI(const std::vector<bool> transmitDataSDIcmd)
 {
-   transmitionIsOver = false;
    connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)), Qt::ConnectionType::QueuedConnection);
    mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
    mTransmitterHandler.sendDataSDI(transmitDataSDIcmd);
@@ -152,7 +141,6 @@ void ReceiverControlPanel::nIRQTransmitterSDI(const bool state)
    if (!mTransmitterHandler.bitSyncArived())
    {
       count = 0;
-      transmitionIsOver = true;
       mTransmitterHandler.stopSendDataSDI();
       mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
       emit dataTransmitionFinished(false);
