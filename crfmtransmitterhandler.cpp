@@ -50,28 +50,6 @@ void CRFMTransmitterHandler::sendComand(const std::vector<bool> & command)
 }
 
 //--------------------------------------------------
-void CRFMTransmitterHandler::sendData(const std::vector<bool> & command, const std::vector<bool> data)
-//--------------------------------------------------
-{
-   mPinout.setPinState(false, ePin::tr_nSEL);
-
-   for (auto bit : command)
-   {
-      mPinout.setPinState(bit, ePin::tr_SDI);
-      mPinout.setPinState(true, ePin::tr_SCK);
-      mPinout.setPinState(false, ePin::tr_SCK);
-   }
-
-   for (auto bit : data)
-   {
-      mPinout.setPinState(bit, ePin::tr_SDI);
-   }
-
-   mPinout.setPinState(true, ePin::tr_SCK);
-   mPinout.setPinState(true, ePin::tr_nSEL);
-}
-
-//--------------------------------------------------
 void CRFMTransmitterHandler::sendDataFSK()
 //--------------------------------------------------
 {

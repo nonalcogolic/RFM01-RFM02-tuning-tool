@@ -231,12 +231,13 @@ void TransmitterControlPanel::dataTransmitionFinished(const bool throughTheFSK)
    }
    else
    {
+      sendSleep();
   //    ui->checkbox_auto_oscil_synth->setChecked(false);
   //    ui->checkbox_auto_power_apl->setChecked(false);
   //    ui->checkBox_on_amplifter->setChecked(false);
-      ui->checkBox_on_oscil->setChecked(false);
+     // ui->checkBox_on_oscil->setChecked(false);
    //   ui->checkBox_on_synth->setChecked(false);
-      sendPowerManagment();
+   //   sendPowerManagment();
    }
 }
 
@@ -253,7 +254,6 @@ void TransmitterControlPanel::send(const ACommands & cmd)
    mTransmitterHandler.sendComand(bytes);
 }
 
-//=====================================
 
 void TransmitterControlPanel::sendData(const bool throughFSK, const std::vector<bool> transmitDataSDIcmd)
 {
@@ -270,9 +270,11 @@ void TransmitterControlPanel::sendData(const bool throughFSK, const std::vector<
 
 void TransmitterControlPanel::sendDataFSK()
 {
+   mTransmitterHandler.sendDataFSK();
+
+   std::this_thread::sleep_for(std::chrono::microseconds(300));
    connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)), Qt::ConnectionType::QueuedConnection);
    mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
-   mTransmitterHandler.sendDataFSK();
 }
 
 void TransmitterControlPanel::nIRQTransmitterFSK(const bool state)
@@ -290,9 +292,10 @@ void TransmitterControlPanel::nIRQTransmitterFSK(const bool state)
 
 void TransmitterControlPanel::sendDataSDI(const std::vector<bool> transmitDataSDIcmd)
 {
+   mTransmitterHandler.sendDataSDI(transmitDataSDIcmd);   
+   std::this_thread::sleep_for(std::chrono::milliseconds(6));
    connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)), Qt::ConnectionType::QueuedConnection);
    mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
-   mTransmitterHandler.sendDataSDI(transmitDataSDIcmd);
 }
 
 void TransmitterControlPanel::nIRQTransmitterSDI(const bool state)

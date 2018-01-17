@@ -7,6 +7,8 @@ ApplicationController::ApplicationController(QObject *parent)
    , mReceiverPanel(mPinout, mEvents)
    , mTransmitterPanel(mPinout, mEvents)
 {
+   mReceiverPanel.setWindowTitle("Receiver control panel");
    mReceiverPanel.show();
+   mTransmitterPanel.setWindowTitle("Transmitter control panel");
    mTransmitterPanel.show();
 }
