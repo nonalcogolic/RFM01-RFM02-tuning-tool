@@ -7,6 +7,11 @@
 #include "receivercontrolpanel.h"
 #include "transmittercontrolpanel.h"
 
+#include "crmfhandler.h"
+#include "crfmtransmitterhandler.h"
+#include "CBroadcomPinout.h"
+#include "cgpioevent.h"
+
 
 class ApplicationController : public QObject
 {
@@ -20,6 +25,9 @@ public slots:
 
 
 private:
+   CBroadcomPinout mPinout;
+   CGPIOEvent mEvents;
+
    ReceiverControlPanel mReceiverPanel;
    TransmitterControlPanel mTransmitterPanel;
 };

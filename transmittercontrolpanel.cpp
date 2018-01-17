@@ -1,7 +1,11 @@
 #include "transmittercontrolpanel.h"
 #include "ui_transmittercontrolpanel.h"
 
+#include "CBroadcomPinout.h"
+#include "cgpioevent.h"
+
 #include <functional>
+#include <future>
 
 #include "Commands/Transmitter/configurationsetting.h"
 #include "Commands/Transmitter/powermanagement.h"
@@ -53,9 +57,12 @@ int convertCLK(const QString clk)
 }
 
 
-TransmitterControlPanel::TransmitterControlPanel(QWidget *parent) :
-   QWidget(parent),
-   ui(new Ui::TransmitterControlPanel)
+TransmitterControlPanel::TransmitterControlPanel(CBroadcomPinout & pinout, CGPIOEvent & events, QWidget *parent)
+   : QWidget(parent)
+   , ui(new Ui::TransmitterControlPanel)
+   , mPinout(pinout)
+   , mEvents(events)
+   , mTransmitterHandler(mPinout)
 {
    ui->setupUi(this);
 
@@ -72,6 +79,7 @@ TransmitterControlPanel::TransmitterControlPanel(QWidget *parent) :
    connect(ui->but_read_status, SIGNAL(clicked()), this, SLOT(sendReadStatus()));
    connect(ui->but_send_pll, SIGNAL(clicked()), this, SLOT(sendPLLSettings()));
    connect(ui->deviation_value, SIGNAL(valueChanged(int)), ui->label_deviation, SLOT(setNum(int)));
+
 }
 
 TransmitterControlPanel::~TransmitterControlPanel()
@@ -178,19 +186,27 @@ void TransmitterControlPanel::sendDataTransmit()
       ui->checkBox_on_amplifter->setChecked(true);
       ui->checkBox_on_oscil->setChecked(true);
       ui->checkBox_on_synth->setChecked(true);
-      emit startDataTransmittion(true, {});
+      sendData(true, {});
       sendPowerManagment();
    }
    else
    {
-      emit startDataTransmittion(false, NTransmitter::DataTransmit()());
+      sendData(false, NTransmitter::DataTransmit()());
    }
 }
 
 void TransmitterControlPanel::sendReadStatus()
 {
    NTransmitter::ReadStatus msg;
-   emit readStatus(msg());
+
+   auto word = mTransmitterHandler.readStatus(msg());
+   QString result;
+   for (auto symb : word)
+   {
+      result += (symb) ? "1" : "0";
+   }
+
+   ui->lineEdit_status->setText(result);
 }
 
 void TransmitterControlPanel::sendPLLSettings()
@@ -224,11 +240,6 @@ void TransmitterControlPanel::dataTransmitionFinished(const bool throughTheFSK)
    }
 }
 
-void TransmitterControlPanel::statusReceived(const QString & data)
-{
-   ui->lineEdit_status->setText(data);
-}
-
 void TransmitterControlPanel::send(const ACommands & cmd)
 {
    const auto bytes = cmd();
@@ -238,5 +249,62 @@ void TransmitterControlPanel::send(const ACommands & cmd)
 
    qDebug() << string;
 
-   emit sendCommand(bytes);
+
+   mTransmitterHandler.sendComand(bytes);
+}
+
+//=====================================
+
+void TransmitterControlPanel::sendData(const bool throughFSK, const std::vector<bool> transmitDataSDIcmd)
+{
+   qDebug() << "ReceiverControlPanel::sendData";
+   if (throughFSK)
+   {
+      std::async(std::launch::async, &TransmitterControlPanel::sendDataFSK, this);
+   }
+   else
+   {
+      std::async(std::launch::async, &TransmitterControlPanel::sendDataSDI, this, transmitDataSDIcmd);
+   }
+}
+
+void TransmitterControlPanel::sendDataFSK()
+{
+   connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)), Qt::ConnectionType::QueuedConnection);
+   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
+   mTransmitterHandler.sendDataFSK();
+}
+
+void TransmitterControlPanel::nIRQTransmitterFSK(const bool state)
+{
+   std::ignore = state; static int count = 0; qDebug() << "nIRQTransmitterFSK " << ++count;
+   if (!mTransmitterHandler.bitSyncArived())
+   {
+      count = 0;
+      disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)));
+      mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
+      mTransmitterHandler.stopSendDataFSK();
+      dataTransmitionFinished(true);
+   }
+}
+
+void TransmitterControlPanel::sendDataSDI(const std::vector<bool> transmitDataSDIcmd)
+{
+   connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)), Qt::ConnectionType::QueuedConnection);
+   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
+   mTransmitterHandler.sendDataSDI(transmitDataSDIcmd);
+}
+
+void TransmitterControlPanel::nIRQTransmitterSDI(const bool state)
+{
+   std::ignore = state; static int count = 0; qDebug() << "nIRQTransmitterSDI " << ++count;
+   if (!mTransmitterHandler.bitSyncArived())
+   {
+      count = 0;
+      mTransmitterHandler.stopSendDataSDI();
+      mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
+      dataTransmitionFinished(false);
+      disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)));
+      qDebug() << "disconnected";
+   }
 }

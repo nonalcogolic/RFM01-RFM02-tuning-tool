@@ -1,45 +1,27 @@
 #include "receivercontrolpanel.h"
 #include "ui_receivercontrolpanel.h"
 
+#include "CBroadcomPinout.h"
+#include "cgpioevent.h"
+
 #include <list>
-#include <future>
 
 #include <qmessagebox.h>
 #include <qdebug.h>
 
-namespace
-{
 
-   std::vector<bool> fromInt(int command, int charsInCommand)
-   {
-      std::list<bool> retValue;
-
-      for (int i = 0 ; i < charsInCommand * 4; ++i)
-      {
-         bool value = (command >> i) % 2;
-         retValue.push_front(value);
-      }
-
-      return std::vector<bool>(retValue.cbegin(), retValue.cend());
-   }
-}
-
-
-ReceiverControlPanel::ReceiverControlPanel(QWidget *parent)
+ReceiverControlPanel::ReceiverControlPanel(CBroadcomPinout & pinout, CGPIOEvent & events, QWidget *parent)
    : QWidget(parent)
    , ui(new Ui::ReceiverControlPanel)
-   , mPinout()
-   , mReceiver(mPinout)
-   , mTransmitterHandler(mPinout)
-   , mEvents(mPinout)
+   , mPinout(pinout)
+   , mEvents(events)
+   , mReceiver(pinout)
 {
-   mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, eEventType::rise);
-
    ui->setupUi(this);
    connect(ui->pushButton_read_status, SIGNAL(clicked()), this, SLOT(receiverReadStatus()));
 
-
-   connect(this, SIGNAL(nIRQSignal(const bool)), this, SLOT(nIRQ(const bool)), Qt::ConnectionType::QueuedConnection);
+   mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, eEventType::rise);
+   connect(this, SIGNAL(nIRQSignal(const bool)), this, SLOT(receiver_nIRQ(const bool)), Qt::ConnectionType::QueuedConnection);
 
    //ui->edit_multple_comand_rec->setText("0000 898A A7D0 C847 C69B C42A C200 C080 CE84 CE87 C081");
 
@@ -69,82 +51,9 @@ void ReceiverControlPanel::receiverReadStatus()
    ui->lineEdit_status->setText(result);
 }
 
-void ReceiverControlPanel::nIRQ(const bool state)
+void ReceiverControlPanel::receiver_nIRQ(const bool state)
 {
    static int value= 0;
    value = (++value)%100;
    ui->progressBar->setValue(value);
-}
-
-
-void ReceiverControlPanel::transmiiterSendCommand(const std::vector<bool> & cmd)
-{
-   mTransmitterHandler.sendComand(cmd);
-}
-
-void ReceiverControlPanel::readTrStatus(const std::vector<bool> & readstatusCMD)
-{
-   auto word = mTransmitterHandler.readStatus(readstatusCMD);
-   QString result;
-   for (auto symb : word)
-   {
-      result += (symb) ? "1" : "0";
-   }
-
-   emit transmitterStatusChanged(result);
-}
-
-void ReceiverControlPanel::sendData(const bool throughFSK, const std::vector<bool> transmitDataSDIcmd)
-{
-   qDebug() << "ReceiverControlPanel::sendData";
-   if (throughFSK)
-   {
-      std::async(std::launch::async, &ReceiverControlPanel::sendDataFSK, this);
-   }
-   else
-   {
-      std::async(std::launch::async, &ReceiverControlPanel::sendDataSDI, this, transmitDataSDIcmd);
-   }
-}
-
-void ReceiverControlPanel::sendDataFSK()
-{
-   connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)), Qt::ConnectionType::QueuedConnection);
-   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
-   mTransmitterHandler.sendDataFSK();
-}
-
-void ReceiverControlPanel::nIRQTransmitterFSK(const bool state)
-{
-   std::ignore = state; static int count = 0; qDebug() << "nIRQTransmitterFSK " << ++count;
-   if (!mTransmitterHandler.bitSyncArived())
-   {
-      count = 0;
-      disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)));
-      mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
-      mTransmitterHandler.stopSendDataFSK();
-      emit dataTransmitionFinished(true);
-   }
-}
-
-
-void ReceiverControlPanel::sendDataSDI(const std::vector<bool> transmitDataSDIcmd)
-{
-   connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)), Qt::ConnectionType::QueuedConnection);
-   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
-   mTransmitterHandler.sendDataSDI(transmitDataSDIcmd);
-}
-
-void ReceiverControlPanel::nIRQTransmitterSDI(const bool state)
-{
-   std::ignore = state; static int count = 0; qDebug() << "nIRQTransmitterSDI " << ++count;
-   if (!mTransmitterHandler.bitSyncArived())
-   {
-      count = 0;
-      mTransmitterHandler.stopSendDataSDI();
-      mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
-      emit dataTransmitionFinished(false);
-      disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)));
-      qDebug() << "disconnected";
-   }
 }
