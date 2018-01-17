@@ -1,5 +1,5 @@
-#ifndef STATUSREAD_H
-#define STATUSREAD_H
+#ifndef STATUSREAD_RECEIVER_H
+#define STATUSREAD_RECEIVER_H
 
 #include "../ACommands.h"
 
@@ -15,4 +15,4 @@ public:
 
 }
 
-#endif // STATUSREAD_H
+#endif // STATUSREAD_RECEIVER_H

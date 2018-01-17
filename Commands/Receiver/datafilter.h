@@ -1,5 +1,5 @@
-#ifndef DATAFILTER_H
-#define DATAFILTER_H
+#ifndef DATAFILTER_RECEIVER_H
+#define DATAFILTER_RECEIVER_H
 
 #include "../ACommands.h"
 
@@ -27,4 +27,4 @@ public:
 
 }
 
-#endif // DATAFILTER_H
+#endif // DATAFILTER_RECEIVER_H

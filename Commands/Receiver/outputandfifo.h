@@ -1,5 +1,5 @@
-#ifndef OUTPUTANDFIFO_H
-#define OUTPUTANDFIFO_H
+#ifndef OUTPUTANDFIFO_RECEIVER_H
+#define OUTPUTANDFIFO_RECEIVER_H
 
 #include "../ACommands.h"
 
@@ -28,4 +28,4 @@ public:
 
 }
 
-#endif // OUTPUTANDFIFO_H
+#endif // OUTPUTANDFIFO_RECEIVER_H

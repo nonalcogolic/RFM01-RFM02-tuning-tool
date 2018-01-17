@@ -1,5 +1,5 @@
-#ifndef RECEIVERSETTING_H
-#define RECEIVERSETTING_H
+#ifndef RECEIVERSETTING_RECEIVER_H
+#define RECEIVERSETTING_RECEIVER_H
 
 #include "../ACommands.h"
 
@@ -47,4 +47,4 @@ public:
 
 }
 
-#endif // RECEIVERSETTING_H
+#endif // RECEIVERSETTING_RECEIVER_H

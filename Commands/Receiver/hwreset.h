@@ -1,5 +1,5 @@
-#ifndef HWRESET_H
-#define HWRESET_H
+#ifndef HWRESET_RECEIVER_H
+#define HWRESET_RECEIVER_H
 
 #include "../ACommands.h"
 
@@ -15,4 +15,4 @@ public:
 
 }
 
-#endif // HWRESET_H
+#endif // HWRESET_RECEIVER_H

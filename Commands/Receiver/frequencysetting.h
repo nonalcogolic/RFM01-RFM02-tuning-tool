@@ -1,5 +1,5 @@
-#ifndef FREQUENCYSETTING_H
-#define FREQUENCYSETTING_H
+#ifndef FREQUENCYSETTING_RECEIVER_H
+#define FREQUENCYSETTING_RECEIVER_H
 
 #include "../ACommands.h"
 
@@ -18,4 +18,4 @@ public:
 
 }
 
-#endif // FREQUENCYSETTING_H
+#endif // FREQUENCYSETTING_RECEIVER_H

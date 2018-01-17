@@ -1,5 +1,5 @@
-#ifndef LOWDUTYCYCLE_H
-#define LOWDUTYCYCLE_H
+#ifndef LOWDUTYCYCLE_RECEIVER_H
+#define LOWDUTYCYCLE_RECEIVER_H
 
 #include "../ACommands.h"
 
@@ -19,4 +19,4 @@ public:
 
 }
 
-#endif // LOWDUTYCYCLE_H
+#endif // LOWDUTYCYCLE_RECEIVER_H

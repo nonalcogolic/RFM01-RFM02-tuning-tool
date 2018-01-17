@@ -29,14 +29,13 @@ signals:
    void transmitterStatusChanged(const QString & data);
 
 public slots:
-   void sendComand();
-   void readStatus();
+   void receiverSendComand(const std::vector<bool> & cmd);
+   void receiverReadStatus();
+
    void transmiiterSendCommand(const std::vector<bool> & cmd);
    void readTrStatus(const std::vector<bool> & readstatusCMD);
 
    void nIRQ(const bool state);
-
-   void sendAllRec();
 
    void sendData(const bool throughFSK, const std::vector<bool> transmitDataSDIcmd);
 

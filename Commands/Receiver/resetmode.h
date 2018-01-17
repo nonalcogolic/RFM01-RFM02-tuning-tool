@@ -1,5 +1,5 @@
-#ifndef RESETMODE_H
-#define RESETMODE_H
+#ifndef RESETMODE_RECEIVER_H
+#define RESETMODE_RECEIVER_H
 
 #include "../ACommands.h"
 
@@ -17,4 +17,4 @@ public:
 
 }
 
-#endif // RESETMODE_H
+#endif // RESETMODE_RECEIVER_H

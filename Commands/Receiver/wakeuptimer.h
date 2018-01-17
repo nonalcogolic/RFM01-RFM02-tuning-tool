@@ -1,5 +1,5 @@
-#ifndef WAKEUPTIMER_H
-#define WAKEUPTIMER_H
+#ifndef WAKEUPTIMER_RECEIVER_H
+#define WAKEUPTIMER_RECEIVER_H
 
 #include "../ACommands.h"
 
@@ -17,4 +17,4 @@ public:
 
 }
 
-#endif // WAKEUPTIMER_H
+#endif // WAKEUPTIMER_RECEIVER_H

@@ -37,8 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
    mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, eEventType::rise);
 
    ui->setupUi(this);
-   connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(sendComand()));
-   connect(ui->pushButton_2, SIGNAL(clicked()), this, SLOT(readStatus()));
+   connect(ui->pushButton_read_status, SIGNAL(clicked()), this, SLOT(receiverReadStatus()));
 
    //transmitter
    connect(&trControlPanel, SIGNAL(sendCommand(const std::vector<bool> &)), this, SLOT(transmiiterSendCommand(const std::vector<bool> &))); //, Qt::ConnectionType::QueuedConnection
@@ -49,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
 
    connect(this, SIGNAL(nIRQSignal(const bool)), this, SLOT(nIRQ(const bool)), Qt::ConnectionType::QueuedConnection);
 
-   ui->edit_multple_comand_rec->setText("0000 898A A7D0 C847 C69B C42A C200 C080 CE84 CE87 C081");
+   //ui->edit_multple_comand_rec->setText("0000 898A A7D0 C847 C69B C42A C200 C080 CE84 CE87 C081");
 
    trControlPanel.show();
 }
@@ -59,25 +58,12 @@ MainWindow::~MainWindow()
    delete ui;
 }
 
-
-void MainWindow::sendComand()
+void MainWindow::receiverSendComand(const std::vector<bool> & cmd)
 {
-   const auto size = ui->lineEdit->text().size();
-   auto comand = ui->lineEdit->text().toInt(nullptr, 16);
-   const auto bitset = fromInt(comand, size);
-   mReceiver.sendComand(bitset);
-
-   QString result;
-
-   for (auto symb : bitset)
-   {
-      result += (symb) ? "1" : "0";
-   }
-
-   ui->label->setText(result);
+   mReceiver.sendComand(cmd);
 }
 
-void MainWindow::readStatus()
+void MainWindow::receiverReadStatus()
 {
    auto word = mReceiver.readStatus();
 
@@ -88,7 +74,7 @@ void MainWindow::readStatus()
       result += (symb) ? "1" : "0";
    }
 
-   ui->lineEdit_2->setText(result);
+   ui->lineEdit_status->setText(result);
 }
 
 void MainWindow::nIRQ(const bool state)
@@ -115,20 +101,6 @@ void MainWindow::readTrStatus(const std::vector<bool> & readstatusCMD)
 
    emit transmitterStatusChanged(result);
 }
-
-void MainWindow::sendAllRec()
-{
-   QRegExp rx { R"([,\s]+)" };
-   auto commandsList = ui->edit_multple_comand_rec->toPlainText().split(rx);
-   for (const auto & comand : commandsList)
-   {
-      qDebug() << comand ;
-      mReceiver.sendComand(fromInt(comand.toInt(nullptr, 16), comand.size()));
-      std::this_thread::sleep_for(std::chrono::milliseconds(50));
-   }
-   readStatus();
-}
-
 
 void MainWindow::sendData(const bool throughFSK, const std::vector<bool> transmitDataSDIcmd)
 {

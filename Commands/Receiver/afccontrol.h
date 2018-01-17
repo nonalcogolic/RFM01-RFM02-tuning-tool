@@ -1,5 +1,5 @@
-#ifndef AFCCONTROL_H
-#define AFCCONTROL_H
+#ifndef AFCCONTROL_RECEIVER_H
+#define AFCCONTROL_RECEIVER_H
 
 #include "../ACommands.h"
 
@@ -39,4 +39,4 @@ public:
 
 }
 
-#endif // AFCCONTROL_H
+#endif // AFCCONTROL_RECEIVER_H

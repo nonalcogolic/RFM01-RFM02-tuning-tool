@@ -1,5 +1,5 @@
-#ifndef DATARATE_H
-#define DATARATE_H
+#ifndef DATARATE_RECEIVER_H
+#define DATARATE_RECEIVER_H
 
 #include "../ACommands.h"
 
@@ -17,4 +17,4 @@ public:
 
 }
 
-#endif // DATARATE_H
+#endif // DATARATE_RECEIVER_H
