@@ -74,12 +74,12 @@ void CBroadcomPinout::subscribeOn(const ePin pin, const eEventType type)
    bcm2835_gpio_clr_len(static_cast<uint8_t>(pin));
 
 
-   switch (type) {
+   switch (type)
+   {
    case eEventType::fall:
       bcm2835_gpio_pud(BCM2835_GPIO_PUD_UP);
-      bcm2835_gpio_pudclk(static_cast<uint8_t>(pin),true);
-      bcm2835_gpio_fen(static_cast<uint8_t>(pin));
-
+      bcm2835_gpio_pudclk(static_cast<uint8_t>(pin), false);
+      bcm2835_gpio_afen(static_cast<uint8_t>(pin));
       break;
 
    case eEventType::rise:

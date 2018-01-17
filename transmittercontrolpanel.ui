@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>529</width>
-    <height>614</height>
+    <width>761</width>
+    <height>788</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -200,6 +200,9 @@
             <property name="singleStep">
              <number>5</number>
             </property>
+            <property name="value">
+             <number>105</number>
+            </property>
            </widget>
           </item>
           <item row="3" column="2">
@@ -269,7 +272,7 @@
              <number>3</number>
             </property>
             <property name="value">
-             <number>21</number>
+             <number>0</number>
             </property>
            </widget>
           </item>
@@ -448,7 +451,7 @@
          <string>Disable wakeUp sync</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -485,7 +488,10 @@
       <item row="1" column="2" colspan="3">
        <widget class="QLineEdit" name="lineEdit_data_rate">
         <property name="text">
-         <string>4800</string>
+         <string>9600</string>
+        </property>
+        <property name="maxLength">
+         <number>6</number>
         </property>
        </widget>
       </item>

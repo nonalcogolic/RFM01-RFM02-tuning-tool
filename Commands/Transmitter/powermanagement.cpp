@@ -5,13 +5,16 @@ namespace NTransmitter
 
 PowerManagement::PowerManagement()
    : ACommands(0xC0, 0x00)
-{
+{}
 
+void PowerManagement::automaticOscilatorAndSynthesizer(const bool active)
+{
+   setValue(7, active);
 }
 
-void PowerManagement::disableClockOut(const bool disable)
+void PowerManagement::automaticPowerAmplifter(const bool active)
 {
-   setValue(0, disable);
+   setValue(6, active);
 }
 
 void PowerManagement::activateOscillator(const bool active)
@@ -39,14 +42,9 @@ void PowerManagement::activateWakeUpTimer(const bool active)
    setValue(1, active);
 }
 
-void PowerManagement::automaticOscilatorAndSynthesizer(const bool active)
+void PowerManagement::disableClockOut(const bool disable)
 {
-   setValue(7, active);
-}
-
-void PowerManagement::automaticPowerAmplifter(const bool active)
-{
-   setValue(6, active);
+   setValue(0, disable);
 }
 
 }
