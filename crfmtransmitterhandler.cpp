@@ -88,6 +88,7 @@ void CRFMTransmitterHandler::sendDataSDI(const std::vector<bool> & command)
    mDataSender.reset();
    mDataSender.setUsedPin(ePin::tr_SDI);
 
+   mPinout.setPinState(false, ePin::tr_SCK); //TODO: check if it is a reason of trouble
    mPinout.setPinState(false, ePin::tr_nSEL);
 
    for (auto bit : command)
@@ -102,9 +103,8 @@ void CRFMTransmitterHandler::sendDataSDI(const std::vector<bool> & command)
 void CRFMTransmitterHandler::stopSendDataSDI()
 //--------------------------------------------------
 {   
-   mPinout.setPinStateForce(true, ePin::tr_nSEL);
-   mPinout.setPinState(true, ePin::tr_SCK); //TODO: order?
-   mPinout.setPinState(false, ePin::tr_SCK); //TODO: order?
+   mPinout.setPinState(true, ePin::tr_nSEL);
+   mPinout.setPinState(true, ePin::tr_SCK); //TODO: no need I guess and may be reason of bugs. Remove and check workability
    qDebug() << "CRFMTransmitterHandler::stopSendDataSDI";
 }
 
