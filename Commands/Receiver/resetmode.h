@@ -10,6 +10,8 @@ class ResetMode : public ACommands
 {
 public:
    ResetMode();
+   
+   void disableHighlySensetiveResetMode(const bool disable);
 };
 
 
