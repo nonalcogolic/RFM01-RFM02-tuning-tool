@@ -1,5 +1,5 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "receivercontrolpanel.h"
+#include "ui_receivercontrolpanel.h"
 
 #include <list>
 #include <future>
@@ -25,9 +25,9 @@ namespace
 }
 
 
-MainWindow::MainWindow(QWidget *parent)
+ReceiverControlPanel::ReceiverControlPanel(QWidget *parent)
    : QWidget(parent)
-   , ui(new Ui::MainWindow)
+   , ui(new Ui::ReceiverControlPanel)
    , mPinout()
    , mReceiver(mPinout)
    , mTransmitterHandler(mPinout)
@@ -53,17 +53,17 @@ MainWindow::MainWindow(QWidget *parent)
    trControlPanel.show();
 }
 
-MainWindow::~MainWindow()
+ReceiverControlPanel::~ReceiverControlPanel()
 {
    delete ui;
 }
 
-void MainWindow::receiverSendComand(const std::vector<bool> & cmd)
+void ReceiverControlPanel::receiverSendComand(const std::vector<bool> & cmd)
 {
    mReceiver.sendComand(cmd);
 }
 
-void MainWindow::receiverReadStatus()
+void ReceiverControlPanel::receiverReadStatus()
 {
    auto word = mReceiver.readStatus();
 
@@ -77,7 +77,7 @@ void MainWindow::receiverReadStatus()
    ui->lineEdit_status->setText(result);
 }
 
-void MainWindow::nIRQ(const bool state)
+void ReceiverControlPanel::nIRQ(const bool state)
 {
    static int value= 0;
    value = (++value)%100;
@@ -85,12 +85,12 @@ void MainWindow::nIRQ(const bool state)
 }
 
 
-void MainWindow::transmiiterSendCommand(const std::vector<bool> & cmd)
+void ReceiverControlPanel::transmiiterSendCommand(const std::vector<bool> & cmd)
 {
    mTransmitterHandler.sendComand(cmd);
 }
 
-void MainWindow::readTrStatus(const std::vector<bool> & readstatusCMD)
+void ReceiverControlPanel::readTrStatus(const std::vector<bool> & readstatusCMD)
 {
    auto word = mTransmitterHandler.readStatus(readstatusCMD);
    QString result;
@@ -102,20 +102,20 @@ void MainWindow::readTrStatus(const std::vector<bool> & readstatusCMD)
    emit transmitterStatusChanged(result);
 }
 
-void MainWindow::sendData(const bool throughFSK, const std::vector<bool> transmitDataSDIcmd)
+void ReceiverControlPanel::sendData(const bool throughFSK, const std::vector<bool> transmitDataSDIcmd)
 {
-   qDebug() << "MainWindow::sendData";
+   qDebug() << "ReceiverControlPanel::sendData";
    if (throughFSK)
    {
-      std::async(std::launch::async, &MainWindow::sendDataFSK, this);
+      std::async(std::launch::async, &ReceiverControlPanel::sendDataFSK, this);
    }
    else
    {
-      std::async(std::launch::async, &MainWindow::sendDataSDI, this, transmitDataSDIcmd);
+      std::async(std::launch::async, &ReceiverControlPanel::sendDataSDI, this, transmitDataSDIcmd);
    }
 }
 
-void MainWindow::sendDataFSK()
+void ReceiverControlPanel::sendDataFSK()
 {
    transmitionIsOver = false;
    connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)), Qt::ConnectionType::QueuedConnection);
@@ -123,7 +123,7 @@ void MainWindow::sendDataFSK()
    mTransmitterHandler.sendDataFSK();
 }
 
-void MainWindow::nIRQTransmitterFSK(const bool state)
+void ReceiverControlPanel::nIRQTransmitterFSK(const bool state)
 {
    std::ignore = state; static int count = 0; qDebug() << "nIRQTransmitterFSK " << ++count;
    if (!mTransmitterHandler.bitSyncArived())
@@ -138,7 +138,7 @@ void MainWindow::nIRQTransmitterFSK(const bool state)
 }
 
 
-void MainWindow::sendDataSDI(const std::vector<bool> transmitDataSDIcmd)
+void ReceiverControlPanel::sendDataSDI(const std::vector<bool> transmitDataSDIcmd)
 {
    transmitionIsOver = false;
    connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)), Qt::ConnectionType::QueuedConnection);
@@ -146,7 +146,7 @@ void MainWindow::sendDataSDI(const std::vector<bool> transmitDataSDIcmd)
    mTransmitterHandler.sendDataSDI(transmitDataSDIcmd);
 }
 
-void MainWindow::nIRQTransmitterSDI(const bool state)
+void ReceiverControlPanel::nIRQTransmitterSDI(const bool state)
 {
    std::ignore = state; static int count = 0; qDebug() << "nIRQTransmitterSDI " << ++count;
    if (!mTransmitterHandler.bitSyncArived())

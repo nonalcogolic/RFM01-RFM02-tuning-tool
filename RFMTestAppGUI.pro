@@ -26,7 +26,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    mainwindow.cpp \
     main.cpp \
     crmfhandler.cpp \
     crfmtransmitterhandler.cpp \
@@ -34,14 +33,15 @@ SOURCES += \
     datapacketsender.cpp \
     helper.cpp \
     command.cpp \
-    transmittercontrolpanel.cpp
+    transmittercontrolpanel.cpp \
+    applicationcontroller.cpp \
+    receivercontrolpanel.cpp
 
 unix:SOURCES += CBroadcomPinout.cpp
 win32:SOURCES += CBroadcomPinoutDummy.cpp
 
 
 HEADERS += \
-    mainwindow.h \
     crmfhandler.h \
     ipinout.h \
     CBroadcomPinout.h \
@@ -51,11 +51,13 @@ HEADERS += \
     datapacketsender.h \
     helper.h \
     command.h \
-    transmittercontrolpanel.h
+    transmittercontrolpanel.h \
+    applicationcontroller.h \
+    receivercontrolpanel.h
 
 FORMS += \
-    mainwindow.ui \
-    transmittercontrolpanel.ui
+    transmittercontrolpanel.ui \
+    receivercontrolpanel.ui
 
 OTHER_FILES += \
     config.txt

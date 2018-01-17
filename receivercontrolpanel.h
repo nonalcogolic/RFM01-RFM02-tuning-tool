@@ -1,5 +1,5 @@
-#ifndef MainWindow_H
-#define MainWindow_H
+#ifndef ReceiverControlPanel_H
+#define ReceiverControlPanel_H
 
 #include <QWidget>
 
@@ -10,16 +10,16 @@
 #include "transmittercontrolpanel.h"
 
 namespace Ui {
-class MainWindow;
+class ReceiverControlPanel;
 }
 
-class MainWindow : public QWidget
+class ReceiverControlPanel : public QWidget
 {
    Q_OBJECT
 
 public:
-   explicit MainWindow(QWidget *parent = 0);
-   ~MainWindow();
+   explicit ReceiverControlPanel(QWidget *parent = 0);
+   ~ReceiverControlPanel();
 
 signals:
    void nIRQSignal(const bool state);
@@ -47,7 +47,7 @@ private:
    void sendDataFSK();
    void sendDataSDI(const std::vector<bool> transmitDataSDIcmd);
 
-   Ui::MainWindow *ui;
+   Ui::ReceiverControlPanel *ui;
    CBroadcomPinout mPinout;
    CRMFHandler mReceiver;
    CRFMTransmitterHandler mTransmitterHandler;
@@ -58,4 +58,4 @@ private:
 
 };
 
-#endif // MainWindow_H
+#endif // ReceiverControlPanel_H
