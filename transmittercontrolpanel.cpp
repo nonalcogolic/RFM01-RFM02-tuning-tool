@@ -254,7 +254,6 @@ void TransmitterControlPanel::send(const ACommands & cmd)
    mTransmitterHandler.sendComand(bytes);
 }
 
-
 void TransmitterControlPanel::sendData(const bool throughFSK, const std::vector<bool> transmitDataSDIcmd)
 {
    qDebug() << "ReceiverControlPanel::sendData";
@@ -305,8 +304,8 @@ void TransmitterControlPanel::nIRQTransmitterSDI(const bool state)
    {
       count = 0;
       mTransmitterHandler.stopSendDataSDI();
-      mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
       dataTransmitionFinished(false);
+      mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
       disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)));
       qDebug() << "disconnected";
    }

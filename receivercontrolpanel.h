@@ -23,12 +23,30 @@ public:
 signals:
    void nIRQSignal(const bool state);
 
+private slots:
+   void sendAll();
+   void sendConfiguration();
+   void sendFrequency();
+   void sendReceiverSettings();
+   void sendWakeUpTimer();
+   void sendLowDutyCycle();
+   void sendLowBattery();
+   void sendAFC();
+   void sendDataFilter();
+   void sendDataRate();
+   void sendFIFO();
+   void sendResetMode();
+   void sendReset();
+   void sendReadstatus();
+
+
 public slots:
-   void receiverSendComand(const std::vector<bool> & cmd);
    void receiverReadStatus();   
    void receiver_nIRQ(const bool state);
 
 private:
+   void sendComand(const std::vector<bool> & cmd);
+
    Ui::ReceiverControlPanel *ui;
 
    CBroadcomPinout & mPinout;
