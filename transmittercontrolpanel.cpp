@@ -22,14 +22,17 @@
 
 #include "QDebug"
 
-
-void checkAndSend(const QCheckBox * checkbox, const std::function<void()> & fn)
+namespace
 {
-   if (checkbox->isChecked())
+   void checkAndSend(const QCheckBox * checkbox, const std::function<void()> & fn)
    {
-      fn();
+      if (checkbox->isChecked())
+      {
+         fn();
+      }
    }
 }
+
 
 
 

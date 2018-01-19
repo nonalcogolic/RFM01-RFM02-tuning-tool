@@ -6,23 +6,22 @@
 namespace Receiver
 {
 
+enum class eCLKfrequncy
+{
+   clk_1 = 0,
+   clk_1_25,
+   clk_1_33,
+   clk_2,
+   clk_2_5,
+   clk_3_33,
+   clk_5,
+   clk_10
+};
+
 class LowBatteryDetectorAndClockDivider : public ACommands
 {
 public:
    LowBatteryDetectorAndClockDivider();
-
-   enum class eCLKfrequncy
-   {
-      clk_1 = 0,
-      clk_1_25,
-      clk_1_33,
-      clk_2,
-      clk_2_5,
-      clk_3_33,
-      clk_5,
-      clk_10
-   };
-
 
    void setOutputCLKFrequency(const eCLKfrequncy clk);
 

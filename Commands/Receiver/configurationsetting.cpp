@@ -35,6 +35,13 @@ void ConfigurationSetting::setCrystalLoadCapasitance(const int8_t pf)
    setValue(4, 4, value);
 }
 
+void ConfigurationSetting::setCrystalLoadCapasitance(const double pf)
+{
+   uint8_t value = (pf * 10 - 85) / 5;
+   if (value > 0xF) value = 0xF;
+   setValue(4, 4, value);
+}
+
 void ConfigurationSetting::setBaseBandWidth(const eBaseband base)
 {
    setValue(1, 3, base);

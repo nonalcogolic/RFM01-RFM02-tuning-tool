@@ -11,6 +11,7 @@ class ReceiverControlPanel;
 
 class CBroadcomPinout;
 class CGPIOEvent;
+class ACommands;
 
 class ReceiverControlPanel : public QWidget
 {
@@ -41,11 +42,10 @@ private slots:
 
 
 public slots:
-   void receiverReadStatus();   
    void receiver_nIRQ(const bool state);
 
 private:
-   void sendComand(const std::vector<bool> & cmd);
+   void sendComand(const ACommands & cmd);
 
    Ui::ReceiverControlPanel *ui;
 
