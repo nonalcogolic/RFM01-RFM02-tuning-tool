@@ -48,7 +48,13 @@ ReceiverControlPanel::ReceiverControlPanel(CBroadcomPinout & pinout, CGPIOEvent 
    ui->setupUi(this);
 
    mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, eEventType::rise);
+   mEvents.listenPin(ePin::FFIT, [this](const bool state) { emit FIFO_interupt(state); }, eEventType::rise);
+   mEvents.listenPin(ePin::VDI, [this](const bool state) { emit VDI_interupt(state); }, eEventType::rise);
+
    connect(this, SIGNAL(nIRQSignal(const bool)), this, SLOT(receiver_nIRQ(const bool)), Qt::ConnectionType::QueuedConnection);
+   connect(this, SIGNAL(FIFO_interupt(const bool)), this, SLOT(receiver_FIFO_interupt(const bool)), Qt::ConnectionType::QueuedConnection);
+   connect(this, SIGNAL(VDI_interupt(const bool)), this, SLOT(receiver_VDI_interupt(const bool)), Qt::ConnectionType::QueuedConnection);
+
 
    connect(ui->pushButton_send_all , SIGNAL(clicked()), this, SLOT(sendAll()));
    connect(ui->pushButton_Configuration , SIGNAL(clicked()), this, SLOT(sendConfiguration()));
@@ -90,8 +96,18 @@ void ReceiverControlPanel::sendComand(const ACommands & cmd)
 void ReceiverControlPanel::receiver_nIRQ(const bool state)
 {
    static int value= 0;
-   value = (++value)%100;
+   value = (++value) % 100;
    ui->progressBar->setValue(value);
+}
+
+void ReceiverControlPanel::receiver_FIFO_interupt(const bool state)
+{
+   ui->checkBox_FIFO_IT->setChecked(state);
+}
+
+void ReceiverControlPanel::receiver_VDI_interupt(const bool state)
+{
+   ui->checkBox_VDI_IT->setChecked(state);
 }
 
 void ReceiverControlPanel::sendAll()

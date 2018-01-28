@@ -875,20 +875,6 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="checkBox_dis_sensetive_reset">
-        <property name="text">
-         <string>Disable high sensetive RESET mode</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="pushButton_reset_mode">
-        <property name="text">
-         <string>Send</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="1">
        <widget class="QPushButton" name="pushButton_read_status">
         <property name="text">
@@ -910,17 +896,45 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="checkBox_dis_sensetive_reset">
+        <property name="text">
+         <string>Disable high sensetive RESET mode</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="pushButton_reset_mode">
+        <property name="text">
+         <string>Send</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QLineEdit" name="lineEdit_received_data">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
        <widget class="QProgressBar" name="progressBar">
         <property name="value">
          <number>0</number>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
-       <widget class="QLineEdit" name="lineEdit_received_data">
-        <property name="enabled">
-         <bool>false</bool>
+      <item row="8" column="0">
+       <widget class="QCheckBox" name="checkBox_FIFO_IT">
+        <property name="text">
+         <string>FIFO IT happened</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QCheckBox" name="checkBox_VDI_IT">
+        <property name="text">
+         <string>VDI IT happened</string>
         </property>
        </widget>
       </item>

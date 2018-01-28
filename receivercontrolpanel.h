@@ -23,6 +23,8 @@ public:
 
 signals:
    void nIRQSignal(const bool state);
+   void FIFO_interupt(const bool state);
+   void VDI_interupt(const bool state);
 
 private slots:
    void sendAll();
@@ -43,6 +45,9 @@ private slots:
 
 public slots:
    void receiver_nIRQ(const bool state);
+
+   void receiver_FIFO_interupt(const bool state);
+   void receiver_VDI_interupt(const bool state);
 
 private:
    void sendComand(const ACommands & cmd);
