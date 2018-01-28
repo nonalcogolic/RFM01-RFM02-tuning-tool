@@ -6,17 +6,17 @@
 namespace Receiver
 {
 
+enum class eDataFilterType
+{
+   OOK = 0,
+   DigitalFilter = 1,
+   AnalogRC = 3
+};
+
 class DataFilter : public ACommands
 {
 public:
    DataFilter();
-
-   enum class eDataFilterType
-   {
-      OOK = 0,
-      DigitalFilter = 1,
-      AnalogRC = 3
-   };
 
    void enableAutoClockRecovery(const bool enabled);
    void onClockRecovery(const bool active);

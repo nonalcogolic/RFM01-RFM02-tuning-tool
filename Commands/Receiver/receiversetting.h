@@ -40,7 +40,7 @@ public:
    void setVDIsignal(const eVDIsignal signal);
    void setLNAgain(const eLNAGain gain);
    void setRSSI(const eRSSI rssi);
-   void enableWholeReceiverChain(const bool enabled);
+   void enableReceiver(const bool enabled);
 
 };
 

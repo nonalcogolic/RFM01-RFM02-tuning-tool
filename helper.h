@@ -35,6 +35,7 @@ namespace Receiver
    enum class eFifoFillCondition;
    enum class eRangeLimit;
    enum class eAutomaticOperationMode;
+   enum class eDataFilterType;
 
    eFrequencyBand frequency(const QString & formValue);
    eBaseband baseband(const QString & formValue);
@@ -45,6 +46,7 @@ namespace Receiver
    eFifoFillCondition fifoCondition(const QString & formValue);
    eRangeLimit rangeLimit(const QString & formValue);
    eAutomaticOperationMode automaticOperations(const QString & formValue);
+   eDataFilterType filterType(const QString & formValue);
 }
 
 std::vector<bool> operator+(const std::vector<bool> & lhs, const std::vector<bool> & rhs);

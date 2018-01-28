@@ -6,6 +6,7 @@
 #include "Commands/Receiver/outputandfifo.h"
 #include "Commands/Receiver/datafilter.h"
 #include "Commands/Receiver/afccontrol.h"
+#include "Commands/Receiver/datafilter.h"
 
 #include "qstring.h"
 
@@ -235,6 +236,22 @@ eAutomaticOperationMode automaticOperations(const QString & formValue)
    {
       retValue = eAutomaticOperationMode::keep_offset_independently_from_VDI;
    }
+   return retValue;
+}
+
+eDataFilterType filterType(const QString & formValue)
+{
+   auto retValue = eDataFilterType::OOK;
+
+   if (formValue == "Digital")
+   {
+      retValue = eDataFilterType::DigitalFilter;
+   }
+   else if (formValue == "Analogue")
+   {
+      retValue = eDataFilterType::AnalogRC;
+   }
+
    return retValue;
 }
 

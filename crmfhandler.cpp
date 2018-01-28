@@ -32,7 +32,6 @@ void CRMFHandler::sendComand(const std::vector<bool> & command)
       mPinout.setPinState(false, ePin::SCK);
    }
 
-   mPinout.setPinState(false, ePin::SCK);
    mPinout.setPinState(true, ePin::nSel);
 }
 

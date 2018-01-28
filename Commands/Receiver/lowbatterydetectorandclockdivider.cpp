@@ -1,5 +1,6 @@
 #include "lowbatterydetectorandclockdivider.h"
 
+#include <math.h>
 
 namespace Receiver
 {
@@ -26,7 +27,7 @@ void LowBatteryDetectorAndClockDivider::setTresholdValue(const double voltage)
 {
    if (voltage <= 5.3)
    {
-      const uint8_t value = (voltage - 2.2) * 10;
+      const uint8_t value = round((voltage - 2.2) * 10);
       setValue(0, 5, value);
    }
 }

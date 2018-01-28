@@ -23,7 +23,7 @@ void ReceiverSetting::setRSSI(const eRSSI rssi)
    setValue(1, 3, rssi);
 }
 
-void ReceiverSetting::enableWholeReceiverChain(const bool enabled)
+void ReceiverSetting::enableReceiver(const bool enabled)
 {
    setValue(0, enabled);
 }

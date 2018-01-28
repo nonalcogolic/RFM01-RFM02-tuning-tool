@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>870</width>
-    <height>551</height>
+    <width>1203</width>
+    <height>716</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,10 +39,16 @@
         <property name="text">
          <string>Clock recovery auto lock control</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="comboBox_filter_type">
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
         <item>
          <property name="text">
           <string>OOK</string>
@@ -89,6 +95,9 @@
         <property name="maximum">
          <number>7</number>
         </property>
+        <property name="value">
+         <number>4</number>
+        </property>
        </widget>
       </item>
      </layout>
@@ -105,6 +114,9 @@
         <property name="text">
          <string>Strobe edge</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item row="1" column="0">
@@ -116,6 +128,9 @@
       </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="comboBox_afc_mode">
+        <property name="currentIndex">
+         <number>2</number>
+        </property>
         <item>
          <property name="text">
           <string>off</string>
@@ -140,6 +155,9 @@
       </item>
       <item row="1" column="1">
        <widget class="QComboBox" name="comboBox_afc_range_lim">
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
         <item>
          <property name="text">
           <string>off</string>
@@ -174,6 +192,9 @@
         <property name="text">
          <string>Output register</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item row="0" column="0">
@@ -187,6 +208,9 @@
        <widget class="QCheckBox" name="checkBox_calculation_offset">
         <property name="text">
          <string>Calculation offset frequency</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -289,6 +313,9 @@
       </item>
       <item row="3" column="2">
        <widget class="QLineEdit" name="lineEdit_lowDutyCycle">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>unclear currently</string>
         </property>
@@ -462,6 +489,9 @@
         <property name="maximum">
          <number>15</number>
         </property>
+        <property name="value">
+         <number>8</number>
+        </property>
        </widget>
       </item>
       <item row="3" column="1">
@@ -522,62 +552,11 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="QCheckBox" name="checkBox_a_Receiver_setings">
-          <property name="text">
-           <string>AUTO SEND</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
+        <item row="4" column="2">
          <widget class="QPushButton" name="pushButton_receiver_settings">
           <property name="text">
            <string>Send</string>
           </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>RSSI threshold</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>VDI condition </string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QComboBox" name="comboBox_VDI_cond">
-          <property name="currentIndex">
-           <number>3</number>
-          </property>
-          <item>
-           <property name="text">
-            <string>Digitial RSSI Out (DRSSI)</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Data Quality Detector (DQD)</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Clock recovery lock</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>DRSSI &amp;&amp; DQD</string>
-           </property>
-          </item>
          </widget>
         </item>
         <item row="1" column="2">
@@ -638,6 +617,64 @@
           </item>
          </widget>
         </item>
+        <item row="0" column="2">
+         <widget class="QComboBox" name="comboBox_VDI_cond">
+          <property name="currentIndex">
+           <number>2</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Digitial RSSI Out (DRSSI)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Data Quality Detector (DQD)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Clock recovery lock</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>DRSSI &amp;&amp; DQD</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QCheckBox" name="checkBox_a_Receiver_setings">
+          <property name="text">
+           <string>AUTO SEND</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>RSSI threshold</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>VDI condition </string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QCheckBox" name="checkBox_en_receiver">
+          <property name="text">
+           <string>Enable receiver</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
@@ -683,6 +720,9 @@
          <widget class="QCheckBox" name="checkBox_en_active_sleep">
           <property name="text">
            <string>crystal is active during sleep</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -802,7 +842,10 @@
            <double>16.000000000000000</double>
           </property>
           <property name="singleStep">
-           <double>5.000000000000000</double>
+           <double>0.500000000000000</double>
+          </property>
+          <property name="value">
+           <double>10.500000000000000</double>
           </property>
          </widget>
         </item>
