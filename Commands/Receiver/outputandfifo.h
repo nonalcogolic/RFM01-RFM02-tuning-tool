@@ -10,6 +10,7 @@ enum class eFifoFillCondition
 {
    cond_VDI = 0,
    cond_sync_word = 1,
+   cond_reserved = 2,
    cond_Always = 3
 };
 

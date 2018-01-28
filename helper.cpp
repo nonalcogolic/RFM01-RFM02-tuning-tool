@@ -197,6 +197,10 @@ eFifoFillCondition fifoCondition(const QString & formValue)
    {
       retValue = eFifoFillCondition::cond_Always ;
    }
+   else if (formValue == "Reserved")
+   {
+      retValue = eFifoFillCondition::cond_reserved;
+   }
 
    return retValue;
 }

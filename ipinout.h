@@ -18,7 +18,7 @@ enum class ePin
    tr_SCK = 3 ,
    tr_nSEL = 4,
    tr_NIRQ = 17,
-   tr_FSK //not configurated yet
+   tr_FSK = 18
 };
 
 
