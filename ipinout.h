@@ -4,12 +4,15 @@
 #include "helper.h"
 
 enum class ePin
-{
-   nSel = 23,
+{   
+   FFIT = 22,
+   nSel = 25,
+   VDI = 23,
    SDI = 10,
    SDO = 9,
    SCK = 11,
    nIRQ = 24,
+
 
    tr_SDI = 2,
    tr_SCK = 3 ,
