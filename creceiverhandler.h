@@ -1,5 +1,5 @@
-#ifndef CRMFHANDLER_H
-#define CRMFHANDLER_H
+#ifndef CReceiverHandler_H
+#define CReceiverHandler_H
 
 #include "ipinout.h"
 
@@ -8,13 +8,13 @@
 
 #include <QObject>
 
-class CRMFHandler : public QObject
+class CReceiverHandler : public QObject
 {
     Q_OBJECT
 
 public:
-   CRMFHandler(IPinOut & pinout);
-   ~CRMFHandler();
+   CReceiverHandler(IPinOut & pinout);
+   ~CReceiverHandler();
 
    void sendComand(const std::vector<bool> & command);
 
@@ -28,4 +28,4 @@ private:
 };
 
 
-#endif // CRMFHANDLER_H
+#endif // CReceiverHandler_H

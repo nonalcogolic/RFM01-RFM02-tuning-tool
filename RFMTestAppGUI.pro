@@ -27,7 +27,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    crmfhandler.cpp \
     crfmtransmitterhandler.cpp \
     cgpioevent.cpp \
     datapacketsender.cpp \
@@ -35,14 +34,14 @@ SOURCES += \
     command.cpp \
     transmittercontrolpanel.cpp \
     applicationcontroller.cpp \
-    receivercontrolpanel.cpp
+    receivercontrolpanel.cpp \
+    creceiverhandler.cpp
 
 unix:SOURCES += CBroadcomPinout.cpp
 win32:SOURCES += CBroadcomPinoutDummy.cpp
 
 
 HEADERS += \
-    crmfhandler.h \
     ipinout.h \
     CBroadcomPinout.h \
     crfmtransmitterhandler.h \
@@ -53,7 +52,8 @@ HEADERS += \
     command.h \
     transmittercontrolpanel.h \
     applicationcontroller.h \
-    receivercontrolpanel.h
+    receivercontrolpanel.h \
+    creceiverhandler.h
 
 FORMS += \
     transmittercontrolpanel.ui \

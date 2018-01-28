@@ -25,12 +25,14 @@ CRFMTransmitterHandler::CRFMTransmitterHandler(IPinOut & pinout)
    mPinout.setPinDirrection(true, ePin::tr_nSEL);
    mPinout.setPinDirrection(true, ePin::tr_SDI);
    mPinout.setPinDirrection(true, ePin::tr_SCK);
+   mPinout.setPinDirrection(true, ePin::tr_FSK);
    mPinout.setPinDirrection(false, ePin::tr_NIRQ);
 
    mPinout.setPinState(true, ePin::tr_nSEL);
    mPinout.setPinState(false, ePin::tr_SDI);
    mPinout.setPinState(true, ePin::tr_SCK);
-   mPinout.setPinState(false, ePin::tr_NIRQ);
+   mPinout.setPinState(false, ePin::tr_NIRQ);   
+   mPinout.setPinState(false, ePin::tr_FSK);
 }
 
 //--------------------------------------------------

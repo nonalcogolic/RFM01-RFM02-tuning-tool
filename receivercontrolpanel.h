@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "crmfhandler.h"
+#include "creceiverhandler.h"
 
 namespace Ui {
 class ReceiverControlPanel;
@@ -51,7 +51,7 @@ private:
 
    CBroadcomPinout & mPinout;
    CGPIOEvent & mEvents;
-   CRMFHandler mReceiver;
+   CReceiverHandler mReceiver;
 
 };
 

@@ -1,12 +1,15 @@
-#include "crmfhandler.h"
+#include "creceiverhandler.h"
 
 
-CRMFHandler::CRMFHandler(IPinOut & pinout)
+CReceiverHandler::CReceiverHandler(IPinOut & pinout)
    : QObject(nullptr)
    , mPinout(pinout)
 {
    mPinout.setPinDirrection(false, ePin::SDO);
    mPinout.setPinDirrection(false, ePin::nIRQ);
+   mPinout.setPinDirrection(false, ePin::FFIT);
+   mPinout.setPinDirrection(false, ePin::VDI);
+
    mPinout.setPinDirrection(true, ePin::nSel);
    mPinout.setPinDirrection(true, ePin::SDI);
    mPinout.setPinDirrection(true, ePin::SCK);
@@ -16,11 +19,11 @@ CRMFHandler::CRMFHandler(IPinOut & pinout)
    mPinout.setPinState(true, ePin::SCK);
 }
 
-CRMFHandler::~CRMFHandler()
+CReceiverHandler::~CReceiverHandler()
 {
 }
 
-void CRMFHandler::sendComand(const std::vector<bool> & command)
+void CReceiverHandler::sendComand(const std::vector<bool> & command)
 {
    mPinout.setPinState(false, ePin::SCK);
    mPinout.setPinState(false, ePin::nSel);
@@ -35,7 +38,7 @@ void CRMFHandler::sendComand(const std::vector<bool> & command)
    mPinout.setPinState(true, ePin::nSel);
 }
 
-std::vector<bool> CRMFHandler::readStatus()
+std::vector<bool> CReceiverHandler::readStatus()
 {
    std::vector<bool> output;
 

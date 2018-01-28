@@ -7,7 +7,7 @@
 #include "receivercontrolpanel.h"
 #include "transmittercontrolpanel.h"
 
-#include "crmfhandler.h"
+#include "creceiverhandler.h"
 #include "crfmtransmitterhandler.h"
 #include "CBroadcomPinout.h"
 #include "cgpioevent.h"
