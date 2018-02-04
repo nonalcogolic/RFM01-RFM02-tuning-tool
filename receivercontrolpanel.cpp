@@ -47,9 +47,9 @@ ReceiverControlPanel::ReceiverControlPanel(CBroadcomPinout & pinout, CGPIOEvent 
 {
    ui->setupUi(this);
 
-   mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, eEventType::rise);
+   mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, eEventType::fall);
    mEvents.listenPin(ePin::FFIT, [this](const bool state) { emit FIFO_interupt(state); }, eEventType::rise);
-   mEvents.listenPin(ePin::VDI, [this](const bool state) { emit VDI_interupt(state); }, eEventType::rise);
+   mEvents.listenPin(ePin::VDI, [this](const bool state) { emit VDI_interupt(state); }, eEventType::fall);
 
    connect(this, SIGNAL(nIRQSignal(const bool)), this, SLOT(receiver_nIRQ(const bool)), Qt::ConnectionType::QueuedConnection);
    connect(this, SIGNAL(FIFO_interupt(const bool)), this, SLOT(receiver_FIFO_interupt(const bool)), Qt::ConnectionType::QueuedConnection);
@@ -107,7 +107,7 @@ void ReceiverControlPanel::receiver_FIFO_interupt(const bool state)
 
 void ReceiverControlPanel::receiver_VDI_interupt(const bool state)
 {
-   ui->checkBox_VDI_IT->setChecked(state);
+   ui->checkBox_VDI_IT->setChecked(!state);
 }
 
 void ReceiverControlPanel::sendAll()

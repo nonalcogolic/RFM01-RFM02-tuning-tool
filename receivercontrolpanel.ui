@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1203</width>
-    <height>716</height>
+    <width>1245</width>
+    <height>748</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -243,7 +243,7 @@
       <item row="0" column="1" colspan="2">
        <widget class="QLineEdit" name="lineEdit_frequency">
         <property name="text">
-         <string>435000000</string>
+         <string>434000000</string>
         </property>
         <property name="maxLength">
          <number>9</number>
@@ -427,7 +427,7 @@
       <item row="1" column="1" colspan="2">
        <widget class="QLineEdit" name="lineEdit_data_rate">
         <property name="text">
-         <string>9600</string>
+         <string>4800</string>
         </property>
        </widget>
       </item>
@@ -935,6 +935,9 @@
        <widget class="QCheckBox" name="checkBox_VDI_IT">
         <property name="text">
          <string>VDI IT happened</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

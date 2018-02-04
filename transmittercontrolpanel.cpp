@@ -184,13 +184,13 @@ void TransmitterControlPanel::sendDataTransmit()
 {
    if (ui->checkBox_FSK->isChecked())
    {
-      ui->checkbox_auto_oscil_synth->setChecked(false);
-      ui->checkbox_auto_power_apl->setChecked(false);
-      ui->checkBox_on_amplifter->setChecked(true);
-      ui->checkBox_on_oscil->setChecked(true);
-      ui->checkBox_on_synth->setChecked(true);
+   //   ui->checkbox_auto_oscil_synth->setChecked(false);
+   //   ui->checkbox_auto_power_apl->setChecked(false);
+   //   ui->checkBox_on_amplifter->setChecked(true);
+    //  ui->checkBox_on_oscil->setChecked(true);
+   //   ui->checkBox_on_synth->setChecked(true);
+   //   sendPowerManagment();
       sendData(true, {});
-      sendPowerManagment();
    }
    else
    {
@@ -234,7 +234,7 @@ void TransmitterControlPanel::dataTransmitionFinished(const bool throughTheFSK)
    }
    else
    {
-      sendSleep();
+   //   sendSleep();
   //    ui->checkbox_auto_oscil_synth->setChecked(false);
   //    ui->checkbox_auto_power_apl->setChecked(false);
   //    ui->checkBox_on_amplifter->setChecked(false);
@@ -274,7 +274,7 @@ void TransmitterControlPanel::sendDataFSK()
 {
    mTransmitterHandler.sendDataFSK();
 
-   std::this_thread::sleep_for(std::chrono::microseconds(300));
+  // std::this_thread::sleep_for(std::chrono::microseconds(300));
    connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)), Qt::ConnectionType::QueuedConnection);
    mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
 }

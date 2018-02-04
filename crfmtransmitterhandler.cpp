@@ -8,6 +8,7 @@
 
 const auto data
    = Helper::convert(0xAA)
+ //  + Helper::convert(0xAA)
    + Helper::convert(0xAA)
    + Helper::convert(0xAA)
    + Helper::convert(0x2D)
@@ -84,7 +85,7 @@ void CRFMTransmitterHandler::stopSendDataSDI()
 //--------------------------------------------------
 {   
    mPinout.setPinState(true, ePin::tr_nSEL);
-   mPinout.setPinState(true, ePin::tr_SCK); //TODO: no need I guess and may be reason of bugs. Remove and check workability
+  // mPinout.setPinState(true, ePin::tr_SCK); //TODO: no need I guess and may be reason of bugs. Remove and check workability
    qDebug() << "CRFMTransmitterHandler::stopSendDataSDI";
 }
 

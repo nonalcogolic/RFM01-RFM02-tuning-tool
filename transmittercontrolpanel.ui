@@ -201,7 +201,7 @@
              <number>5</number>
             </property>
             <property name="value">
-             <number>105</number>
+             <number>155</number>
             </property>
            </widget>
           </item>
@@ -488,7 +488,7 @@
       <item row="1" column="2" colspan="3">
        <widget class="QLineEdit" name="lineEdit_data_rate">
         <property name="text">
-         <string>9600</string>
+         <string>4800</string>
         </property>
         <property name="maxLength">
          <number>6</number>
@@ -505,7 +505,7 @@
       <item row="0" column="2" colspan="3">
        <widget class="QLineEdit" name="lineEdit_work_freq">
         <property name="text">
-         <string>435000000</string>
+         <string>434000000</string>
         </property>
        </widget>
       </item>

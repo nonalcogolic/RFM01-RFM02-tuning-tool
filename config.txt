@@ -94,3 +94,33 @@ Send data
 //TX should stoped with sleep or PWMN, could be not stoped at all (90% sure)
 should be handled manualy
 
+
+//SUCCESS FULL TRANSMITTION:
+
+1) Send default settings with send all to transmitter and mentioned bellow order for the receiver:
+- Config
+- Frequency
+- Datarate
+- AFC
+- Data filter
+- Receiver settings (off receiver)
+- Fifo disable (both checkboxes)
+- Fifo enable (both checkboxes)
+- Receiver settings (on receiver)
+
+For the transmitter enable all oscil, synth and ampl and enable FSK
+Send transmit.
+In case of success - FIFO IT checkbox will become checked.
+
+2) restart: SW restart for the receiver, sleep for transmitter
+
+
+
+//TRansmitter stable rate:
+Used params 4800, SDI source selected, internal caps 15,5, Data transmit command modified with the data size (!)
+1) Disable a1, a0, ex, es, ea
+2) Send
+3) To reload: set ex=0, then ex=1
+4) again posible to get stable bitrate
+
+
