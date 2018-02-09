@@ -21,7 +21,7 @@ void CGPIOEvent::listenPin(const ePin pin, std::function<void(bool)> stateChange
    mPinout.setPinDirrection(false, pin);
    mPinout.subscribeOn(pin, type);
    std::lock_guard<std::mutex> lk(mx);
-   mEvents.emplace(pin, stateChangedEvent);
+   mEvents[pin] = stateChangedEvent;
    qDebug() << "CGPIOEvent::listenPin() inserted pin";
 }
 
@@ -53,6 +53,7 @@ void CGPIOEvent::eventLoop()
             pin.second(true);
          }
       }
+      //std::this_thread::sleep_for(std::chrono::nanoseconds(500));
 
    }
 }

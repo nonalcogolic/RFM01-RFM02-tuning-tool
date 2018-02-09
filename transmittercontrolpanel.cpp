@@ -184,12 +184,13 @@ void TransmitterControlPanel::sendDataTransmit()
 {
    if (ui->checkBox_FSK->isChecked())
    {
-   //   ui->checkbox_auto_oscil_synth->setChecked(false);
-   //   ui->checkbox_auto_power_apl->setChecked(false);
-   //   ui->checkBox_on_amplifter->setChecked(true);
-    //  ui->checkBox_on_oscil->setChecked(true);
-   //   ui->checkBox_on_synth->setChecked(true);
-   //   sendPowerManagment();
+      ui->checkbox_auto_oscil_synth->setChecked(false);
+      ui->checkbox_auto_power_apl->setChecked(false);
+      ui->checkBox_on_amplifter->setChecked(true);
+      ui->checkBox_on_oscil->setChecked(true);
+      ui->checkBox_on_synth->setChecked(true);
+
+      sendPowerManagment();
       sendData(true, {});
    }
    else
@@ -274,7 +275,7 @@ void TransmitterControlPanel::sendDataFSK()
 {
    mTransmitterHandler.sendDataFSK();
 
-  // std::this_thread::sleep_for(std::chrono::microseconds(300));
+   std::this_thread::sleep_for(std::chrono::milliseconds(1000));
    connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)), Qt::ConnectionType::QueuedConnection);
    mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
 }
@@ -295,7 +296,7 @@ void TransmitterControlPanel::nIRQTransmitterFSK(const bool state)
 void TransmitterControlPanel::sendDataSDI(const std::vector<bool> transmitDataSDIcmd)
 {
    mTransmitterHandler.sendDataSDI(transmitDataSDIcmd);   
-   std::this_thread::sleep_for(std::chrono::milliseconds(6));
+   std::this_thread::sleep_for(std::chrono::milliseconds(6)); //TODO: WTF?
    connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)), Qt::ConnectionType::QueuedConnection);
    mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
 }
