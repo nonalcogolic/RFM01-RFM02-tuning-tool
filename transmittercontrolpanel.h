@@ -36,6 +36,7 @@ private slots:
    void sendDataTransmit();
    void sendReadStatus();
    void sendPLLSettings();
+   void sendHWReset();
 
 private slots:
    void nIRQTransmitterFSK(const bool state); //transmition over FSK using PWR managment command 0xC039/0xC001

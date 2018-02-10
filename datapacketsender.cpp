@@ -20,8 +20,12 @@ bool DataPacketSender::sendNext()
    {
       mPinout.setPinStateForce(mData[mCursor], mUsedPin);
       ++mCursor;
+      return true;
    }
-   return mCursor < mSize;
+   else
+   {
+      return false;
+   }
 }
 
 void DataPacketSender::reset()

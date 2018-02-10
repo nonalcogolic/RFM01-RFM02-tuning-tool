@@ -9,7 +9,8 @@ HEADERS += \
     $$PWD/sleep.h \
     $$PWD/wakeuptimer.h \
     $$PWD/datatransmit.h \
-    $$PWD/pllsettings.h
+    $$PWD/pllsettings.h \
+    $$PWD/hwreset.h
 
 SOURCES += \
     $$PWD/configurationsetting.cpp \
@@ -22,4 +23,5 @@ SOURCES += \
     $$PWD/sleep.cpp \
     $$PWD/wakeuptimer.cpp \
     $$PWD/datatransmit.cpp \
-    $$PWD/pllsettings.cpp
+    $$PWD/pllsettings.cpp  \
+    $$PWD/hwreset.cpp

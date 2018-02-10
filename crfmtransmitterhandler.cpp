@@ -40,6 +40,8 @@ CRFMTransmitterHandler::CRFMTransmitterHandler(IPinOut & pinout)
 void CRFMTransmitterHandler::sendComand(const std::vector<bool> & command)
 //--------------------------------------------------
 {
+   mPinout.setPinState(false, ePin::tr_SDI);
+   mPinout.setPinState(false, ePin::tr_SCK);
    mPinout.setPinState(false, ePin::tr_nSEL);
 
    for (auto bit : command)
@@ -49,7 +51,8 @@ void CRFMTransmitterHandler::sendComand(const std::vector<bool> & command)
       mPinout.setPinState(false, ePin::tr_SCK);
    }
 
-   mPinout.setPinState(true, ePin::tr_nSEL);
+   mPinout.setPinState(true, ePin::tr_nSEL);   
+   mPinout.setPinState(false, ePin::tr_SDI);
 }
 
 //--------------------------------------------------
@@ -69,6 +72,7 @@ void CRFMTransmitterHandler::sendDataSDI(const std::vector<bool> & command)
    mDataSender.reset();
    mDataSender.setUsedPin(ePin::tr_SDI);
 
+   mPinout.setPinState(false, ePin::tr_SDI);
    mPinout.setPinState(false, ePin::tr_SCK); //TODO: check if it is a reason of trouble
    mPinout.setPinState(false, ePin::tr_nSEL);
 
@@ -84,7 +88,9 @@ void CRFMTransmitterHandler::sendDataSDI(const std::vector<bool> & command)
 void CRFMTransmitterHandler::stopSendDataSDI()
 //--------------------------------------------------
 {   
-   mPinout.setPinState(true, ePin::tr_nSEL);
+   mPinout.setPinStateForce(true, ePin::tr_nSEL);
+   mPinout.setPinStateForce(false, ePin::tr_SDI);
+   mPinout.setPinStateForce(false, ePin::tr_SCK);
   // mPinout.setPinState(true, ePin::tr_SCK); //TODO: no need I guess and may be reason of bugs. Remove and check workability
    qDebug() << "CRFMTransmitterHandler::stopSendDataSDI";
 }
@@ -95,8 +101,9 @@ std::vector<bool> CRFMTransmitterHandler::readStatus(const std::vector<bool> com
 {
    std::vector<bool> output;
 
-   mPinout.setPinState(false, ePin::tr_nSEL);
+
    mPinout.setPinState(false, ePin::tr_SDI);
+   mPinout.setPinState(false, ePin::tr_nSEL);
 
    for (int i = 0; i<8; ++i)
    {
@@ -113,8 +120,8 @@ std::vector<bool> CRFMTransmitterHandler::readStatus(const std::vector<bool> com
    }
    output.push_back(mPinout.getPinState(ePin::tr_NIRQ));
 
-   mPinout.setPinState(true, ePin::tr_SDI);
-   mPinout.setPinState(true, ePin::tr_nSEL);
+   mPinout.setPinState(true, ePin::tr_nSEL);   
+   mPinout.setPinState(false, ePin::tr_SDI);
 
    return output;
 }
