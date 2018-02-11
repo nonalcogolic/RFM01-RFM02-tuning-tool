@@ -5,20 +5,32 @@
 
 enum class ePin
 {   
-   FFIT = 22,
-   nSel = 25,
-   VDI = 23,
-   SDI = 10,
-   SDO = 9,
-   SCK = 11,
-   nIRQ = 24,
+   /* 22 - 23
+      3V - 24
+      10 - GND
+      09 - 25
+      11 - 8
+           7  */
 
+   VDI = 22,  SCK = 23,
+   /*3V*/     SDO = 24,
+   SDI = 10,  /*GND*/
+   nSel = 9,  DATA = 25,  //Not used
+   nIRQ = 11, CLK = 8, //NOT used yet
+              FFIT = 7,
 
-   tr_SDI = 2,
-   tr_SCK = 3 ,
-   tr_nSEL = 4,
-   tr_NIRQ = 17,
-   tr_FSK = 18
+   /* 2 - 5V
+      3 - GND
+      4 - 14
+      X - 15
+      17- X  */
+
+   tr_nSEL = 2,   /*5V*/
+   tr_SCK = 3 ,   /*GND*/
+   tr_NIRQ = 4,   tr_SDI = 14,
+                  tr_FSK = 15,
+   tr_CLK = 17
+
 };
 
 

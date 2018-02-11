@@ -304,8 +304,8 @@ void TransmitterControlPanel::nIRQTransmitterFSK(const bool state)
 
 void TransmitterControlPanel::sendDataSDI(const std::vector<bool> transmitDataSDIcmd)
 {
-   std::this_thread::sleep_for(std::chrono::milliseconds(10)); //TODO: WTF? 7
-   connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)), Qt::ConnectionType::QueuedConnection);
+   std::this_thread::sleep_for(std::chrono::milliseconds(8)); //TODO: WTF? 7
+   connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)));
    mTransmitterHandler.sendDataSDI(transmitDataSDIcmd);
 //
 
