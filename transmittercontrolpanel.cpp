@@ -86,12 +86,12 @@ TransmitterControlPanel::TransmitterControlPanel(CBroadcomPinout & pinout, CGPIO
    connect(ui->deviation_value, SIGNAL(valueChanged(int)), ui->label_deviation, SLOT(setNum(int)));
 
 
-   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
 
 }
 
 TransmitterControlPanel::~TransmitterControlPanel()
 {
+   mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
    delete ui;
 }
 
@@ -285,8 +285,7 @@ void TransmitterControlPanel::sendDataFSK()
    mTransmitterHandler.sendDataFSK();
 
    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-   connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)), Qt::ConnectionType::QueuedConnection);
-   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { emit nIRQTransmitterSignal(state); }, eEventType::fall);
+     mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { nIRQTransmitterFSK(state); }, eEventType::fall);
 }
 
 void TransmitterControlPanel::nIRQTransmitterFSK(const bool state)
@@ -296,7 +295,7 @@ void TransmitterControlPanel::nIRQTransmitterFSK(const bool state)
    {
       count = 0;
       disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterFSK(const bool)));
-  //    mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
+      mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
       mTransmitterHandler.stopSendDataFSK();
       dataTransmitionFinished(true);
    }
@@ -304,8 +303,8 @@ void TransmitterControlPanel::nIRQTransmitterFSK(const bool state)
 
 void TransmitterControlPanel::sendDataSDI(const std::vector<bool> transmitDataSDIcmd)
 {
-   std::this_thread::sleep_for(std::chrono::milliseconds(8)); //TODO: WTF? 7
-   connect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)));
+ //  std::this_thread::sleep_for(std::chrono::milliseconds(8)); //TODO: WTF? 7
+   mEvents.listenPin(ePin::tr_NIRQ, [this](const bool state) { nIRQTransmitterSDI(state); }, eEventType::fall);
    mTransmitterHandler.sendDataSDI(transmitDataSDIcmd);
 //
 
@@ -319,8 +318,7 @@ void TransmitterControlPanel::nIRQTransmitterSDI(const bool state)
       count = 0;
       mTransmitterHandler.stopSendDataSDI();
       dataTransmitionFinished(false);
-  //    mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
-      disconnect(this, SIGNAL(nIRQTransmitterSignal(const bool)), this, SLOT(nIRQTransmitterSDI(const bool)));
+      mEvents.removeEvent(ePin::tr_NIRQ, eEventType::fall);
       qDebug() << "disconnected";
    }
 }
