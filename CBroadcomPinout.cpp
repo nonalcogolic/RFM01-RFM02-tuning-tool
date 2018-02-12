@@ -89,6 +89,9 @@ void CBroadcomPinout::subscribeOn(const ePin pin, const eEventType type)
       break;
 
    case eEventType::high:
+      bcm2835_gpio_pud(BCM2835_GPIO_PUD_DOWN);
+      bcm2835_gpio_pudclk(static_cast<uint8_t>(pin), true);
+
       bcm2835_gpio_hen(static_cast<uint8_t>(pin));
       break;
 

@@ -245,7 +245,7 @@ void TransmitterControlPanel::dataTransmitionFinished(const bool throughTheFSK)
    }
    else
    {
-   //   sendSleep();
+      sendSleep();
   //    ui->checkbox_auto_oscil_synth->setChecked(false);
   //    ui->checkbox_auto_power_apl->setChecked(false);
   //    ui->checkBox_on_amplifter->setChecked(false);

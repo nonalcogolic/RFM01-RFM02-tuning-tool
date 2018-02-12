@@ -40,7 +40,7 @@
          <string>Clock recovery auto lock control</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -504,7 +504,7 @@
       <item row="1" column="1">
        <widget class="QComboBox" name="comboBox_fill_condition">
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <item>
          <property name="text">
