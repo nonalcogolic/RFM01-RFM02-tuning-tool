@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1245</width>
+    <width>1562</width>
     <height>748</height>
    </rect>
   </property>
@@ -14,7 +14,7 @@
    <string>Main</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="1">
+   <item row="3" column="1">
     <widget class="QGroupBox" name="groupBox_6">
      <property name="title">
       <string>Data filter</string>
@@ -103,7 +103,422 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="1" column="2">
+    <widget class="QGroupBox" name="groupBox_7">
+     <property name="title">
+      <string>Output and FIFO </string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_10">
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_14">
+        <property name="text">
+         <string>FIFO fill start condition</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string>FIFO IT level</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="checkBox_a_fifo">
+        <property name="text">
+         <string>AUTO SEND</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="int_fifo_IT_level">
+        <property name="maximum">
+         <number>15</number>
+        </property>
+        <property name="value">
+         <number>8</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="pushButton_fifo">
+        <property name="text">
+         <string>Send</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="comboBox_fill_condition">
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>VDI</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sync Word</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Reserved</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Always</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="checkBox_fifo_fill">
+        <property name="text">
+         <string>FIFO fill</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="checkBox_fifo_16">
+        <property name="text">
+         <string>16 bit FIFO mode</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QPushButton" name="closeButton">
+     <property name="text">
+      <string>Close</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Configuration settings</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="1">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Frequency band</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Baseband Bandwidth, kHz</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QCheckBox" name="checkBox_en_low_bat">
+          <property name="text">
+           <string>enable low battery detection</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QCheckBox" name="checkBox_en_wakeUp">
+          <property name="text">
+           <string>enable WakeUp timer</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="QCheckBox" name="checkBox_en_active_sleep">
+          <property name="text">
+           <string>crystal is active during sleep</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QComboBox" name="comboBox_frequency_band">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <property name="currentText">
+           <string>433</string>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>315</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>433</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>868</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>915</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="QCheckBox" name="checkBox_disable_CLK">
+          <property name="text">
+           <string>disable CLK output</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Crystal Load Capacitance, pF</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <widget class="QPushButton" name="pushButton_Configuration">
+          <property name="text">
+           <string>Send</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QCheckBox" name="checkBox_a_Configuration">
+          <property name="text">
+           <string>AUTO SEND</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QComboBox" name="comboBox_bandwidth">
+          <item>
+           <property name="text">
+            <string>67</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>134</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>200</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>270</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>340</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>400</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QDoubleSpinBox" name="double_capacitance">
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="minimum">
+           <double>8.500000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>16.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.500000000000000</double>
+          </property>
+          <property name="value">
+           <double>10.500000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Receiver settings</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_7">
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="1" column="1">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>LNA gain, * -1</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="QPushButton" name="pushButton_receiver_settings">
+          <property name="text">
+           <string>Send</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QComboBox" name="comboBox_LNA_gain">
+          <item>
+           <property name="text">
+            <string>0</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>14</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>6</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>20</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QComboBox" name="comboBox_RSSI_threshold">
+          <item>
+           <property name="text">
+            <string>103</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>97</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>91</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>85</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>79</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>73</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QComboBox" name="comboBox_VDI_cond">
+          <property name="currentIndex">
+           <number>2</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Digitial RSSI Out (DRSSI)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Data Quality Detector (DQD)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Clock recovery lock</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>DRSSI &amp;&amp; DQD</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QCheckBox" name="checkBox_a_Receiver_setings">
+          <property name="text">
+           <string>AUTO SEND</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>RSSI threshold</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>VDI condition </string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QCheckBox" name="checkBox_en_receiver">
+          <property name="text">
+           <string>Enable receiver</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
     <widget class="QGroupBox" name="groupBox_5">
      <property name="title">
       <string>AFC</string>
@@ -234,7 +649,7 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
+   <item row="1" column="0" rowspan="2" colspan="2">
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
       <string>Common</string>
@@ -454,445 +869,74 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="2">
-    <widget class="QGroupBox" name="groupBox_7">
-     <property name="title">
-      <string>Output and FIFO </string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_10">
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_14">
-        <property name="text">
-         <string>FIFO fill start condition</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_13">
-        <property name="text">
-         <string>FIFO IT level</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="checkBox_a_fifo">
-        <property name="text">
-         <string>AUTO SEND</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="int_fifo_IT_level">
-        <property name="maximum">
-         <number>15</number>
-        </property>
-        <property name="value">
-         <number>8</number>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QPushButton" name="pushButton_fifo">
-        <property name="text">
-         <string>Send</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="comboBox_fill_condition">
-        <property name="currentIndex">
-         <number>1</number>
-        </property>
-        <item>
-         <property name="text">
-          <string>VDI</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Sync Word</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Reserved</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Always</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QCheckBox" name="checkBox_fifo_fill">
-        <property name="text">
-         <string>FIFO fill</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QCheckBox" name="checkBox_fifo_16">
-        <property name="text">
-         <string>16 bit FIFO mode</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QGroupBox" name="groupBox_3">
-     <property name="title">
-      <string>Receiver settings</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_7">
-      <item row="0" column="0">
-       <layout class="QGridLayout" name="gridLayout_6">
-        <item row="1" column="1">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>LNA gain, * -1</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <widget class="QPushButton" name="pushButton_receiver_settings">
-          <property name="text">
-           <string>Send</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QComboBox" name="comboBox_LNA_gain">
-          <item>
-           <property name="text">
-            <string>0</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>14</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>6</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>20</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="QComboBox" name="comboBox_RSSI_threshold">
-          <item>
-           <property name="text">
-            <string>103</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>97</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>91</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>85</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>79</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>73</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QComboBox" name="comboBox_VDI_cond">
-          <property name="currentIndex">
-           <number>2</number>
-          </property>
-          <item>
-           <property name="text">
-            <string>Digitial RSSI Out (DRSSI)</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Data Quality Detector (DQD)</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Clock recovery lock</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>DRSSI &amp;&amp; DQD</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QCheckBox" name="checkBox_a_Receiver_setings">
-          <property name="text">
-           <string>AUTO SEND</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>RSSI threshold</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>VDI condition </string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="QCheckBox" name="checkBox_en_receiver">
-          <property name="text">
-           <string>Enable receiver</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="0" colspan="2">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Configuration settings</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_5">
-      <item row="0" column="0">
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="1">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Frequency band</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Baseband Bandwidth, kHz</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1">
-         <widget class="QCheckBox" name="checkBox_en_low_bat">
-          <property name="text">
-           <string>enable low battery detection</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QCheckBox" name="checkBox_en_wakeUp">
-          <property name="text">
-           <string>enable WakeUp timer</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <widget class="QCheckBox" name="checkBox_en_active_sleep">
-          <property name="text">
-           <string>crystal is active during sleep</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QComboBox" name="comboBox_frequency_band">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="editable">
-           <bool>false</bool>
-          </property>
-          <property name="currentText">
-           <string>433</string>
-          </property>
-          <property name="currentIndex">
-           <number>1</number>
-          </property>
-          <item>
-           <property name="text">
-            <string>315</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>433</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>868</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>915</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="QCheckBox" name="checkBox_disable_CLK">
-          <property name="text">
-           <string>disable CLK output</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Crystal Load Capacitance, pF</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2">
-         <widget class="QPushButton" name="pushButton_Configuration">
-          <property name="text">
-           <string>Send</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="1">
-         <widget class="QCheckBox" name="checkBox_a_Configuration">
-          <property name="text">
-           <string>AUTO SEND</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="QComboBox" name="comboBox_bandwidth">
-          <item>
-           <property name="text">
-            <string>67</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>134</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>200</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>270</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>340</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>400</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="QDoubleSpinBox" name="double_capacitance">
-          <property name="decimals">
-           <number>1</number>
-          </property>
-          <property name="minimum">
-           <double>8.500000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>16.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.500000000000000</double>
-          </property>
-          <property name="value">
-           <double>10.500000000000000</double>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="2" column="2">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>Receive info</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_13">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_12">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="checkBox_autoRead">
+            <property name="text">
+             <string>Auto read when received</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="pushButton_read_status">
+            <property name="text">
+             <string>Read status</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="QLineEdit" name="lineEdit_status">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="checkBox_FIFO_IT">
+            <property name="text">
+             <string>FIFO IT happened</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QCheckBox" name="checkBox_VDI_IT">
+            <property name="text">
+             <string>VDI IT happened</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="2">
     <widget class="QGroupBox" name="groupBox_8">
      <property name="title">
       <string>Control</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_11">
-      <item row="2" column="0">
-       <widget class="QPushButton" name="pushButton_SW_reset">
-        <property name="text">
-         <string>SW reset</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="pushButton_read_status">
-        <property name="text">
-         <string>Read status</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0" colspan="2">
-       <widget class="QLineEdit" name="lineEdit_status">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
       <item row="5" column="0" colspan="2">
-       <widget class="QPushButton" name="pushButton_send_all">
+       <widget class="QPushButton" name="pushButton_quickConfig">
         <property name="text">
-         <string>SEND ALL</string>
+         <string>Quick config</string>
         </property>
        </widget>
       </item>
@@ -910,34 +954,17 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
-       <widget class="QLineEdit" name="lineEdit_received_data">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="0">
-       <widget class="QProgressBar" name="progressBar">
-        <property name="value">
-         <number>0</number>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="0">
-       <widget class="QCheckBox" name="checkBox_FIFO_IT">
+      <item row="2" column="0" colspan="2">
+       <widget class="QPushButton" name="pushButton_SW_reset">
         <property name="text">
-         <string>FIFO IT happened</string>
+         <string>SW reset</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="1">
-       <widget class="QCheckBox" name="checkBox_VDI_IT">
+      <item row="6" column="0" colspan="2">
+       <widget class="QPushButton" name="pushButton_sendAll">
         <property name="text">
-         <string>VDI IT happened</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
+         <string>Send all selected (auto send)</string>
         </property>
        </widget>
       </item>

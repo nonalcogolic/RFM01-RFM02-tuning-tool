@@ -9,6 +9,8 @@
 
 #include <qmessagebox.h>
 #include <qdebug.h>
+#include <qtimer.h>
+#include <qtooltip.h>
 
 #include "Commands/ACommands.h"
 
@@ -26,6 +28,12 @@
 #include "Commands/Receiver/hwreset.h"
 #include "Commands/Receiver/statusread.h"
 
+#include <chrono>
+#include <iomanip>
+#include <ctime>
+#include <fstream>
+#include <fstream>
+
 
 namespace {
    void checkAndSend(const QCheckBox * checkbox, const std::function<void()> & fn)
@@ -35,6 +43,9 @@ namespace {
          fn();
       }
    }
+
+   std::ofstream logFile("./transmisions.log");
+
 }
 
 
@@ -48,15 +59,16 @@ ReceiverControlPanel::ReceiverControlPanel(CBroadcomPinout & pinout, CGPIOEvent 
    ui->setupUi(this);
 
    mEvents.listenPin(ePin::nIRQ, [this](const bool state) { emit nIRQSignal(state); }, eEventType::fall);
-   mEvents.listenPin(ePin::FFIT, [this](const bool state) { emit FIFO_interupt(state); }, eEventType::high);
-   mEvents.listenPin(ePin::VDI, [this](const bool state) { emit VDI_interupt(state); }, eEventType::high);
+   mEvents.listenPin(ePin::FFIT, [this](const bool state) { emit FIFO_interupt(state); }, eEventType::rise);
+   mEvents.listenPin(ePin::VDI, [this](const bool state) { emit VDI_interupt(state); }, eEventType::rise);
+   mEvents.startThread();
 
    connect(this, SIGNAL(nIRQSignal(const bool)), this, SLOT(receiver_nIRQ(const bool)), Qt::ConnectionType::QueuedConnection);
    connect(this, SIGNAL(FIFO_interupt(const bool)), this, SLOT(receiver_FIFO_interupt(const bool)), Qt::ConnectionType::QueuedConnection);
    connect(this, SIGNAL(VDI_interupt(const bool)), this, SLOT(receiver_VDI_interupt(const bool)), Qt::ConnectionType::QueuedConnection);
 
-
-   connect(ui->pushButton_send_all , SIGNAL(clicked()), this, SLOT(sendAll()));
+   connect(ui->pushButton_sendAll , SIGNAL(clicked()), this, SLOT(sendAll()));
+   connect(ui->pushButton_quickConfig , SIGNAL(clicked()), this, SLOT(quickConfig()));
    connect(ui->pushButton_Configuration , SIGNAL(clicked()), this, SLOT(sendConfiguration()));
    connect(ui->pushButton_frequency , SIGNAL(clicked()), this, SLOT(sendFrequency()));
    connect(ui->pushButton_receiver_settings , SIGNAL(clicked()), this, SLOT(sendReceiverSettings()));
@@ -71,9 +83,19 @@ ReceiverControlPanel::ReceiverControlPanel(CBroadcomPinout & pinout, CGPIOEvent 
    connect(ui->pushButton_SW_reset , SIGNAL(clicked()), this, SLOT(sendReset()));
    connect(ui->pushButton_read_status, SIGNAL(clicked()), this, SLOT(sendReadstatus()));
 
+   connect(ui->closeButton, &QPushButton::clicked, [this](){  QTimer::singleShot(0,[](){
+           QCoreApplication::exit(0);
+      }); });
 
-   //ui->edit_multple_comand_rec->setText("0000 898A A7D0 C847 C69B C42A C200 C080 CE84 CE87 C081");
 
+   ui->pushButton_quickConfig->setToolTip("Checkbox \"Auto read\" will be unchecked to prevent infinite loop, you would need to set it manually after FIFO IT set");
+
+  /* QTimer::singleShot(2000,[this](){
+              quickConfig();
+              QTimer::singleShot(2000,[this](){
+                  ui->checkBox_autoRead->setChecked(true);
+                    });
+         });*/
 }
 
 ReceiverControlPanel::~ReceiverControlPanel()
@@ -95,37 +117,137 @@ void ReceiverControlPanel::sendComand(const ACommands & cmd)
 
 void ReceiverControlPanel::receiver_nIRQ(const bool state)
 {
+   qDebug() << "receiver_nIRQ";
    static int value= 0;
    value = (++value) % 100;
-   ui->progressBar->setValue(value);
+   //ui->progressBar->setValue(value);
 }
 
 void ReceiverControlPanel::receiver_FIFO_interupt(const bool state)
 {
+   qDebug() << "receiver_FIFO_interupt";
    ui->checkBox_FIFO_IT->setChecked(state);
+
+   std::time_t now= std::time(0);
+   std::tm* now_tm= std::gmtime(&now);
+   char buf[42];
+   auto size = std::strftime(buf, 42, "%Y-%m-%d %X", now_tm);
+
+   std::string time(buf, size);
+
+   if (ui->checkBox_autoRead->isChecked())
+   {
+       auto word = mReceiver.readStatus();
+
+       QString result;
+
+       for (auto symb : word)
+       {
+          result += (symb) ? "1" : "0";
+       }
+
+       ui->lineEdit_status->setText(result);
+
+       result.remove(0,16);
+       qDebug() << time.c_str() << " data: " << result ;
+       logFile << time << " data: " << result.toStdString() << std::endl;
+
+       restartFiFo();
+   }
+
+
 }
 
 void ReceiverControlPanel::receiver_VDI_interupt(const bool state)
 {
+   qDebug() << "receiver_VDI_interupt";
    ui->checkBox_VDI_IT->setChecked(state);
+}
+
+void ReceiverControlPanel::restartFiFo()
+{
+    {
+        auto msg = Receiver::ReceiverSetting();
+        msg.setLNAgain(Receiver::lnaGain(ui->comboBox_LNA_gain->currentText()));
+        msg.setRSSI(Receiver::rssi(ui->comboBox_RSSI_threshold->currentText()));
+        msg.setVDIsignal(Receiver::vdiSignal(ui->comboBox_VDI_cond->currentText()));
+        msg.enableReceiver(false);
+        sendComand(msg);
+    }
+
+    {
+        auto msg = Receiver::OutputAndFIFO();
+        msg.enableFIFO(false);
+        msg.enableFifoFill(false);
+        msg.setFIFOFillCondition(Receiver::fifoCondition(ui->comboBox_fill_condition->currentText()));
+        msg.setFIFOitLevel(ui->int_fifo_IT_level->value());
+        sendComand(msg);
+    }
+
+    {
+        auto msg = Receiver::OutputAndFIFO();
+        msg.enableFIFO(true);
+        msg.enableFifoFill(true);
+        msg.setFIFOFillCondition(Receiver::fifoCondition(ui->comboBox_fill_condition->currentText()));
+        msg.setFIFOitLevel(ui->int_fifo_IT_level->value());
+        sendComand(msg);
+    }
+
+    {
+        auto msg = Receiver::ReceiverSetting();
+        msg.setLNAgain(Receiver::lnaGain(ui->comboBox_LNA_gain->currentText()));
+        msg.setRSSI(Receiver::rssi(ui->comboBox_RSSI_threshold->currentText()));
+        msg.setVDIsignal(Receiver::vdiSignal(ui->comboBox_VDI_cond->currentText()));
+        msg.enableReceiver(true);
+        sendComand(msg);
+    }
 }
 
 void ReceiverControlPanel::sendAll()
 {
+   ui->checkBox_autoRead->setChecked(false);
+
    checkAndSend(ui->checkBox_a_Configuration, std::bind(&ReceiverControlPanel::sendConfiguration, this));
    checkAndSend(ui->checkBox_a_frequency, std::bind(&ReceiverControlPanel::sendFrequency, this));
-   checkAndSend(ui->checkBox_a_Receiver_setings, std::bind(&ReceiverControlPanel::sendReceiverSettings, this));
+   checkAndSend(ui->checkBox_a_data_rate, std::bind(&ReceiverControlPanel::sendDataRate, this));
+
    checkAndSend(ui->checkBox_a_wakeUp, std::bind(&ReceiverControlPanel::sendWakeUpTimer, this));
    checkAndSend(ui->checkBox_a_LowDuty, std::bind(&ReceiverControlPanel::sendLowDutyCycle, this));
    checkAndSend(ui->checkBox_a_low_bat_clk_rate, std::bind(&ReceiverControlPanel::sendLowBattery, this));
    checkAndSend(ui->checkBox_a_AFC, std::bind(&ReceiverControlPanel::sendAFC, this));
    checkAndSend(ui->checkBox_a_data_filter, std::bind(&ReceiverControlPanel::sendDataFilter, this));
-   checkAndSend(ui->checkBox_a_data_rate, std::bind(&ReceiverControlPanel::sendDataRate, this));
+
+   checkAndSend(ui->checkBox_a_Receiver_setings, std::bind(&ReceiverControlPanel::sendReceiverSettings, this));
+
+
    checkAndSend(ui->checkBox_a_fifo, std::bind(&ReceiverControlPanel::sendFIFO, this));
+
    //checkAndSend(ui->checkBox_a_, std::bind(&ReceiverControlPanel::sendResetMode, this));
    //checkAndSend(ui->checkBox_a_, std::bind(&ReceiverControlPanel::sendReset, this));
    //checkAndSend(ui->checkBox_a_, std::bind(&ReceiverControlPanel::sendReadstatus, this));
 }
+
+
+void ReceiverControlPanel::quickConfig()
+{
+   ui->checkBox_autoRead->setChecked(false);
+
+   checkAndSend(ui->checkBox_a_Configuration, std::bind(&ReceiverControlPanel::sendConfiguration, this));
+   checkAndSend(ui->checkBox_a_frequency, std::bind(&ReceiverControlPanel::sendFrequency, this));
+   checkAndSend(ui->checkBox_a_data_rate, std::bind(&ReceiverControlPanel::sendDataRate, this));
+
+   checkAndSend(ui->checkBox_a_wakeUp, std::bind(&ReceiverControlPanel::sendWakeUpTimer, this));
+   checkAndSend(ui->checkBox_a_LowDuty, std::bind(&ReceiverControlPanel::sendLowDutyCycle, this));
+   checkAndSend(ui->checkBox_a_low_bat_clk_rate, std::bind(&ReceiverControlPanel::sendLowBattery, this));
+   checkAndSend(ui->checkBox_a_AFC, std::bind(&ReceiverControlPanel::sendAFC, this));
+   checkAndSend(ui->checkBox_a_data_filter, std::bind(&ReceiverControlPanel::sendDataFilter, this));
+
+   restartFiFo();
+
+   const auto globalPos = ui->checkBox_autoRead->mapToGlobal(ui->checkBox_autoRead->pos());
+   QToolTip::showText(globalPos, "'Auto read' unchecked to prevent infinite loop. \nYou can set it manually after very first FIFO IT comes", this, QRect(globalPos, QSize(100, 50)), 5000);
+}
+
 
 void ReceiverControlPanel::sendConfiguration()
 {

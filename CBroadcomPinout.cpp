@@ -32,12 +32,17 @@ public:
 
 CBroadcomPinout::CBroadcomPinout()
 {
+   // bcm2835_set_debug(1);
    if (!bcm2835_init())
         throw OpenBCMException();
+
+   setPinDirrection(true, ePin::_test);
+   setPinState(true, ePin::_test);
 }
 
 CBroadcomPinout::~CBroadcomPinout()
 {
+   setPinState(false, ePin::_test);
    bcm2835_close();
 }
 
@@ -58,8 +63,11 @@ bool CBroadcomPinout::getPinState(const ePin pin)
     return (bcm2835_gpio_lev(static_cast<uint8_t>(pin)) != 0);
 }
 
+#include <qdebug.h>
+
 void CBroadcomPinout::setPinDirrection(const bool isPinOut, const ePin pin)
 {
+   qDebug() << __FUNCTION__ ;
    auto dirrection = (isPinOut) ? BCM2835_GPIO_FSEL_OUTP : BCM2835_GPIO_FSEL_INPT;
    bcm2835_gpio_fsel(static_cast<uint8_t>(pin), dirrection);
 }
@@ -78,14 +86,14 @@ void CBroadcomPinout::subscribeOn(const ePin pin, const eEventType type)
    {
    case eEventType::fall:
       bcm2835_gpio_pud(BCM2835_GPIO_PUD_UP);
-      bcm2835_gpio_pudclk(static_cast<uint8_t>(pin), false);
+      bcm2835_gpio_pudclk(static_cast<uint8_t>(pin), 1);
       bcm2835_gpio_afen(static_cast<uint8_t>(pin));
       break;
 
    case eEventType::rise:
-   //   bcm2835_gpio_pud(BCM2835_GPIO_PUD_DOWN);
-  //    bcm2835_gpio_pudclk(static_cast<uint8_t>(pin), false);
-      bcm2835_gpio_ren(static_cast<uint8_t>(pin));
+      bcm2835_gpio_pud(BCM2835_GPIO_PUD_DOWN);
+      bcm2835_gpio_pudclk(static_cast<uint8_t>(pin), 1);
+      bcm2835_gpio_aren(static_cast<uint8_t>(pin));
       break;
 
    case eEventType::high:

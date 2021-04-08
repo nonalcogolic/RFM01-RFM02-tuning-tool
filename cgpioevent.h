@@ -21,6 +21,8 @@ public:
    void listenPin(const ePin pin, std::function<void(bool)> stateChangedEvent, const eEventType type);
    void removeEvent(const ePin pin, const eEventType type);
 
+   void startThread();
+
 private:
    IPinOut & mPinout;
    std::map<ePin, std::function<void(bool)>> mEvents;

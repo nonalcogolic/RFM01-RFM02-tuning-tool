@@ -7,7 +7,6 @@ CGPIOEvent::CGPIOEvent(IPinOut & pinout)
    , mTerminateThread(false)
    , mEventThread(nullptr)
 {
-   mEventThread = std::unique_ptr<std::thread>(new std::thread{ &CGPIOEvent::eventLoop, this });
 }
 
 CGPIOEvent::~CGPIOEvent()
@@ -34,6 +33,11 @@ void CGPIOEvent::removeEvent(const ePin pin, const eEventType type)
    qDebug() << "CGPIOEvent::removeEvent()";
 }
 
+void CGPIOEvent::startThread()
+{
+    mEventThread = std::unique_ptr<std::thread>(new std::thread{ &CGPIOEvent::eventLoop, this });
+}
+
 
 void CGPIOEvent::eventLoop()
 {
@@ -45,7 +49,7 @@ void CGPIOEvent::eventLoop()
          events = mEvents;
       }
 
-      for (auto & pin : events)
+      for (const auto & pin : mEvents)
       {
          if (mPinout.checkEvent(pin.first))
          {
@@ -53,7 +57,7 @@ void CGPIOEvent::eventLoop()
             pin.second(true);
          }
       }
-      //std::this_thread::sleep_for(std::chrono::nanoseconds(500));
+      std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
    }
 }

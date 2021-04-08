@@ -17,8 +17,12 @@ public:
     }
 };
 
+#include <qdebug.h>
+
 CBroadcomPinout::CBroadcomPinout()
-{}
+{
+   qDebug() << __FUNCTION__ << "Dummy" ;
+}
 
 CBroadcomPinout::~CBroadcomPinout()
 {}

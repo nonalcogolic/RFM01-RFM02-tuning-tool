@@ -41,6 +41,7 @@ private slots:
    void sendResetMode();
    void sendReset();
    void sendReadstatus();
+   void quickConfig();
 
 
 public slots:
@@ -50,6 +51,8 @@ public slots:
    void receiver_VDI_interupt(const bool state);
 
 private:
+   void restartFiFo();
+
    void sendComand(const ACommands & cmd);
 
    Ui::ReceiverControlPanel *ui;

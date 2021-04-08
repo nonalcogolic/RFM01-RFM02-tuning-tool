@@ -5,6 +5,10 @@
 
 enum class ePin
 {   
+
+    /*test LED*/
+    _test = 21,
+
    /* 22 - 23
       3V - 24
       10 - GND
@@ -30,6 +34,9 @@ enum class ePin
    tr_NIRQ = 4,   tr_SDI = 14,
                   tr_FSK = 15,
    tr_CLK = 17
+
+
+
 
 };
 

@@ -11,8 +11,20 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = RFMTestAppGUI
 TEMPLATE = app
-unix:LIBS += -L/usr/local/lib/ -lbcm2835
-# LIBS += -L/usr/local/lib/ -lbcm2835
+
+linux {
+    contains(QMAKE_CXX, .*raspbian.*arm.*):{
+        LIBS += -L$$[QT_SYSROOT]/usr/local/lib/ -lbcm2835
+        message("Raspberry")
+    }
+}
+
+
+target.path = /home/pi/
+INSTALLS += target
+
+
+INCLUDEPATH += $$[QT_SYSROOT]/usr/local/include
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -37,8 +49,13 @@ SOURCES += \
     receivercontrolpanel.cpp \
     creceiverhandler.cpp
 
-unix:SOURCES += CBroadcomPinout.cpp
-win32:SOURCES += CBroadcomPinoutDummy.cpp
+linux {
+    contains(QMAKE_CXX, .*raspbian.*arm.*):{
+        SOURCES += CBroadcomPinout.cpp
+    }else{
+        SOURCES += CBroadcomPinoutDummy.cpp
+    }
+}
 
 
 HEADERS += \
@@ -59,13 +76,12 @@ FORMS += \
     transmittercontrolpanel.ui \
     receivercontrolpanel.ui
 
-OTHER_FILES += \
-    config.txt
+OTHER_FILES +=
 
-#DISTFILES += \
-  #  Commands/Commands.pri # \
-  #  Commands/Receiver/Receiver.pri
 
 include(Commands/Commands.pri)
 include(Commands/Transmitter/Transmitter.pri)
 include(Commands/Receiver/Receiver.pri)
+
+DISTFILES += \
+    Readme.md
